@@ -6,7 +6,7 @@
 #PBS -S /bin/bash
 
 # Settings
-LOGFILE=ctsp.out
+LOGDIR="${PBS_O_WORKDIR}/results/logs"
 
 ########################################################
 # Don't edit below unless you know what you are doing
@@ -19,8 +19,9 @@ echo ""
 # Clean up and copy back workspace
 clean_up ()
 {
-  echo "Cleaning up temporary workspace..."
-  cp -r ${PFSDIR}/* $PBS_O_WORKDIR/.
+  echo "Cleaning up temporary workspace (${PFSDIR})..."
+  time cp -r ${PFSDIR}/* $PBS_O_WORKDIR/.
+  echo "Done cleaning up"
 }
 
 # Kill batch script and clean up
@@ -48,8 +49,9 @@ module load ctsp
 trap "die 'Unexpected termination'" TERM
 
 # Create workspace in tmp directory
-echo "Creating workspace in temporary directory"
-cp -r ${PBS_O_WORKDIR}/* ${PFSDIR}
+echo "Creating temporary workspace (${PFSDIR})"
+mkdir -p "${LOGDIR}"
+time cp -r ${PBS_O_WORKDIR}/* ${PFSDIR}
 cd ${PFSDIR}
 
 # Find number of cores from the subdirectories present
@@ -62,7 +64,6 @@ fi
 
 # CTSP execution
 echo "Processing CTSP using ${NUM_CORES} cores"
-echo "Logging output to: ${LOGFILE}"
 
 # Go into each subdirectory and run the CTSP executable
 time pbsdsh bash -l -c "
@@ -70,37 +71,41 @@ time pbsdsh bash -l -c "
   ARRAY=(${DIRS})
   WORKDIR=\${ARRAY[\$PBS_VNODENUM]}
   if [ -d \"\$WORKDIR\" ]; then
-    exec 1>\$WORKDIR/${LOGFILE} 2>&1
+    exec 1>"${LOGDIR}/ctsp.\$PBS_VNODENUM.log" 2>&1
     cd \$WORKDIR
     ctsp.x
   fi
 "
 check_status $? pbsdsh
 
+# Create common log file
+LOGFILE="${LOGDIR}/ctsp.log"
+> ${LOGFILE}
+
 # Merge CTSP subdirectories if more than one core
 if [[ ${NUM_CORES} -ne 1 ]]; then
   echo "Merging the CTSP subdirectories"
-  time merge.x > ${LOGFILE}
+  time merge.x >> ${LOGFILE}
+  echo "" >> ${LOGFILE}
   check_status $? merge.x
 fi
 
 # Cutoff temperatures greater than melting temp
 CUTOFF=$(awk -F',' 'NR==3{print $3; exit}' input.in)
 echo "Cutoff spurious temperatures (CUTOFF = ${CUTOFF} C)"
-echo "" >> ${LOGFILE}
 echo "Using cutoff temperature = ${CUTOFF}" >> ${LOGFILE}
 time echo ${CUTOFF} | cutoff.x >> ${LOGFILE}
+echo "" >> ${LOGFILE}
 check_status $? cutoff.x
 
 # Convert temperature file to binary
 echo "Convert temperature file into binary format"
-echo "" >> ${LOGFILE}
 time echo "CTSP" | temp_convert.x >> ${LOGFILE}
+echo "" >> ${LOGFILE}
 check_status $? temp_convert.x
 
 # Create paraview inputs
-echo "Generating Paraview input file: ctsp.case"
-echo "" >> ${LOGFILE}
+echo "Generating Paraview input file"
 time ctsp2case.x >> ${LOGFILE}
 check_status $? ctsp2case.x
 
