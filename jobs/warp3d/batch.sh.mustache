@@ -8,9 +8,9 @@
 # Global Settings
 WORKSPACE="${TMPDIR}"
 STAGEDDIR="${PBS_O_WORKDIR}"
+LOGDIR="${STAGEDDIR}/results/logs"
 
 # WARP3D Settings
-LOGDIR="${STAGEDDIR}/results/logs"
 PATTERN="*.wrp"
 
 ########################################################
@@ -50,6 +50,7 @@ init ()
 {
   echo "Creating temporary workspace (${WORKSPACE})..."
   time rsync -av "${STAGEDDIR}/" "${WORKSPACE}"
+  mkdir -p "${LOGDIR}"
   echo "Done creating temporary workspace"
   cd "${WORKSPACE}"
 }
@@ -65,7 +66,6 @@ trap "die 'Unexpected termination'" TERM
 
 # Create workspace in tmp directory
 init
-mkdir -p "${LOGDIR}"
 
 # Find first *.wrp file and use as input file
 FILES=( ${PATTERN} )
@@ -82,6 +82,7 @@ LOGFILE="${LOGDIR}/warp3d.log"
 # WARP3D execution
 echo "Running WARP3D"
 time warp3d.omp < "${INPUT}" &>> "${LOGFILE}"
+check_status $? warp3d.omp
 
 # Simple error checking
 
@@ -113,6 +114,7 @@ ${FLATFILE}
 .
 n
 EOF
+check_status $? warp3d2exii
 
 # Always clean up after yourself
 clean_up

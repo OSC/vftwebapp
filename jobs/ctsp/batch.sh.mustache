@@ -5,8 +5,13 @@
 #PBS -j oe
 #PBS -S /bin/bash
 
-# Settings
-LOGDIR="${PBS_O_WORKDIR}/results/logs"
+# Global Settings
+WORKSPACE="${PFSDIR}"
+STAGEDDIR="${PBS_O_WORKDIR}"
+LOGDIR="${STAGEDDIR}/results/logs"
+
+# CTSP Settings
+# none...
 
 ########################################################
 # Don't edit below unless you know what you are doing
@@ -19,8 +24,8 @@ echo ""
 # Clean up and copy back workspace
 clean_up ()
 {
-  echo "Cleaning up temporary workspace (${PFSDIR})..."
-  time cp -R ${PFSDIR}/* $PBS_O_WORKDIR/.
+  echo "Cleaning up temporary workspace (${WORKSPACE})..."
+  time rsync -avu "${WORKSPACE}/" "${STAGEDDIR}"
   echo "Done cleaning up"
 }
 
@@ -40,6 +45,16 @@ check_status ()
   fi
 }
 
+# Initialize workspace
+init ()
+{
+  echo "Creating temporary workspace (${WORKSPACE})..."
+  time rsync -av "${STAGEDDIR}/" "${WORKSPACE}"
+  mkdir -p "${LOGDIR}"
+  echo "Done creating temporary workspace"
+  cd "${WORKSPACE}"
+}
+
 # Set up CTSP environment (use default CTSP module)
 module use /nfs/gpfs/PZS0645/local-ruby/emc2/share/modulefiles
 module load ctsp
@@ -49,10 +64,7 @@ module load ctsp
 trap "die 'Unexpected termination'" TERM
 
 # Create workspace in tmp directory
-echo "Creating temporary workspace (${PFSDIR})"
-mkdir -p "${LOGDIR}"
-time cp -R ${PBS_O_WORKDIR}/* ${PFSDIR}
-cd ${PFSDIR}
+init
 
 # Find number of cores from the subdirectories present
 DIRS=$(find ${PWD} -maxdepth 1 -name 'CTSPsubd*' | sort)
@@ -67,12 +79,12 @@ echo "Processing CTSP using ${NUM_CORES} cores"
 
 # Go into each subdirectory and run the CTSP executable
 time pbsdsh bash -l -c "
-  export PATH=${PATH}
+  export PATH=\"${PATH}\"
   ARRAY=(${DIRS})
-  WORKDIR=\${ARRAY[\$PBS_VNODENUM]}
-  if [ -d \"\$WORKDIR\" ]; then
-    exec 1>"${LOGDIR}/ctsp.\$PBS_VNODENUM.log" 2>&1
-    cd \$WORKDIR
+  WORKDIR=\"\${ARRAY[\${PBS_VNODENUM}]}\"
+  if [ -d \"\${WORKDIR}\" ]; then
+    exec 1>\"${LOGDIR}/ctsp.\$PBS_VNODENUM.log\" 2>&1
+    cd \"\${WORKDIR}\"
     ctsp.x
   fi
 "
@@ -80,33 +92,33 @@ check_status $? pbsdsh
 
 # Create common log file
 LOGFILE="${LOGDIR}/ctsp.log"
-> ${LOGFILE}
+> "${LOGFILE}"
 
 # Merge CTSP subdirectories if more than one core
 if [[ ${NUM_CORES} -ne 1 ]]; then
   echo "Merging the CTSP subdirectories"
-  time merge.x >> ${LOGFILE}
-  echo "" >> ${LOGFILE}
+  time merge.x >> "${LOGFILE}"
+  echo "" >> "${LOGFILE}"
   check_status $? merge.x
 fi
 
 # Cutoff temperatures greater than melting temp
 CUTOFF=$(awk -F',' 'NR==3{print $3; exit}' input.in)
 echo "Cutoff spurious temperatures (CUTOFF = ${CUTOFF} C)"
-echo "Using cutoff temperature = ${CUTOFF}" >> ${LOGFILE}
-time echo ${CUTOFF} | cutoff.x >> ${LOGFILE}
-echo "" >> ${LOGFILE}
+echo "Using cutoff temperature = ${CUTOFF}" >> "${LOGFILE}"
+time echo ${CUTOFF} | cutoff.x >> "${LOGFILE}"
+echo "" >> "${LOGFILE}"
 check_status $? cutoff.x
 
 # Convert temperature file to binary
 echo "Convert temperature file into binary format"
-time echo "CTSP" | temp_convert.x >> ${LOGFILE}
-echo "" >> ${LOGFILE}
+time echo "CTSP" | temp_convert.x >> "${LOGFILE}"
+echo "" >> "${LOGFILE}"
 check_status $? temp_convert.x
 
 # Create paraview inputs
 echo "Generating Paraview input file"
-time ctsp2case.x >> ${LOGFILE}
+time ctsp2case.x >> "${LOGFILE}"
 check_status $? ctsp2case.x
 
 # Always clean up after yourself
