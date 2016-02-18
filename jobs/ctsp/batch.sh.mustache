@@ -20,7 +20,7 @@ echo ""
 clean_up ()
 {
   echo "Cleaning up temporary workspace (${PFSDIR})..."
-  time cp -r ${PFSDIR}/* $PBS_O_WORKDIR/.
+  time cp -R ${PFSDIR}/* $PBS_O_WORKDIR/.
   echo "Done cleaning up"
 }
 
@@ -51,7 +51,7 @@ trap "die 'Unexpected termination'" TERM
 # Create workspace in tmp directory
 echo "Creating temporary workspace (${PFSDIR})"
 mkdir -p "${LOGDIR}"
-time cp -r ${PBS_O_WORKDIR}/* ${PFSDIR}
+time cp -R ${PBS_O_WORKDIR}/* ${PFSDIR}
 cd ${PFSDIR}
 
 # Find number of cores from the subdirectories present
