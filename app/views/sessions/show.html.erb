@@ -1,0 +1,17 @@
+<% render partial: 'navbar' %>
+<div class="page-header">
+    <h2>Showing Session</h2>
+</div>
+
+<p>
+  <strong>Name:</strong>
+  <%= @session.name %>
+</p>
+
+<p>
+  <strong>Version:</strong>
+  <%= @session.version %>
+</p>
+
+<%= link_to 'Back', mesh_sessions_path(@mesh), class: 'btn btn-default' %>
+<%= link_to 'Edit', edit_session_path(@session), class: 'btn btn-default' %>

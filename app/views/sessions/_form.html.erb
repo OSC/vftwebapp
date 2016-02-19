@@ -1,0 +1,15 @@
+<%# Uses rails_bootstrap_form gem. API at: https://github.com/bootstrap-ruby/rails-bootstrap-forms %>
+<%= bootstrap_form_for([mesh, session]) do |f| %>
+  <%= f.alert_message "Please fix the errors below." %>
+
+  <%= f.text_field :name %>
+  <%= f.number_field :version %>
+
+  <%= f.submit 'Save', class: 'btn btn-primary' %>
+  <%= f.button 'Reset', type: :reset, class: 'btn btn-default' %>
+
+  <hr>
+
+  <%= link_to 'Back', mesh_sessions_path(mesh), class: 'btn btn-default' %>
+  <%= link_to 'Show', session, class: 'btn btn-primary' unless session.new_record? %>
+<% end %>

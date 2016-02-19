@@ -1,0 +1,17 @@
+<% content_for :navbar do %>
+  <ul class="nav navbar-nav">
+    <li>
+      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Session'.html_safe, new_mesh_session_path(@mesh) %>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
+    <li>
+      <%= link_to "Documentation", docs_path('Home') %>
+    </li>
+    <% end %>
+    <li>
+      <%= link_to "My Sessions", mesh_sessions_path(@mesh) %>
+    </li>
+  </ul>
+<% end %>

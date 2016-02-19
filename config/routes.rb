@@ -6,6 +6,13 @@ Vftsim::Application.routes.draw do
       put 'submit'
       put 'copy'
     end
+
+    resources :sessions, shallow: true do
+      member do
+        put 'submit'
+        put 'copy'
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
