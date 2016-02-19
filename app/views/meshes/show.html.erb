@@ -1,0 +1,17 @@
+<% render partial: 'navbar' %>
+<div class="page-header">
+    <h2>Showing Mesh</h2>
+</div>
+
+<p>
+  <strong>Name:</strong>
+  <%= @mesh.name %>
+</p>
+
+<p>
+  <strong>Version:</strong>
+  <%= @mesh.version %>
+</p>
+
+<%= link_to 'Back', meshes_path, class: 'btn btn-default' %>
+<%= link_to 'Edit', edit_mesh_path(@mesh), class: 'btn btn-default' %>

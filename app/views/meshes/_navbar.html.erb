@@ -1,0 +1,17 @@
+<% content_for :navbar do %>
+  <ul class="nav navbar-nav">
+    <li>
+      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Mesh'.html_safe, new_mesh_path %>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
+    <li>
+      <%= link_to "Documentation", docs_path('Home') %>
+    </li>
+    <% end %>
+    <li>
+      <%= link_to "My Meshes", meshes_path %>
+    </li>
+  </ul>
+<% end %>

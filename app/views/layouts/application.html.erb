@@ -32,21 +32,7 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-responsive-collapse">
-        <ul class="nav navbar-nav">
-          <li>
-            <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Simulation'.html_safe, "#" %>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
-          <li>
-            <%= link_to "Documentation", docs_path('Home') %>
-          </li>
-          <% end %>
-          <li>
-            <%= link_to "My Simulations", root_path %>
-          </li>
-        </ul>
+        <%= yield :navbar %>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
