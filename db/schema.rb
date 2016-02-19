@@ -41,10 +41,8 @@ ActiveRecord::Schema.define(version: 20160218190619) do
   create_table "workflows", force: true do |t|
     t.string   "type"
     t.integer  "parent_id"
-    t.string   "name"
     t.string   "staged_dir"
     t.text     "data"
-    t.integer  "version"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
