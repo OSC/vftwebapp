@@ -5,6 +5,12 @@
   <%= f.text_field :name %>
   <%= f.number_field :version %>
 
+  <%= f.fields_for :upload do |u| %>
+    <%= u.hidden_field :file_cache %>
+    <%= u.hidden_field :file_cache_name %>
+    <%= u.file_field :file, label: "Upload (#{u.object.file_cache_name || u.object.file_file_name})"%>
+  <% end %>
+
   <%= f.submit 'Save', class: 'btn btn-primary' %>
   <%= f.button 'Reset', type: :reset, class: 'btn btn-default' %>
 

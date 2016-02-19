@@ -13,5 +13,10 @@
   <%= @mesh.version %>
 </p>
 
+<p>
+  <strong>Upload:</strong>
+  <%= link_to @mesh.upload.file_file_name, @mesh.upload.file.url %>
+</p>
+
 <%= link_to 'Back', meshes_path, class: 'btn btn-default' %>
 <%= link_to 'Edit', edit_mesh_path(@mesh), class: 'btn btn-default' %>

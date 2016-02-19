@@ -15,6 +15,7 @@ class MeshesController < ApplicationController
   # GET /meshes/new
   def new
     @mesh = Mesh.new
+    @mesh.build_upload
   end
 
   # GET /meshes/1/edit
