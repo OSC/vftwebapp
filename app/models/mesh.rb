@@ -2,6 +2,9 @@ class Mesh < Workflow
   has_many :jobs, class_name: "MeshJob", foreign_key: "workflow_id", dependent: :destroy
   has_many :sessions, foreign_key: "parent_id", dependent: :destroy
 
+  store_accessor :data, :name
+  validates :name, presence: true
+
   has_one :upload, class_name: "MeshUpload", foreign_key: "workflow_id", dependent: :destroy
   accepts_nested_attributes_for :upload, allow_destroy: true
   validates_associated :upload

@@ -1,7 +1,10 @@
 class Session < Workflow
   has_many :jobs, class_name: "SessionJob", foreign_key: "workflow_id", dependent: :destroy
-  has_many :thermals, foreign_key: "parent_id", dependent: :destroy
+  has_one :thermal, foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Mesh"
+
+  store_accessor :data, :name
+  validates :name, presence: true
 
   # This workflow has a single job, so set workflow pbsid to this value
   def pbsid
@@ -56,7 +59,7 @@ class Session < Workflow
   # Use OSC::VNC to generate the batch script
   def build_jobs(staged_dir, job_list = [])
     self.staged_dir = staged_dir
-    script = staged_dir.join("main.sh")
+    script = staged_dir.join("session_main.sh")
     File.open(script, 'w') do |f|
       f.write "#PBS -N VFTSolid\n"
       # f.write "#PBS -l nodes=1:ppn=1:ruby\n"

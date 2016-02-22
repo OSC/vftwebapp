@@ -1,0 +1,5 @@
+<% if !thermal.submitted? %>
+  <%= link_to 'Submit CTSP', submit_thermal_path(thermal), method: :put, class: 'btn btn-success btn-sm' %>
+<% else %>
+  <%= status_label(thermal) %>
+<% end %>

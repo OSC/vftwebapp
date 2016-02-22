@@ -22,7 +22,7 @@
         <td><%= session.id %></td>
         <td><%= session.name %></td>
         <td><%= render 'vftsolid', session: session %></td>
-        <td></td>
+        <td><%= render 'ctsp', session: session, thermal: session.thermal if session.passed? %></td>
         <td></td>
         <td><%= link_to 'Edit', edit_session_path(session), class: 'btn btn-default btn-sm' %></td>
         <td><%= link_to 'Destroy', session, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>

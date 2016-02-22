@@ -16,6 +16,9 @@ Vftsim::Application.routes.draw do
     end
   end
 
+  put 'thermals/:id/submit' => 'thermals#submit', as: 'submit_thermal'
+  put 'thermals/:id/stop' => 'thermals#stop', as: 'stop_thermal'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
