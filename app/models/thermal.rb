@@ -3,6 +3,14 @@ class Thermal < Workflow
   has_one :structural, foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Session"
 
+  def nodes
+    1
+  end
+
+  def hours
+    1
+  end
+
   def staging_template_name
     "thermal"
   end
