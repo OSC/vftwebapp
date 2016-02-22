@@ -3,47 +3,64 @@ class Session < Workflow
   has_many :thermals, foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Mesh"
 
+  # This workflow has a single job, so set workflow pbsid to this value
   def pbsid
     jobs.first.pbsid
   end
 
+  # OSC::VNC Script view
   def script_view
     OSC::VNC::ScriptView.new(
       :vnc,
-      'ruby',
+      # 'ruby',
+      'oakley',
       xstartup: staging_template_dir.join('xstartup'),
       outdir: staged_dir,
       geom: '1024x768'
     )
   end
 
+  # Location of connection file
   def conn_file
     "#{staged_dir}/#{pbsid}.conn"
   end
 
+  # OSC::VNC Connection view
   def conn_view
     session = OpenStruct.new(conn_file: conn_file, script: script_view)
     OSC::VNC::ConnView.new(session)
   end
 
+  # Is the batch job starting? (i.e., running but no connection file yet)
   def starting?
     active? && !File.file?(conn_file)
   end
 
+  # Template is located in jobs/session
   def staging_template_name
     "session"
   end
 
+  # Don't copy the template directory over
+  def stage
+    staged_dir = OSC::Machete::JobDir.new(staging_target_dir).new_jobdir
+    FileUtils.mkdir_p staged_dir
+    staged_dir
+  end
+
+  # Copy the mesh upload over
   def after_stage(staged_dir)
     FileUtils.cp parent.upload.file.path, staged_dir
   end
 
+  # Use OSC::VNC to generate the batch script
   def build_jobs(staged_dir, job_list = [])
     self.staged_dir = staged_dir
     script = staged_dir.join("main.sh")
     File.open(script, 'w') do |f|
       f.write "#PBS -N VFTSolid\n"
-      f.write "#PBS -l nodes=1:ppn=1:ruby\n"
+      # f.write "#PBS -l nodes=1:ppn=1:ruby\n"
+      f.write "#PBS -l nodes=1:ppn=1:oakley\n"
       f.write "#PBS -l walltime=01:00:00\n"
       f.write "#PBS -j oe\n"
       f.write "#PBS -S /bin/bash\n\n"

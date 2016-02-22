@@ -1,51 +1,20 @@
 #!/bin/bash
 
-# Turn off screensaver
-gconftool-2 --set -t boolean /apps/gnome-screensaver/idle_activation_enabled false
+if [ -e $HOME/.Xresources ]; then
+  xrdb $HOME/.Xresources
+fi
+xsetroot -solid grey
 
-# Use browser window instead in nautilus
-gconftool-2 --set -t boolean /apps/nautilus/preferences/always_use_browser true
+export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+/usr/bin/fvwm -f ${XSTARTUP_DIR}/fvwm/fvwmrc &
 
 . /etc/profile.d/lmod.sh
+module use /nfs/gpfs/PZS0645/local-ruby/share/modulefiles
+module load wine
+module use /nfs/gpfs/PZS0645/local-ruby/emc2/share/modulefiles
+module load vft/i686
 
-###########################################################################
-# Preserve library paths -                                                #
-# These get wiped probably because a binary with setuid or setgid bit was #
-# called during the startup of gnome                                      #
-###########################################################################
-export VNC_OAKLEY_DESKTOP_LLP="${LD_LIBRARY_PATH}"
-if [ ! -f "${HOME}/.bashrc" ]; then
-    touch ${HOME}/.bashrc
-fi
-if [ ! -f "${HOME}/.bashrc_awesim" ]; then
-    touch ${HOME}/.bashrc_awesim
-fi
+cd ${VFT_HOME}
+WINEPREFIX=~/.wine-vft VFTHOME="Z:\\${HOME}" MATDIR="${MATDIR}" wine Project2.exe
 
-# Source our .bashrc_awesim
-if ! grep -Fq "bashrc_awesim" ${HOME}/.bashrc
-then
-    echo '. ${HOME}/.bashrc_awesim' >> ${HOME}/.bashrc
-fi
-
-# Remove script from user's .bashrc if already exists
-sed -i '/###VNC_OAKLEY_DESKTOP_BEGIN###/,/###VNC_OAKLEY_DESKTOP_END###/d' ${HOME}/.bashrc_awesim
-
-# Add this to user's .bashrc
-cat <<EOF >> ${HOME}/.bashrc_awesim
-###VNC_OAKLEY_DESKTOP_BEGIN###
-if [ -n "\${VNC_OAKLEY_DESKTOP_LLP}" ]; then
-    export LD_LIBRARY_PATH="\${VNC_OAKLEY_DESKTOP_LLP}"
-    export -n VNC_OAKLEY_DESKTOP_LLP
-    unset VNC_OAKLEY_DESKTOP_LLP
-    # Replace bash "module" functions that were lost
-    . /usr/local/lmod/lmod/init/sh
-fi
-###VNC_OAKLEY_DESKTOP_END###
-EOF
-###########################################################################
-
-# Start up Gnome desktop
-/etc/X11/xinit/xinitrc
-
-# Kill vncserver when user logs out of Gnome desktop
-vncserver -kill $DISPLAY
+vncserver -kill ${DISPLAY}
