@@ -15,8 +15,7 @@ class Session < Workflow
   def script_view
     OSC::VNC::ScriptView.new(
       :vnc,
-      # 'ruby',
-      'oakley',
+      'ruby',
       xstartup: staging_template_dir.join('xstartup'),
       outdir: staged_dir,
       geom: '1024x768'
@@ -34,9 +33,13 @@ class Session < Workflow
     OSC::VNC::ConnView.new(session)
   end
 
+  def running?
+    jobs.first.status.running?
+  end
+
   # Is the batch job starting? (i.e., running but no connection file yet)
   def starting?
-    active? && !File.file?(conn_file)
+    running? && !File.file?(conn_file)
   end
 
   # Template is located in jobs/session
@@ -62,8 +65,7 @@ class Session < Workflow
     script = staged_dir.join("session_main.sh")
     File.open(script, 'w') do |f|
       f.write "#PBS -N VFTSolid\n"
-      # f.write "#PBS -l nodes=1:ppn=1:ruby\n"
-      f.write "#PBS -l nodes=1:ppn=1:oakley\n"
+      f.write "#PBS -l nodes=1:ppn=1:ruby\n"
       f.write "#PBS -l walltime=01:00:00\n"
       f.write "#PBS -j oe\n"
       f.write "#PBS -S /bin/bash\n\n"

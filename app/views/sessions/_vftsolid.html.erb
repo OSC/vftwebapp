@@ -1,6 +1,7 @@
 <% if !session.submitted? %>
   <%= link_to 'Launch VFTSolid', submit_session_path(session), method: :put, class: 'btn btn-success btn-sm' %>
 <% elsif session.active? %>
+  <%= status_label(session) %>
   <% if session.starting? %>
     Starting...
   <% else %>
