@@ -1,9 +1,9 @@
 <% if !session.submitted? %>
-    <%= link_to 'Launch VFTSolid', submit_session_path(session), method: :put, class: 'btn btn-success btn-sm' %>
+  <%= link_to 'Launch VFTSolid', submit_session_path(session), method: :put, class: 'btn btn-success btn-sm' %>
 <% elsif session.starting? %>
-    Starting
+  Starting...
 <% elsif session.active? %>
-    Running
+  <%= link_to session.conn_view.render(:awesim), session.conn_view.render(:awesim) %>
 <% else %>
-    Done!
+  Done!
 <% end %>
