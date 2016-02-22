@@ -5,4 +5,15 @@ class Structural < Workflow
   def staging_template_name
     "structural"
   end
+
+  def script_name
+    "structural_main.sh"
+  end
+
+  # Re-use staged dir from Thermal
+  def stage
+    staged_dir = Pathname.new(parent.staged_dir)
+    FileUtils.cp_r staging_template_dir.to_s + "/.", staged_dir
+    staged_dir
+  end
 end

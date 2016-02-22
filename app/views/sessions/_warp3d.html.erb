@@ -1,0 +1,8 @@
+<% if !structural.submitted? %>
+  <%= link_to 'Submit WARP3D', submit_structural_path(structural), method: :put, class: 'btn btn-success btn-sm' %>
+<% else %>
+  <%= status_label(structural) %>
+  <% if structural.active? %>
+    <%= link_to 'Stop', stop_structural_path(structural), method: :put, class: 'btn btn-danger btn-sm' %>
+  <% end %>
+<% end %>
