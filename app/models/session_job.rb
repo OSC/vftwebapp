@@ -9,7 +9,10 @@ class SessionJob < Job
     return unless status.active?
 
     job.delete
-    update(status: OSC::Machete::Status.passed) if update
-    workflow.create_thermal if update
+    if update && results_valid?
+      update(status: OSC::Machete::Status.passed)
+    elsif update
+      update(status: OSC::Machete::Status.failed)
+    end
   end
 end
