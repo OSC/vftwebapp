@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   # GET /sessions
   # GET /sessions.json
   def index
-    @sessions = @mesh.sessions.preload(:jobs)
+    @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]])
   end
 
   # GET /sessions/1
@@ -117,13 +117,13 @@ class SessionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_session
-      @session = Session.preload(:jobs).find(params[:id])
+      @session = Session.find(params[:id])
       @mesh = @session.parent
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_mesh
-      @mesh = Mesh.preload(:jobs).find(params[:mesh_id])
+      @mesh = Mesh.find(params[:mesh_id])
     end
 
     # Only allow a trusted parameter "white list" through.
