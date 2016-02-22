@@ -4,7 +4,7 @@
   <%= status_label(session) %>
   <% if session.starting? %>
     Starting...
-  <% else %>
+  <% elsif session.running? %>
     <%= link_to session.conn_view.render(:awesim), session.conn_view.render(:awesim) %>
   <% end %>
   <%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' %>
