@@ -34,6 +34,10 @@ class Session < Workflow
     "session"
   end
 
+  def after_stage(staged_dir)
+    FileUtils.cp parent.upload.file.path, staged_dir
+  end
+
   def build_jobs(staged_dir, job_list = [])
     self.staged_dir = staged_dir
     script = staged_dir.join("main.sh")
