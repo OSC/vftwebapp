@@ -1,0 +1,21 @@
+<% content_for :navbar_header do %>
+  <%= bootstrap_nav_awesim_breadcrumb_divider %>
+  <%= link_to('Meshes', meshes_path, class: 'navbar-brand') %>
+  <%= bootstrap_nav_awesim_breadcrumb_divider %>
+  <%= link_to('Sessions', mesh_sessions_path(@mesh), class: 'navbar-brand') %>
+<% end %>
+
+<% content_for :navbar do %>
+  <ul class="nav navbar-nav">
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li>
+      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Session'.html_safe, new_mesh_session_path(@mesh) %>
+    </li>
+    <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
+    <li>
+      <%= link_to "Documentation", docs_path('Home') %>
+    </li>
+    <% end %>
+  </ul>
+<% end %>

@@ -1,0 +1,21 @@
+<% render 'navbar' %>
+<div class="page-header">
+    <h2>Showing Mesh</h2>
+</div>
+
+<p>
+  <strong>Name:</strong>
+  <%= @mesh.name %>
+</p>
+
+<p>
+  <strong>Upload:</strong>
+  <%= link_to @mesh.upload.file_file_name, @mesh.upload.file.url %>
+</p>
+
+<p>
+  <%= link_to 'List Sessions', mesh_sessions_path(@mesh) %>
+</p>
+
+<%= link_to 'Back', meshes_path, class: 'btn btn-default' %>
+<%= link_to 'Edit', edit_mesh_path(@mesh), class: 'btn btn-default' %>

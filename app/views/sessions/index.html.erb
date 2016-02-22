@@ -1,0 +1,32 @@
+<% render 'navbar' %>
+<div class="page-header">
+  <h2>Listing Sessions</h2>
+</div>
+
+<table class="table data-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>VFTSolid</th>
+      <th>CTSP</th>
+      <th>WARP3D</th>
+      <th class="no-sort"></th>
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sessions.each do |session| %>
+      <tr>
+        <td><%= session.id %></td>
+        <td><%= session.name %></td>
+        <td><%= render 'vftsolid', session: session %></td>
+        <td><%= render 'ctsp', thermal: session.thermal if session.passed? %></td>
+        <td><%= render 'warp3d', structural: session.thermal.structural if session.passed? && session.thermal.passed? %></td>
+        <td><%= link_to 'Edit', edit_session_path(session), class: 'btn btn-default btn-sm' %></td>
+        <td><%= link_to 'Destroy', session, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

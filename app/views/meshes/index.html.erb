@@ -1,0 +1,32 @@
+<% render 'navbar' %>
+<div class="page-header">
+  <h2>Listing Meshes</h2>
+</div>
+
+<table class="table data-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th class="no-sort"></th>
+      <th>Name</th>
+      <th class="no-sort"></th>
+      <th class="no-sort"></th>
+      <th class="no-sort"></th>
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @meshes.each do |mesh| %>
+      <tr>
+        <td><%= mesh.id %></td>
+        <td><%= link_to 'View Sessions', mesh_sessions_path(mesh), class: 'btn btn-success btn-sm' %></td>
+        <td><%= mesh.name %></td>
+        <td><%= link_to 'Show', mesh, class: 'btn btn-primary btn-sm' %></td>
+        <td><%= link_to 'Edit', edit_mesh_path(mesh), class: 'btn btn-default btn-sm' unless mesh.submitted? %></td>
+        <td><%= link_to 'Copy', copy_mesh_path(mesh), method: :put, class: 'btn btn-default btn-sm' %></td>
+        <td><%= link_to 'Destroy', mesh, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
