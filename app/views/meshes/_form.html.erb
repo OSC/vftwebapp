@@ -3,7 +3,6 @@
   <%= f.alert_message "Please fix the errors below." %>
 
   <%= f.text_field :name %>
-  <%= f.number_field :version %>
 
   <%= f.fields_for :upload do |u| %>
     <%= u.hidden_field :file_cache %>

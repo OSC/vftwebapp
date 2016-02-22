@@ -8,10 +8,5 @@
   <%= @session.name %>
 </p>
 
-<p>
-  <strong>Version:</strong>
-  <%= @session.version %>
-</p>
-
 <%= link_to 'Back', mesh_sessions_path(@mesh), class: 'btn btn-default' %>
 <%= link_to 'Edit', edit_session_path(@session), class: 'btn btn-default' %>
