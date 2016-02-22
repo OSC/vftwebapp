@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :set_session, only: [:show, :edit, :update, :destroy, :submit, :copy]
+  before_action :set_session, only: [:show, :edit, :update, :destroy, :submit, :stop, :copy]
   before_action :set_mesh, only: [:index, :new, :create]
 
   # GET /sessions
@@ -78,6 +78,22 @@ class SessionsController < ApplicationController
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be submitted: #{@session.errors.to_a}" }
+        format.json { render json: @session.errors, status: :internal_server_error }
+      end
+    end
+  end
+
+  # PUT /sessions/1/stop
+  def stop
+    respond_to do |format|
+      if !@session.submitted?
+        format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Session has not been submitted.' }
+        format.json { head :no_content }
+      elsif @session.stop
+        format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully stopped.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be stopped: #{@session.errors.to_a}" }
         format.json { render json: @session.errors, status: :internal_server_error }
       end
     end

@@ -4,6 +4,7 @@
   Starting...
 <% elsif session.active? %>
   <%= link_to session.conn_view.render(:awesim), session.conn_view.render(:awesim) %>
+  <%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' %>
 <% else %>
   Done!
 <% end %>

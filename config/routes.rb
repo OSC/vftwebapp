@@ -10,6 +10,7 @@ Vftsim::Application.routes.draw do
     resources :sessions, shallow: true do
       member do
         put 'submit'
+        put 'stop'
         put 'copy'
       end
     end
