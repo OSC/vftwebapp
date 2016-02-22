@@ -81,6 +81,9 @@ GEM
     osc-machete (1.0.1)
       mustache
       pbs (~> 1.1)
+    osc-vnc (1.0.0)
+      mustache (~> 0.99, >= 0.99.5)
+      pbs (~> 1.0)
     osc_machete_rails (1.0.0)
       awesim_rails (~> 1.0)
       osc-machete (~> 1.0)
@@ -167,6 +170,7 @@ DEPENDENCIES
   jquery-datatables-rails (~> 3.3.0)
   jquery-rails
   osc-machete (~> 1.0)
+  osc-vnc (~> 1.0)
   osc_machete_rails (~> 1.0)
   paperclip (~> 4.2.2)
   rails (= 4.0.0)
