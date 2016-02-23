@@ -56,12 +56,12 @@ class Session < Workflow
 
   # Copy the mesh upload over
   def after_stage(staged_dir)
+    super
     FileUtils.cp parent.upload.file.path, staged_dir
   end
 
   # Use OSC::VNC to generate the batch script
   def build_jobs(staged_dir, job_list = [])
-    self.staged_dir = staged_dir
     script = staged_dir.join("session_main.sh")
     File.open(script, 'w') do |f|
       f.write "#PBS -N VFTSolid\n"

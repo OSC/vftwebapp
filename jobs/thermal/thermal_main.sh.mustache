@@ -1,14 +1,15 @@
 #PBS -N CTSP
 #PBS -l walltime={{{hours}}}:00:00
 #PBS -l nodes={{{nodes}}}:ppn={{{ppn}}}
-#PBS -o thermal-batch.log
+#PBS -o {{{log_root}}}/thermal-batch.log
 #PBS -j oe
 #PBS -S /bin/bash
 
 # Global Settings
 WORKSPACE="${PFSDIR}"
 STAGEDDIR="${PBS_O_WORKDIR}"
-LOGDIR="${STAGEDDIR}/results/logs"
+LOGDIR="{{{log_root}}}"
+ERRORFILE="{{{error_path}}}"
 
 # CTSP Settings
 # none...
@@ -50,7 +51,6 @@ init ()
 {
   echo "Creating temporary workspace (${WORKSPACE})..."
   time rsync -av "${STAGEDDIR}/" "${WORKSPACE}"
-  mkdir -p "${LOGDIR}"
   echo "Done creating temporary workspace"
   cd "${WORKSPACE}"
 }

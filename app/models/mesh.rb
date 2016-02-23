@@ -16,6 +16,7 @@ class Mesh < Workflow
   # Define tasks to do after staging template directory typically copy over
   # uploaded files here
   def after_stage(staged_dir)
+    super
     FileUtils.cp upload.file.path, staged_dir
   end
 end
