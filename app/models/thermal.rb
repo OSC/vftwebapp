@@ -19,6 +19,10 @@ class Thermal < Workflow
     "thermal_main.sh"
   end
 
+  def host
+    "ruby"
+  end
+
   # Re-use staged dir from Session
   def stage
     staged_dir = Pathname.new(parent.staged_dir)

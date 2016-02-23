@@ -7,7 +7,11 @@ class Workflow < ActiveRecord::Base
     "main.sh"
   end
 
+  def host
+    "oakley"
+  end
+
   def build_jobs(staged_dir, job_list = [])
-    job_list << OSC::Machete::Job.new(script: staged_dir.join(script_name))
+    job_list << OSC::Machete::Job.new(script: staged_dir.join(script_name), host: host)
   end
 end
