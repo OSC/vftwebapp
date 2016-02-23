@@ -11,7 +11,7 @@ class SessionJob < Job
     return unless status.active?
 
     job.delete
-    if update && results_valid?
+    if update && status.running? && results_valid?
       update(status: OSC::Machete::Status.passed)
     elsif update
       update(status: OSC::Machete::Status.failed)
