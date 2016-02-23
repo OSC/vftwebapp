@@ -4,7 +4,12 @@ class Thermal < Workflow
   belongs_to :parent, class_name: "Session"
 
   def nodes
-    1
+    processes = Dir[File.join(parent.staged_dir, "CTSPsubd*")].length
+    processes.zero? ? 1 : (processes - 1) / ppn + 1
+  end
+
+  def ppn
+    20
   end
 
   def hours
