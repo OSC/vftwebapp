@@ -8,6 +8,7 @@ class Mesh < Workflow
   has_one :upload, class_name: "MeshUpload", foreign_key: "workflow_id", dependent: :destroy
   accepts_nested_attributes_for :upload, allow_destroy: true
   validates_associated :upload
+  validates :upload, presence: true
 
   def staging_template_name
     "mesh"
