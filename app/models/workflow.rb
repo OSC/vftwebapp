@@ -1,7 +1,7 @@
 class Workflow < ActiveRecord::Base
   has_machete_workflow_of :jobs
 
-  store :data, accessors: [ :version, :error_list ], coder: JSON
+  store :data, accessors: [ :version, :error_reason ], coder: JSON
 
   # Default script name
   def script_name

@@ -3,10 +3,9 @@ class Job < ActiveRecord::Base
 
   def results_valid?
     if File.file? workflow.error_path
-      workflow.update_attribute(:error_list, YAML.load_file(workflow.error_path))
+      workflow.update_attribute(:error_reason, File.read(workflow.error_path).strip)
       false
     else
-      workflow.update_attribute(:error_list, [])
       true
     end
   end

@@ -73,4 +73,33 @@ class Session < Workflow
     end
     job_list << OSC::Machete::Job.new(script: script, host: 'quick')
   end
+
+  def ctsp_files_valid?
+    files = %w(input.in node.in element.in param.in preWARP.txt time.out)
+    if files.all? {|f| File.file? File.join(staged_dir, f)}
+      return true
+    else
+      update_attribute(:error_reason, "Missing CTSP input files")
+      return false
+    end
+  end
+
+  def warp3d_files_valid?
+    wrp_file = Dir[File.join(staged_dir, "*.wrp")].first
+    if wrp_file.nil?
+      update_attribute(:error_reason, "Missing WARP3D input file *.wrp")
+      return false
+    end
+    wrp_name = File.basename(wrp_file, ".*")
+    files= %W(
+      #{wrp_name}.wrp #{wrp_name}.constraints #{wrp_name}.coordinates #{wrp_name}.incid
+      VED.dat uexternal_data_file.inp output_commands.inp compute_commands_all_profiles.inp
+    )
+    if files.all? {|f| File.file? File.join(staged_dir, f)}
+      return true
+    else
+      update_attribute(:error_reason, "Missing WARP3D input files")
+      false
+    end
+  end
 end

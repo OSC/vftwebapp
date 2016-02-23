@@ -2,7 +2,7 @@ class SessionJob < Job
   belongs_to :workflow, class_name: "Session"
 
   def results_valid?
-    is_valid = super
+    is_valid = workflow.ctsp_files_valid? && workflow.warp3d_files_valid?
     workflow.create_thermal if is_valid
     is_valid
   end
