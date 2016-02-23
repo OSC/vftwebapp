@@ -1,14 +1,14 @@
 <% if !session.submitted? %>
   <%= link_to 'Launch VFTSolid', submit_session_path(session), method: :put, class: 'btn btn-success btn-sm' %>
-<% elsif session.active? %>
-  <%= status_label(session) %>
-  <% if session.starting? %>
-    Starting...
-  <% elsif session.running? %>
-    <%= link_to session.conn_view.render(:awesim), session.conn_view.render(:awesim) %>
-  <% end %>
-  <%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' %>
-  <%= session.staged_dir %>
 <% else %>
-  Done!
+  <%= status_label(session) %>
+  <%= session.staged_dir %>
+  <% if session.active? %>
+    <% if session.starting? %>
+      Starting...
+    <% elsif session.running? %>
+      <%= link_to session.conn_view.render(:awesim), session.conn_view.render(:awesim) %>
+    <% end %>
+    <%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' %>
+  <% end %>
 <% end %>
