@@ -24,4 +24,28 @@ class Structural < Workflow
     FileUtils.cp_r staging_template_dir.to_s + "/.", staged_dir
     staged_dir
   end
+
+  def submit_paraview
+    job = PBS::Job.new(conn: PBS::Conn.batch('quick'))
+    script = OSC::VNC::ScriptView.new(
+      :vnc,
+      'oakley',
+      subtype: :shared,
+      xstartup: Rails.root.join("jobs", "paraview", "xstartup"),
+      outdir: File.join(AwesimRails.dataroot, "paraview"),
+      geom: '1024x768'
+    )
+    session = OSC::VNC::Session.new job, script
+
+    session.submit(
+      headers: {
+        PBS::ATTR[:N] => "VFT-Structural-Paraview"
+      },
+      envvars: {
+        DATAFILE: File.join(staged_dir, "wrp.exo")
+      }
+    )
+
+    OSC::VNC::ConnView.new(session)
+  end
 end

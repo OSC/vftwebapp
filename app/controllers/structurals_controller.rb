@@ -1,5 +1,5 @@
 class StructuralsController < ApplicationController
-  before_action :set_structural, only: [:submit, :stop]
+  before_action :set_structural, only: [:submit, :stop, :paraview]
 
   # PUT /structurals/1/submit
   # PUT /structurals/1/submit.json
@@ -32,6 +32,11 @@ class StructuralsController < ApplicationController
         format.json { render json: @structural.errors, status: :internal_server_error }
       end
     end
+  end
+
+  # PUT /structurals/1/paraview
+  def paraview
+    @conn = @structural.submit_paraview
   end
 
   private

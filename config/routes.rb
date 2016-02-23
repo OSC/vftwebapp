@@ -22,6 +22,7 @@ Vftsim::Application.routes.draw do
 
   put 'structurals/:id/submit' => 'structurals#submit', as: 'submit_structural'
   put 'structurals/:id/stop' => 'structurals#stop', as: 'stop_structural'
+  put 'structurals/:id/paraview' => 'structurals#paraview', as: 'paraview_structural'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
