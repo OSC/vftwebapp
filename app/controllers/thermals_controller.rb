@@ -1,5 +1,5 @@
 class ThermalsController < ApplicationController
-  before_action :set_thermal, only: [:submit, :stop]
+  before_action :set_thermal, only: [:submit, :stop, :paraview]
 
   # PUT /thermals/1/submit
   # PUT /thermals/1/submit.json
@@ -32,6 +32,11 @@ class ThermalsController < ApplicationController
         format.json { render json: @thermal.errors, status: :internal_server_error }
       end
     end
+  end
+
+  # PUT /thermals/1/paraview
+  def paraview
+    @conn = @thermal.submit_paraview
   end
 
   private
