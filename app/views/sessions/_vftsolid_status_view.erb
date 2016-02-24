@@ -4,3 +4,7 @@
 <% else %>
   <button class="btn btn-primary btn-sm" disabled="disabled">VFTSolid: <%= session.status_str %></button>
 <% end %>
+
+<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' if session.active? %>
+
+<%= session.msg if session.msg %>

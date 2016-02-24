@@ -6,4 +6,8 @@ class VftsolidStatusView < ViewModel
   def conn_avail?
     active? && running? && ! starting?
   end
+
+  def msg
+    "The weld passes are a mess!" if failed?
+  end
 end
