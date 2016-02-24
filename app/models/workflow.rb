@@ -17,6 +17,14 @@ class Workflow < ActiveRecord::Base
     File.join staged_dir, "results", "logs"
   end
 
+  def log_file
+    "#{staging_template_name}.log"
+  end
+
+  def log_path
+    File.join log_root, log_file
+  end
+
   def error_root
     File.join staged_dir, "results", "errors"
   end
