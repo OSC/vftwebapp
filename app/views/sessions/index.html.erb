@@ -22,7 +22,7 @@
         <td><%= session.name %></td>
         <td><%= session.workflow_stage %></td>
         <!-- <td><%# render session, :as => :session %></td> -->
-        <td><%= render partial: session.to_partial_path, session: session %></td>
+        <td><%= render partial: session.to_partial_path, locals: { session: session } %></td>
         <td><%= link_to 'Edit', edit_session_path(session), class: 'btn btn-default btn-sm' %></td>
         <td><%= link_to 'Destroy', session, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
       </tr>
