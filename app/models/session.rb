@@ -34,17 +34,7 @@ class Session < Workflow
   end
 
   def running?
-    if pbsid == "3227.quick-batch.osc.edu"
-      true
-    elsif pbsid == "3228.quick-batch.osc.edu"
-      true
-    elsif pbsid == "3228.quick-batch.osc.edu"
-      true
-    elsif pbsid == "3230.quick-batch.osc.edu"
-      false
-    else
-      jobs.first.status.running?
-    end
+    jobs.first.status.running?
   end
 
   # Is the batch job starting? (i.e., running but no connection file yet)
