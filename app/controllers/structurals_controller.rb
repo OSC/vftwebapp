@@ -43,6 +43,8 @@ class StructuralsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_structural
       @structural = Structural.preload(:jobs).find(params[:id])
+      @structural.hours = params[:hours] if params[:hours]
+
       @thermal = @structural.parent
       @session = @thermal.parent
       @mesh = @session.parent
