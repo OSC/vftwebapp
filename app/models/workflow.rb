@@ -13,8 +13,18 @@ class Workflow < ActiveRecord::Base
     "oakley"
   end
 
+  # Record staged_dir as a string
+  def staged_dir=(dir)
+    super(dir.to_s)
+  end
+
+  # Treat staged_dir as a Pathname object
+  def staged_dir
+    Pathname.new(super)
+  end
+
   def log_root
-    File.join staged_dir, "results", "logs"
+    staged_dir.join "results", "logs"
   end
 
   def log_file
@@ -22,11 +32,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def log_path
-    File.join log_root, log_file
+    log_root.join log_file
   end
 
   def error_root
-    File.join staged_dir, "results", "errors"
+    staged_dir.join "results", "errors"
   end
 
   def error_file
@@ -34,13 +44,13 @@ class Workflow < ActiveRecord::Base
   end
 
   def error_path
-    File.join error_root, error_file
+    error_root.join error_file
   end
 
   # Create misc root directories under staged_dir
   def after_stage(staged_dir)
-    FileUtils.mkdir_p log_root
-    FileUtils.mkdir_p error_root
+    log_root.mkpath
+    error_root.mkpath
   end
 
   # Good default job builder for single job script
@@ -48,11 +58,11 @@ class Workflow < ActiveRecord::Base
     job_list << OSC::Machete::Job.new(script: staged_dir.join(script_name), host: host)
   end
 
-  # Override Machete Workflow submit so that it doesn't delete the staged_dir
-  # when job submission fails
-  # Also set the workflow staged_dir at the beginning
+  # - Set the workflow staged_dir at the beginning so other methods can use it
+  # - Override Machete Workflow submit so that it doesn't delete the staged_dir
+  #   when job submission fails
   def submit(template_view=self)
-    self.staged_dir = stage   # set global staged_dir needed throughout code
+    self.staged_dir = stage   # set staged_dir
     render_mustache_files(staged_dir, template_view)
     after_stage(staged_dir)
     jobs = build_jobs(staged_dir)

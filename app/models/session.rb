@@ -24,7 +24,7 @@ class Session < Workflow
 
   # Location of connection file
   def conn_file
-    "#{staged_dir}/#{pbsid}.conn"
+    staged_dir.join "#{pbsid}.conn"
   end
 
   # OSC::VNC Connection view
@@ -50,7 +50,7 @@ class Session < Workflow
   # Don't copy the template directory over
   def stage
     staged_dir = OSC::Machete::JobDir.new(staging_target_dir).new_jobdir
-    FileUtils.mkdir_p staged_dir
+    staged_dir.mkpath
     staged_dir
   end
 
@@ -76,7 +76,7 @@ class Session < Workflow
 
   def ctsp_files_valid?
     files = %w(input.in node.in element.in param.in preWARP.txt time.out)
-    if files.all? {|f| File.file? File.join(staged_dir, f)}
+    if files.all? {|f| File.file? staged_dir.join(f)}
       return true
     else
       update_attribute(:fail_msg, "Missing CTSP input files")
@@ -85,7 +85,7 @@ class Session < Workflow
   end
 
   def warp3d_files_valid?
-    wrp_file = Dir[File.join(staged_dir, "*.wrp")].first
+    wrp_file = Dir[staged_dir.join("*.wrp")].first
     if wrp_file.nil?
       update_attribute(:fail_msg, "Missing WARP3D input file *.wrp")
       return false
@@ -95,7 +95,7 @@ class Session < Workflow
       #{wrp_name}.wrp #{wrp_name}.constraints #{wrp_name}.coordinates #{wrp_name}.incid
       VED.dat uexternal_data_file.inp output_commands.inp compute_commands_all_profiles.inp
     )
-    if files.all? {|f| File.file? File.join(staged_dir, f)}
+    if files.all? {|f| File.file? staged_dir.join(f)}
       return true
     else
       update_attribute(:fail_msg, "Missing WARP3D input files")
