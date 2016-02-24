@@ -79,7 +79,7 @@ class Session < Workflow
     if files.all? {|f| File.file? File.join(staged_dir, f)}
       return true
     else
-      update_attribute(:error_reason, "Missing CTSP input files")
+      update_attribute(:fail_msg, "Missing CTSP input files")
       return false
     end
   end
@@ -87,7 +87,7 @@ class Session < Workflow
   def warp3d_files_valid?
     wrp_file = Dir[File.join(staged_dir, "*.wrp")].first
     if wrp_file.nil?
-      update_attribute(:error_reason, "Missing WARP3D input file *.wrp")
+      update_attribute(:fail_msg, "Missing WARP3D input file *.wrp")
       return false
     end
     wrp_name = File.basename(wrp_file, ".*")
@@ -98,7 +98,7 @@ class Session < Workflow
     if files.all? {|f| File.file? File.join(staged_dir, f)}
       return true
     else
-      update_attribute(:error_reason, "Missing WARP3D input files")
+      update_attribute(:fail_msg, "Missing WARP3D input files")
       false
     end
   end

@@ -3,7 +3,7 @@ class Job < ActiveRecord::Base
 
   def results_valid?
     if File.file? workflow.error_path
-      workflow.update_attribute(:error_reason, File.read(workflow.error_path).strip)
+      workflow.update_attribute(:fail_msg, File.read(workflow.error_path).strip)
       false
     else
       true
