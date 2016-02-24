@@ -33,7 +33,8 @@ clean_up ()
 # Kill batch script and clean up
 die ()
 {
-  echo "ERROR: $@" 1>&2
+  echo "ERROR: $1" 1>&2
+  echo "$1" > ${ERRORFILE}
   clean_up
   exit 1
 }
