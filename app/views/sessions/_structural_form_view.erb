@@ -1,0 +1,7 @@
+<%# FIXME: put is wrong method %>
+<%= link_to 'Verify CTSP results in Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-info btn-sm', target: "_blank" %>
+
+<hr>
+
+
+<%= link_to 'Submit WARP3D', submit_structural_path(session.thermal.structural), method: :put, class: 'btn btn-success btn-sm' %>
