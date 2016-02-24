@@ -58,4 +58,24 @@ class Thermal < Workflow
 
     OSC::VNC::ConnView.new(session)
   end
+
+  def warp3d_files_valid?
+    files = %w(warp_temp_2_files.bin warp_temp_2_files.txt)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "WARP3D input files were not generated")
+      return false
+    end
+  end
+
+  def paraview_files_valid?
+    files = %w(ctsp.case ctsp.geom ctsp.mtemp ctsp.mtemp_wp)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "Paraview input files were not generated")
+      return false
+    end
+  end
 end

@@ -48,4 +48,14 @@ class Structural < Workflow
 
     OSC::VNC::ConnView.new(session)
   end
+
+  def paraview_files_valid?
+    files = %w(wrp.exo)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "Paraview input file was not generated")
+      return false
+    end
+  end
 end

@@ -79,18 +79,21 @@ class Session < Workflow
     if files.all? {|f| File.file? staged_dir.join(f)}
       return true
     else
-      update_attribute(:fail_msg, "Missing CTSP input files")
+      update_attribute(:fail_msg, "CTSP files were not properly exported")
       return false
     end
   end
 
   def warp3d_files_valid?
+    # Get name of warp3d file
     wrp_file = Dir[staged_dir.join("*.wrp")].first
     if wrp_file.nil?
-      update_attribute(:fail_msg, "Missing WARP3D input file *.wrp")
+      update_attribute(:fail_msg, "WARP3D files were not properly exported")
       return false
     end
     wrp_name = File.basename(wrp_file, ".*")
+
+    # Confirm warp3d input files exist
     files= %W(
       #{wrp_name}.wrp #{wrp_name}.constraints #{wrp_name}.coordinates #{wrp_name}.incid
       VED.dat uexternal_data_file.inp output_commands.inp compute_commands_all_profiles.inp
@@ -98,7 +101,7 @@ class Session < Workflow
     if files.all? {|f| File.file? staged_dir.join(f)}
       return true
     else
-      update_attribute(:fail_msg, "Missing WARP3D input files")
+      update_attribute(:fail_msg, "WARP3D files were not properly exported")
       false
     end
   end
