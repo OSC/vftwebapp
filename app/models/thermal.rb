@@ -4,7 +4,7 @@ class Thermal < Workflow
   belongs_to :parent, class_name: "Session"
 
   def nodes
-    processes = Dir[File.join(parent.staged_dir, "CTSPsubd*")].length
+    processes = Dir[parent.staged_dir.join("CTSPsubd*")].length
     processes.zero? ? 1 : (processes - 1) / ppn + 1
   end
 
@@ -30,7 +30,7 @@ class Thermal < Workflow
 
   # Re-use staged dir from Session
   def stage
-    staged_dir = Pathname.new(parent.staged_dir)
+    staged_dir = parent.staged_dir
     FileUtils.cp_r staging_template_dir.to_s + "/.", staged_dir
     staged_dir
   end
@@ -52,10 +52,30 @@ class Thermal < Workflow
         PBS::ATTR[:N] => "VFT-Thermal-Paraview"
       },
       envvars: {
-        DATAFILE: File.join(staged_dir, "ctsp.case")
+        DATAFILE: staged_dir.join("ctsp.case")
       }
     )
 
     OSC::VNC::ConnView.new(session)
+  end
+
+  def warp3d_files_valid?
+    files = %w(warp_temp_2_files.bin warp_temp_2_files.txt)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "WARP3D input files were not generated")
+      return false
+    end
+  end
+
+  def paraview_files_valid?
+    files = %w(ctsp.case ctsp.geom ctsp.mtemp ctsp.mtemp_wp)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "Paraview input files were not generated")
+      return false
+    end
   end
 end

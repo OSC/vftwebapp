@@ -20,7 +20,7 @@ class Structural < Workflow
 
   # Re-use staged dir from Thermal
   def stage
-    staged_dir = Pathname.new(parent.staged_dir)
+    staged_dir = parent.staged_dir
     FileUtils.cp_r staging_template_dir.to_s + "/.", staged_dir
     staged_dir
   end
@@ -42,10 +42,20 @@ class Structural < Workflow
         PBS::ATTR[:N] => "VFT-Structural-Paraview"
       },
       envvars: {
-        DATAFILE: File.join(staged_dir, "wrp.exo")
+        DATAFILE: staged_dir.join("wrp.exo")
       }
     )
 
     OSC::VNC::ConnView.new(session)
+  end
+
+  def paraview_files_valid?
+    files = %w(wrp.exo)
+    if files.all? {|f| File.file? staged_dir.join(f)}
+      return true
+    else
+      update_attribute(:fail_msg, "Paraview input file was not generated")
+      return false
+    end
   end
 end
