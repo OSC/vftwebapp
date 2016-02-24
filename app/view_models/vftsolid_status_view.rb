@@ -1,0 +1,2 @@
+class VftsolidStatusView < ViewModel
+end

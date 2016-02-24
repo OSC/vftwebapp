@@ -1,0 +1,2 @@
+class ResultsView < ViewModel
+end
