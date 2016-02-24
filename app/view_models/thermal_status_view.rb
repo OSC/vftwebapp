@@ -1,0 +1,2 @@
+class ThermalStatusView < ViewModel
+end

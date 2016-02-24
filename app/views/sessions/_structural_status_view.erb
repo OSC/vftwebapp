@@ -1,0 +1,3 @@
+Solving Warp3D: <%= status_label(session.thermal.structural) %>
+
+<%= link_to 'Stop', stop_thermal_path(session.thermal.structural), method: :put, class: 'btn btn-danger btn-sm' if session.thermal.structural.active? %>

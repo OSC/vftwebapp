@@ -1,0 +1,2 @@
+class VftsolidFormView < ViewModel
+end

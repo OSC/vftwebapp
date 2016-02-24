@@ -1,0 +1,2 @@
+class StructuralFormView < ViewModel
+end
