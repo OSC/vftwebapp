@@ -4,7 +4,11 @@ class ViewModel < SimpleDelegator
   end
   
   def workflow_stage
-    ""
+    return "1/3" if [VftsolidFormView, VftsolidStatusView].include? self.class
+    return "2/3" if [ThermalFormView, ThermalStatusView].include? self.class
+    return "3/3" if [StructuralFormView, StructuralStatusView].include? self.class
+
+    "Results:"
   end
 
   def self.for_session(session)
@@ -13,7 +17,7 @@ class ViewModel < SimpleDelegator
 
     if ! session.submitted?
       VftsolidFormView.new(session)
-    elsif session.running? || session.failed?
+    elsif session.active? || session.failed?
       VftsolidStatusView.new(session)
     elsif session.passed? && ! thermal.submitted?
       ThermalFormView.new(session)
