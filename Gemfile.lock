@@ -78,7 +78,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.8.2)
     mustache (0.99.5)
-    osc-machete (1.1.0)
+    osc-machete (1.1.1)
       mustache
       pbs (~> 1.1)
     osc-vnc (1.0.0)
