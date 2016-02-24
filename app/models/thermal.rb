@@ -3,6 +3,8 @@ class Thermal < Workflow
   has_one :structural, foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Session"
 
+  attr_accessor :hours
+
   def nodes
     processes = Dir[parent.staged_dir.join("CTSPsubd*")].length
     processes.zero? ? 1 : (processes - 1) / ppn + 1
@@ -13,7 +15,7 @@ class Thermal < Workflow
   end
 
   def hours
-    1
+    @hours ||= 1
   end
 
   def staging_template_name

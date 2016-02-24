@@ -43,6 +43,8 @@ class ThermalsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_thermal
       @thermal = Thermal.preload(:jobs).find(params[:id])
+      @thermal.hours = params[:hours] if params[:hours]
+
       @session = @thermal.parent
       @mesh = @session.parent
     end
