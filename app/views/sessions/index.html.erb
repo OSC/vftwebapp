@@ -17,7 +17,7 @@
 
   <tbody>
     <% @sessions.each do |session| %>
-      <tr>
+      <tr class="<%= session.row_bg %>">
         <td><%= session.id %></td>
         <td><%= session.name %></td>
         <td><%= session.workflow_stage %></td>
