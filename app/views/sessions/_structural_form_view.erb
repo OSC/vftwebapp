@@ -3,4 +3,7 @@
 
 <hr>
 
-<%= link_to 'Submit WARP3D', submit_structural_path(session.thermal.structural), method: :put, class: 'btn btn-success btn-sm' %>
+<%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put' do |f| %>
+  <%= f.number_field :hours, value: 8, in: 1..3600 %>
+  <%= f.submit 'Submit WARP3D', class: "btn btn-success btn-sm" %>
+<% end %>

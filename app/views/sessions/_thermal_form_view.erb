@@ -1,1 +1,5 @@
-<%= link_to 'Submit CTSP', submit_thermal_path(session.thermal), method: :put, class: 'btn btn-success btn-sm' %>
+<%= bootstrap_form_tag url: submit_thermal_path(session.thermal), method: 'put' do |f| %>
+  <%= f.number_field :hours, value: 8, in: 1..3600 %>
+  <%= f.submit 'Submit CTSP', class: "btn btn-success btn-sm" %>
+<% end %>
+
