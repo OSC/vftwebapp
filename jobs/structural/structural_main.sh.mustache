@@ -1,7 +1,7 @@
 #PBS -N {{{staging_template_name}}}
 #PBS -l walltime={{{hours}}}:00:00
 #PBS -l nodes=1:ppn=20
-#PBS -o {{{log_path}}}
+#PBS -o {{{log_file}}}
 #PBS -j oe
 #PBS -S /bin/bash
 
@@ -9,7 +9,7 @@
 WORKSPACE="${TMPDIR}"
 STAGEDDIR="${PBS_O_WORKDIR}"
 LOGDIR="{{{log_root}}}"
-ERRORFILE="{{{error_path}}}"
+ERRORFILE="{{{error_file}}}"
 
 # WARP3D Settings
 PATTERN="*.wrp"

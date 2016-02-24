@@ -27,24 +27,24 @@ class Workflow < ActiveRecord::Base
     staged_dir.join "results", "logs"
   end
 
-  def log_file
+  def log_file_name
     "#{staging_template_name}.log"
   end
 
-  def log_path
-    log_root.join log_file
+  def log_file
+    log_root.join log_file_name
   end
 
   def error_root
     staged_dir.join "results", "errors"
   end
 
-  def error_file
+  def error_file_name
     "#{staging_template_name}.yml"
   end
 
-  def error_path
-    error_root.join error_file
+  def error_file
+    error_root.join error_file_name
   end
 
   # Create misc root directories under staged_dir
