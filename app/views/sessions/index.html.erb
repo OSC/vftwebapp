@@ -8,9 +8,8 @@
     <tr>
       <th>#</th>
       <th>Name</th>
-      <th>VFTSolid</th>
-      <th>CTSP</th>
-      <th>WARP3D</th>
+      <th>Stage</th>
+      <th>Workflow</th>
       <th class="no-sort"></th>
       <th class="no-sort"></th>
     </tr>
@@ -21,9 +20,9 @@
       <tr>
         <td><%= session.id %></td>
         <td><%= session.name %></td>
-        <td><%= render 'vftsolid', session: session %></td>
-        <td><%= render 'ctsp', thermal: session.thermal if session.passed? %></td>
-        <td><%= render 'warp3d', structural: session.thermal.structural if session.passed? && session.thermal.passed? %></td>
+        <td><%= session.workflow_stage %></td>
+        <!-- <td><%# render session, :as => :session %></td> -->
+        <td><%= render partial: session.to_partial_path, session: session %></td>
         <td><%= link_to 'Edit', edit_session_path(session), class: 'btn btn-default btn-sm' %></td>
         <td><%= link_to 'Destroy', session, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
       </tr>
