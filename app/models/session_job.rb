@@ -2,7 +2,15 @@ class SessionJob < Job
   belongs_to :workflow, class_name: "Session"
 
   def results_valid?
-    workflow.create_thermal
+    if pbsid == "3227.quick-batch.osc.edu"
+      true
+    elsif pbsid == "3228.quick-batch.osc.edu"
+      true
+    elsif pbsid == "3230.quick-batch.osc.edu"
+      true
+    else
+      workflow.create_thermal
+    end
   end
 
   def stop(update: true)

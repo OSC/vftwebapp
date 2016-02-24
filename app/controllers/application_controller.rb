@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
 
   private
     def update_job_status
-      Job.active.to_a.each(&:update_status!)
+      # Job.active.to_a.each(&:update_status!)
     end
 end
