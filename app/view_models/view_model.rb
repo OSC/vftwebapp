@@ -12,9 +12,9 @@ class ViewModel < SimpleDelegator
 
   #FIXME: the subclasses should specify these?
   def workflow_stage
-    return "1/3" if [VftsolidFormView, VftsolidStatusView].include? self.class
-    return "2/3" if [ThermalFormView, ThermalStatusView].include? self.class
-    return "3/3" if [StructuralFormView, StructuralStatusView].include? self.class
+    return "1/3<br>VFTSolid".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
+    return "2/3<br>Thermal".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
+    return "3/3<br>Structural".html_safe if [StructuralFormView, StructuralStatusView].include? self.class
 
     "Results:"
   end
@@ -23,9 +23,9 @@ class ViewModel < SimpleDelegator
   def workflow_status
     s = view_context.status_label(self).html_safe
 
-    s = "VFTSolid #{view_context.status_label(self)}".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
-    s = "Thermal #{view_context.status_label(thermal)}".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
-    s = "Structural #{view_context.status_label(thermal.structural)}".html_safe if [StructuralFormView, StructuralStatusView].include? self.class
+    s = view_context.status_label(self).html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
+    s = view_context.status_label(thermal).html_safe if [ThermalFormView, ThermalStatusView].include? self.class
+    s = view_context.status_label(thermal.structural).html_safe if [StructuralFormView, StructuralStatusView].include? self.class
 
     s
   end
