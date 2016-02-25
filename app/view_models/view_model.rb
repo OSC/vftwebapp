@@ -30,8 +30,14 @@ class ViewModel < SimpleDelegator
     s
   end
 
+  # the subject of the workflow stage is
+  # either the session, or session.thermal, or sesion.thermal.structural
+  def subject
+    self
+  end
+
   def row_bg
-    self.class == ResultsView ? "" : "bg-warning"
+    self.subject.failed? ? "" : "bg-warning"
   end
 
   def self.for_session(session, view_context)
