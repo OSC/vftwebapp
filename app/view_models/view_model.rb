@@ -10,7 +10,8 @@ class ViewModel < SimpleDelegator
     "sessions/#{self.class.name.underscore}"
   end
 
-  #FIXME: the subclasses should specify these?
+  #FIXME: the subclasses should specify these; even tiny duplication is OK - for
+  #the benefit of flexibility of diverting in the future
   def workflow_stage
     return "1/3<br>VFTSolid".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
     return "2/3<br>Thermal".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
@@ -19,21 +20,14 @@ class ViewModel < SimpleDelegator
     "Results:"
   end
 
-  #FIXME: the subclasses should specify these?
-  def workflow_status
-    s = view_context.status_label(self).html_safe
-
-    s = view_context.status_label(self).html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
-    s = view_context.status_label(thermal).html_safe if [ThermalFormView, ThermalStatusView].include? self.class
-    s = view_context.status_label(thermal.structural).html_safe if [StructuralFormView, StructuralStatusView].include? self.class
-
-    s
-  end
-
   # the subject of the workflow stage is
   # either the session, or session.thermal, or sesion.thermal.structural
   def subject
     self
+  end
+
+  def workflow_status
+    view_context.status_label(subject).html_safe
   end
 
   def row_bg
