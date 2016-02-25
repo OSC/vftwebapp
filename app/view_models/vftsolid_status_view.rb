@@ -8,6 +8,10 @@ class VftsolidStatusView < ViewModel
   end
 
   def msg
-    "The weld passes are a mess!" if failed?
+    if starting?
+      "Starting..."
+    elsif failed?
+      fail_msg
+    end
   end
 end
