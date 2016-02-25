@@ -19,6 +19,17 @@ class ViewModel < SimpleDelegator
     "Results:"
   end
 
+  #FIXME: the subclasses should specify these?
+  def workflow_status
+    s = view_context.status_label(self).html_safe
+
+    s = "VFTSolid #{view_context.status_label(self)}".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
+    s = "Thermal #{view_context.status_label(thermal)}".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
+    s = "Structural #{view_context.status_label(thermal.structural)}".html_safe if [StructuralFormView, StructuralStatusView].include? self.class
+
+    s
+  end
+
   def row_bg
     self.class == ResultsView ? "" : "bg-warning"
   end

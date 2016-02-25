@@ -9,6 +9,7 @@
       <th>#</th>
       <th>Name</th>
       <th>Stage</th>
+      <th>Status</th>
       <th>Workflow</th>
       <th class="no-sort"></th>
       <th class="no-sort"></th>
@@ -21,6 +22,7 @@
         <td><%= session.id %></td>
         <td><%= session.name %></td>
         <td><%= session.workflow_stage %></td>
+        <td><%= session.workflow_status %></td>
         <!-- <td><%# render session, :as => :session %></td> -->
         <td><%= render partial: session.to_partial_path, locals: { session: session } %></td>
         <td><%= link_to 'Edit', edit_session_path(session), class: 'btn btn-default btn-sm' %></td>
