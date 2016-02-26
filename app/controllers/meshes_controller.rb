@@ -30,6 +30,7 @@ class MeshesController < ApplicationController
     respond_to do |format|
       if @mesh.save
         format.html { redirect_to @mesh, notice: 'Mesh was successfully created.' }
+        format.js   { redirect_to @mesh }
         format.json { render :show, status: :created, location: @mesh }
       else
         format.html { render :new }
@@ -43,10 +44,10 @@ class MeshesController < ApplicationController
   def update
     respond_to do |format|
       if @mesh.update(mesh_params)
-        format.html { redirect_to @mesh, notice: 'Mesh was successfully updated.' }
+        format.html { redirect_to meshes_url }
         format.json { render :show, status: :ok, location: @mesh }
       else
-        format.html { render :edit }
+        format.html { redirect_to meshes_url, alert: "Mesh failed to be updated: #{@mesh.errors.to_a}" }
         format.json { render json: @mesh.errors, status: :unprocessable_entity }
       end
     end

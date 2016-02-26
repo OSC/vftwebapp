@@ -8,7 +8,10 @@
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li>
-      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Mesh'.html_safe, new_mesh_path %>
+      <%= form_for(Mesh.new(name: 'New Session'), remote: true) do |f| %>
+        <%= f.hidden_field :name %>
+      <% end %>
+      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Mesh'.html_safe, '#', id: 'submit_new_mesh' %>
     </li>
     <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
     <li>

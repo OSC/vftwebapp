@@ -1,0 +1,27 @@
+<tr>
+  <td>
+    <%= best_in_place mesh, :name %>
+  </td>
+  <td>
+    <% if mesh.upload && mesh.sessions.empty? %>
+      <%= link_to 'Add Session', new_mesh_session_path(mesh), class: 'btn btn-success btn-sm' %>
+    <% elsif mesh.upload %>
+      <%= link_to 'View Sessions', mesh_sessions_path(mesh), class: 'btn btn-primary btn-sm' %>
+    <% end %>
+  </td>
+  <td>
+    <p>
+    <% if mesh.upload %>
+      <%= link_to 'Open', mesh.upload.file.url, class: 'btn btn-default btn-sm' %>
+      <%= mesh.upload.file_file_name %>
+    <% else %>
+      Please upload a mesh...
+    <% end %>
+    </p>
+    <% if mesh.sessions.empty? %>
+      <%= render "upload", mesh: mesh %>
+    <% end %>
+  </td>
+  <td data-order="<%= mesh.id %>"><%= mesh.created_at.strftime("%m/%d/%y %I:%M %p") %></td>
+  <td><%= link_to 'Destroy', mesh, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
+</tr>

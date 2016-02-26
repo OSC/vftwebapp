@@ -1,0 +1,7 @@
+<% mesh.build_upload unless mesh.upload %>
+<%= bootstrap_form_for(mesh, layout: :inline) do |f| %>
+  <%= f.fields_for :upload do |u| %>
+    <%= u.file_field :file, hide_label: :true %>
+  <% end %>
+  <%= f.submit 'Upload', class: 'btn btn-default btn-sm' %>
+<% end %>
