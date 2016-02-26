@@ -6,6 +6,13 @@ GIT
       actionpack (>= 3.2)
       railties (>= 3.2)
 
+GIT
+  remote: git://github.com/ncuesta/dropzonejs-rails.git
+  revision: e21e68c87f2cd7923f4a2019d20cbbba825189d5
+  specs:
+    dropzonejs-rails (0.7.3)
+      rails (> 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -174,6 +181,7 @@ DEPENDENCIES
   bootstrap_form (~> 2.3.0)
   coffee-rails (~> 4.0.0)
   dotenv-rails (~> 2.0.0)
+  dropzonejs-rails!
   font-awesome-sass (~> 4.4.0)
   jbuilder (~> 1.2)
   jquery-datatables-rails (~> 3.3.0)

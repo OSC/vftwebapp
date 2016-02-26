@@ -1,5 +1,16 @@
 (function() {
   var row = $("<%= j render "row", mesh: @mesh %>");
-  meshTable.row.add(row);
-  meshTable.order([3, "desc"]).draw();
+  var mesh_row = $('#mesh_row_<%= @mesh.id %>');
+  if (mesh_row.length) {
+    <%# If mesh row exists, then remove it and re-add it %>
+    meshTable.row(mesh_row).remove();
+    meshTable.row.add(row);
+    meshTable.draw();
+  } else {
+    <%# If mesh row doesn't exist then add it and re-sort so it is at the top %>
+    meshTable.row.add(row);
+    meshTable.order([3, "desc"]).draw();
+  }
+
+  $('.dropzone').dropzone(dropzone_options);
 })();

@@ -10,6 +10,9 @@
 // Load up dataTables bootstrap specific styles
 @import "dataTables/bootstrap/3/jquery.dataTables.bootstrap";
 
+// Load up dropzone specific styles
+@import "dropzone/dropzone";
+
 // display header at top of app layout
 body {
   @extend .awesim-banner-background-img;

@@ -60,3 +60,6 @@ gem "osc-vnc", "~> 1.0"
 
 # Use best_in_place for inline form editing
 gem "best_in_place", github: "bernat/best_in_place"
+
+# Use dropzone for AJAX file uploads
+gem "dropzonejs-rails", github: "ncuesta/dropzonejs-rails"

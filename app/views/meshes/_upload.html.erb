@@ -1,7 +1,9 @@
 <% mesh.build_upload unless mesh.upload %>
-<%= bootstrap_form_for(mesh) do |f| %>
+<%= bootstrap_form_for(mesh, html: { class: 'dropzone'}) do |f| %>
+  <div class="fallback">
   <%= f.fields_for :upload do |u| %>
     <%= u.file_field :file, hide_label: :true %>
   <% end %>
   <%= f.submit 'Upload', class: 'btn btn-default btn-sm' %>
+  </div>
 <% end %>

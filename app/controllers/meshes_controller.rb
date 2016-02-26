@@ -59,6 +59,7 @@ class MeshesController < ApplicationController
     respond_to do |format|
       if @mesh.destroy
         format.html { redirect_to meshes_url, notice: 'Mesh was successfully destroyed.' }
+        format.js   { }
         format.json { head :no_content }
       else
         format.html { redirect_to meshes_url, alert: "Mesh failed to be destroyed: #{@mesh.errors.to_a}" }

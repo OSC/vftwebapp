@@ -1,4 +1,4 @@
-<tr>
+<tr id="mesh_row_<%= mesh.id %>">
   <td>
     <%= best_in_place mesh, :name %>
   </td>
@@ -12,7 +12,7 @@
   <td>
     <p>
     <% if mesh.upload %>
-      <%= link_to 'Open', mesh.upload.file.url, class: 'btn btn-default btn-sm' %>
+      <%= link_to 'Open', mesh.upload.file.url, class: 'btn btn-default btn-sm', target: '_blank' %>
       <%= mesh.upload.file_file_name %>
     <% else %>
       Please upload a mesh...
@@ -23,5 +23,5 @@
     <% end %>
   </td>
   <td data-order="<%= mesh.id %>"><%= mesh.created_at.strftime("%m/%d/%y %I:%M %p") %></td>
-  <td><%= link_to 'Destroy', mesh, method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %></td>
+  <td><%= link_to 'Destroy', mesh, method: :delete, class: 'btn btn-danger btn-sm destroy-mesh', data: { confirm: 'Are you sure?' }, remote: true %></td>
 </tr>
