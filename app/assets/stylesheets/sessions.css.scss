@@ -5,8 +5,11 @@
   background-color: #ddd;
 }
 
-.stage-current {
+.stage-current, .stage-current-1 {
   @extend .stage;
+
+  min-width: 95px;
+
   // $state-info-bg
   background-color: #d9edf7;
 
@@ -16,8 +19,8 @@
   }
 }
 
-.stage-current-orange {
-  @extend .stage;
+.stage-current-3 {
+  @extend .stage-current;
   background-color: lighten(#ffa300, 40%);
 
   .badge {
@@ -25,8 +28,8 @@
   }
 }
 
-.stage-current-green {
-  @extend .stage;
+.stage-current-4 {
+  @extend .stage-current;
   background-color: #dff0d8;
 
   // same color as green alerts
@@ -35,8 +38,8 @@
   }
 }
 
-.stage-current-purple {
-  @extend .stage;
+.stage-current-2 {
+  @extend .stage-current;
   background-color: lighten(#9b26b6, 50%);
 
   .badge {

@@ -13,11 +13,23 @@ class ViewModel < SimpleDelegator
   #FIXME: the subclasses should specify these; even tiny duplication is OK - for
   #the benefit of flexibility of diverting in the future
   def workflow_stage
-    return "1/3<br>VFTSolid".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
-    return "2/3<br>Thermal".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
-    return "3/3<br>Structural".html_safe if [StructuralFormView, StructuralStatusView].include? self.class
+    total = 4
 
-    "Results:"
+    if [VftsolidFormView, VftsolidStatusView].include? self.class
+      current = 1
+      text = "VFTSolid"
+    elsif [ThermalFormView, ThermalStatusView].include? self.class
+      current = 2
+      text = "Thermal"
+    elsif [StructuralFormView, StructuralStatusView].include? self.class
+      current = 3
+      text = "Structural"
+    else
+      current = 4
+      text = "Results"
+    end
+
+    view_context.render partial: "stages_ctrl", locals: { current: current, total: total, text: text }
   end
 
   # the subject of the workflow stage is

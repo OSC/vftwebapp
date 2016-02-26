@@ -1,8 +1,3 @@
-<td class="" style="white-space: nowrap;">
-  <div>
-    <div class="stage-current"><span class="badge">1</span> VFTSolid
-    </div><div class="stage"><span class="badge">2</span>
-    </div><div class="stage"><span class="badge">3</span>
-    </div><div class="stage"><span class="badge">4</span></div>
-  </div>
-</td>
+<div style="white-space: nowrap;">
+  <% (1..total).each do |n| %><div class="stage<%= "-current-#{n}" if current == n %>"><span class="badge"><%= n %></span> <%= text if current == n %></div><% end %>
+</div>
