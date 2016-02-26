@@ -1,0 +1,45 @@
+.stage {
+  display: inline-block;
+  padding: 4px;
+  margin: 0px;
+  background-color: #ddd;
+}
+
+.stage-current {
+  @extend .stage;
+  // $state-info-bg
+  background-color: #d9edf7;
+
+  .badge {
+    // $brand-primary
+    background-color: #337ab7;
+  }
+}
+
+.stage-current-orange {
+  @extend .stage;
+  background-color: lighten(#ffa300, 40%);
+
+  .badge {
+    background-color: #ffa300;
+  }
+}
+
+.stage-current-green {
+  @extend .stage;
+  background-color: #dff0d8;
+
+  // same color as green alerts
+  .badge {
+    background-color: #3c763d;
+  }
+}
+
+.stage-current-purple {
+  @extend .stage;
+  background-color: lighten(#9b26b6, 50%);
+
+  .badge {
+    background-color: #9b26b6;
+  }
+}
