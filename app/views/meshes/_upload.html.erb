@@ -1,5 +1,5 @@
 <% mesh.build_upload unless mesh.upload %>
-<%= bootstrap_form_for(mesh, layout: :inline) do |f| %>
+<%= bootstrap_form_for(mesh) do |f| %>
   <%= f.fields_for :upload do |u| %>
     <%= u.file_field :file, hide_label: :true %>
   <% end %>

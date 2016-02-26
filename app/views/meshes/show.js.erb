@@ -1,5 +1,5 @@
 (function() {
   var row = $("<%= j render "row", mesh: @mesh %>");
   meshTable.row.add(row);
-  $('.dataTable').prepend(row);
+  meshTable.order([3, "desc"]).draw();
 })();
