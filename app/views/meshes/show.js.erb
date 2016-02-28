@@ -11,5 +11,10 @@
     meshTable.row.add(row);
     meshTable.order([3, "desc"]).draw();
   }
+
+  <%# Dynamically add the dropzone to this element %>
   $('#mesh_row_<%= @mesh.id %> .dropzone').dropzone(dropzoneOpts);
+
+  <%# Dynamically add the best_in_place to this element %>
+  $('#mesh_row_<%= @mesh.id %> .best_in_place').best_in_place();
 })();
