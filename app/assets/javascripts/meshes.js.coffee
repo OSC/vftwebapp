@@ -44,9 +44,27 @@ jQuery ->
     row = $(this).closest('tr')
     meshTable.row(row).invalidate()
 
-  # Use a link to submit a form
-  $('#submit_new_mesh').click ->
-    $('#new_mesh').submit()
+  $('.dataTable').on 'ajax:error', '.best_in_place', (e, error)->
+    data = $.parseJSON error.responseText
+    alert 'Name ' + data.name
+
+  # Don't let users click multiple times the 'Add Mesh' link
+  $('#new_mesh').on 'ajax:beforeSend', ->
+    text = $(this).html()
+    $placeholder = $('<a href="#" id="new_mesh_placeholder">').html(text)
+    $placeholder.find('i').attr('class', 'fa fa-spinner fa-spin')
+    $(this).parent().append($placeholder)
+    $(this).hide()
+
+  # Repair 'Add Mesh' link after success
+  $('#new_mesh').on 'ajax:success', (e, data, status, xhr) ->
+    $('#new_mesh_placeholder').remove()
+    $(this).show()
 
   # Programmatically define dropzones with personal options
   $('.dropzone').dropzone dropzoneOpts
+
+  # Change delete button icon to a spinner when user clicks confirm button
+  $(document).on 'confirm:complete', (e, answer) ->
+    if answer && $(e.target).hasClass('destroy-mesh')
+      $(e.target).find('i').attr('class', 'fa fa-spinner fa-spin')
