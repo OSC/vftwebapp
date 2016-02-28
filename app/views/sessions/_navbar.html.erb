@@ -10,7 +10,7 @@
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li>
-      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Session'.html_safe, new_mesh_session_path(@mesh) %>
+      <%= link_to icon('plus', 'Add Session'), new_mesh_session_path(@mesh) %>
     </li>
     <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
     <li>

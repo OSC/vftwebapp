@@ -8,7 +8,7 @@ root = exports ? this
 root.dropzoneOpts =
   paramName: 'mesh[upload_attributes][file]'
   maxFiles: 1
-  # addRemoveLinks: true
+  dictDefaultMessage: 'Drop your mesh here to upload'
   previewTemplate: '
     <div class="file-row">
       <div>

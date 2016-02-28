@@ -4,7 +4,7 @@
   </td>
   <td>
     <% if mesh.upload && mesh.sessions.empty? %>
-      <%= link_to '<span class="glyphicon glyphicon-plus"></span> Add Session'.html_safe, new_mesh_session_path(mesh), class: 'btn btn-success btn-sm' %>
+      <%= link_to icon('plus', 'Add Session'), new_mesh_session_path(mesh), class: 'btn btn-success btn-sm' %>
     <% elsif mesh.upload %>
       <%= link_to 'View Sessions', mesh_sessions_path(mesh), class: 'btn btn-primary btn-sm' %>
     <% end %>
