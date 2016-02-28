@@ -8,7 +8,27 @@ root = exports ? this
 root.dropzoneOpts =
   paramName: 'mesh[upload_attributes][file]'
   maxFiles: 1
-  addRemoveLinks: true
+  # addRemoveLinks: true
+  previewTemplate: '
+    <div class="file-row">
+      <div>
+        <p>
+        <span class="name" data-dz-name></span>
+        <span class="size pull-right" data-dz-size></span>
+        </p>
+        <strong class="error text-danger" data-dz-errormessage></strong>
+      </div>
+      <div>
+        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+        <button data-dz-remove class="btn btn-warning cancel">
+            <i class="glyphicon glyphicon-ban-circle"></i>
+            <span>Cancel</span>
+        </button>
+      </div>
+    </div>
+  '
   success: (file, response) ->
     $.getScript($(file.previewElement).parent().attr('action') + '.js')
 
