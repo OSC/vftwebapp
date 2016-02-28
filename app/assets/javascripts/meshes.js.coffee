@@ -40,7 +40,7 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   # Update datatable after inplace field changed
-  $('.best_in_place').bind 'ajax:success', ->
+  $('.dataTable').on 'ajax:success', '.best_in_place', ->
     row = $(this).closest('tr')
     meshTable.row(row).invalidate()
 
