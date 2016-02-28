@@ -11,6 +11,5 @@
     meshTable.row.add(row);
     meshTable.order([3, "desc"]).draw();
   }
-
-  $('.dropzone').dropzone(dropzone_options);
+  $('#mesh_row_<%= @mesh.id %> .dropzone').dropzone(dropzoneOpts);
 })();
