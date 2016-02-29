@@ -4,6 +4,5 @@
 <hr>
 
 <%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put' do |f| %>
-  <%= f.number_field :hours, value: 8, in: 1..3600 %>
-  <%= f.submit 'Submit WARP3D', class: "btn btn-success btn-sm" %>
+  <%= f.number_field :hours, value: 8, in: 1..3600, hide_label: true, prepend: 'Hours:', append: f.submit('Submit', class: 'btn btn-success')%>
 <% end %>
