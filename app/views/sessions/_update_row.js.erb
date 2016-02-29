@@ -1,0 +1,17 @@
+var new_row, row, row_id;
+row_id = "#session_row_<%= session.id %>";
+row = $(row_id);
+new_row = $("<%= j render "row", session: session %>");
+if (row.length) {
+  <%# If row exists, then remove it and re-add it %>
+  indexTable.row(row).remove();
+  indexTable.row.add(new_row);
+  indexTable.draw();
+} else {
+  <%# If session row doesn't exist then add it and re-sort so it is at the top %>
+  indexTable.row.add(new_row);
+  indexTable.order([4, "desc"]).draw();
+}
+
+<%# Dynamically add the best_in_place to this element %>
+$(row_id).find(".best_in_place").best_in_place();

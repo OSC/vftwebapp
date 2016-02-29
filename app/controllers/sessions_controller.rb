@@ -5,13 +5,22 @@ class SessionsController < ApplicationController
   # GET /sessions
   # GET /sessions.json
   def index
-    @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]])
+    if params[:session_list]
+      if params[:session_ids]
+        @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]]).find(params[:session_ids])
+      else
+        @sessions = []
+      end
+    else
+      @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]])
+    end
     @sessions.map! {|s| ViewModel.for_session(s, view_context) }
   end
 
   # GET /sessions/1
   # GET /sessions/1.json
   def show
+    @session = ViewModel.for_session(@session, view_context)
   end
 
   # GET /sessions/new
@@ -27,11 +36,12 @@ class SessionsController < ApplicationController
   # POST /sessions.json
   def create
     @session = @mesh.sessions.build(session_params)
+    @session = ViewModel.for_session(@session, view_context)
 
     respond_to do |format|
       if @session.save
         format.html { redirect_to @session, notice: 'Session was successfully created.' }
-        format.js   { redirect_to @session }
+        format.js   { render :show }
         format.json { render :show, status: :created, location: @session }
       else
         format.html { render :new }
@@ -77,7 +87,9 @@ class SessionsController < ApplicationController
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Session has already been submitted.' }
         format.json { head :no_content }
       elsif @session.submit
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully submitted.' }
+        format.js   { render :show }
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be submitted: #{@session.errors.to_a}" }
@@ -93,7 +105,9 @@ class SessionsController < ApplicationController
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Session has not been submitted.' }
         format.json { head :no_content }
       elsif @session.stop
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully stopped.' }
+        format.js   { render :show }
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be stopped: #{@session.errors.to_a}" }
@@ -121,7 +135,6 @@ class SessionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_session
       @session = Session.find(params[:id])
-      @session = ViewModel.for_session(@session, view_context)
       @mesh = @session.parent
     end
 

@@ -30,7 +30,7 @@ class MeshesController < ApplicationController
     respond_to do |format|
       if @mesh.save
         format.html { redirect_to @mesh, notice: 'Mesh was successfully created.' }
-        format.js   { redirect_to @mesh }
+        format.js   { render :show }
         format.json { render :show, status: :created, location: @mesh }
       else
         format.html { render :new }

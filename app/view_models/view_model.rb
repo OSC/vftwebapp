@@ -40,7 +40,9 @@ class ViewModel < SimpleDelegator
   end
 
   def workflow_status
-    view_context.status_label(subject).html_safe
+    view_context.content_tag :div, class: 'status-label' do
+      view_context.status_label(subject).html_safe
+    end
   end
 
   def row_bg

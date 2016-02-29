@@ -1,0 +1,10 @@
+(function() {
+  <% @sessions.each do |session| %>
+    var cached_status, row_id;
+    row_id = "#session_row_<%= session.id %>";
+    cached_status = $(row_id).data('status');
+    if (cached_status != "<%= session.starting? ? 'Starting' : session.status %>") {
+      <%= render "update_row", session: session %>
+    }
+  <% end %>
+})();
