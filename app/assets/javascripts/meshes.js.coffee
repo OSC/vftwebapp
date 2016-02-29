@@ -36,6 +36,10 @@ root.dropzoneOpts =
 Dropzone.autoDiscover = false
 
 jQuery ->
+  # Set up datatables
+  root.meshTable = $('.data-table#meshTable').DataTable()
+  root.sessionTable = $('.data-table#sessionTable').DataTable()
+
   # Initialize best_in_place
   $('.best_in_place').best_in_place()
 
@@ -55,7 +59,7 @@ jQuery ->
   }, '.best_in_place'
 
   # Don't let users click multiple times the 'Add Mesh' link
-  $('#new_mesh').on {
+  $('#new_mesh,#new_session').on {
     'ajax:beforeSend': ->
       text = $(this).html()
       $placeholder = $('<a href="#" id="new_model_placeholder">').html(text)

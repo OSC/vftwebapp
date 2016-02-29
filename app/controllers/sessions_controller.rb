@@ -31,6 +31,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @session.save
         format.html { redirect_to @session, notice: 'Session was successfully created.' }
+        format.js   { redirect_to @session }
         format.json { render :show, status: :created, location: @session }
       else
         format.html { render :new }
@@ -119,6 +120,7 @@ class SessionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_session
       @session = Session.find(params[:id])
+      @session = ViewModel.for_session(@session, view_context)
       @mesh = @session.parent
     end
 

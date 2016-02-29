@@ -4,7 +4,8 @@ class Session < Workflow
   belongs_to :parent, class_name: "Mesh"
 
   store_accessor :data, :name
-  validates :name, presence: true
+  validates :name, presence: true, allow_blank: true
+  validates :name, length: { maximum: 30 }
 
   # This workflow has a single job, so set workflow pbsid to this value
   def pbsid

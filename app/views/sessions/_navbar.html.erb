@@ -10,7 +10,7 @@
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li>
-      <%= link_to icon('plus', 'Add Session'), new_mesh_session_path(@mesh) %>
+      <%= link_to icon('plus', 'Add Session'), {controller: "sessions", action: "create", session: {name: ''}, mesh_id: @mesh, remote: true}, id: "new_session", method: "post" %>
     </li>
     <% if File.exist?(File.join(AwesimRails.docs.path, 'Home.md')) %>
     <li>
