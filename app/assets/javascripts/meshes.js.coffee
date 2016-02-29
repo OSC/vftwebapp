@@ -39,32 +39,34 @@ jQuery ->
   # Initialize best_in_place
   $('.best_in_place').best_in_place()
 
-  # Update datatable after inplace field changed
-  $('.dataTable').on 'ajax:success', '.best_in_place', ->
-    row = $(this).closest('tr')
-    meshTable.row(row).invalidate()
-
-  $('.dataTable').on 'ajax:error', '.best_in_place', (e, error)->
-    data = $.parseJSON error.responseText
-    alert 'Name ' + data.name
-
-  # Don't let users click multiple times the 'Add Mesh' link
-  $('#new_mesh').on 'ajax:beforeSend', ->
-    text = $(this).html()
-    $placeholder = $('<a href="#" id="new_mesh_placeholder">').html(text)
-    $placeholder.find('i').attr('class', 'fa fa-spinner fa-spin')
-    $(this).parent().append($placeholder)
-    $(this).hide()
-
-  # Repair 'Add Mesh' link after success
-  $('#new_mesh').on 'ajax:success', (e, data, status, xhr) ->
-    $('#new_mesh_placeholder').remove()
-    $(this).show()
-
-  # Programmatically define dropzones with personal options
+  # Initialize dropzones with options
   $('.dropzone').dropzone dropzoneOpts
 
+  # best_in_place event handling
+  $('.dataTable').on {
+    'ajax:success': ->
+      # Update datatable after inplace field change
+      row = $(this).closest('tr')
+      meshTable.row(row).invalidate()
+    'ajax:error': (e, error) ->
+      # Throw up alert error if something goes wrong
+      data = $.parseJSON error.responseText
+      alert 'Name ' + data.name
+  }, '.best_in_place'
+
+  # Don't let users click multiple times the 'Add Mesh' link
+  $('#new_mesh').on {
+    'ajax:beforeSend': ->
+      text = $(this).html()
+      $placeholder = $('<a href="#" id="new_model_placeholder">').html(text)
+      $placeholder.find('i').attr('class', 'fa fa-spinner fa-spin')
+      $(this).parent().append($placeholder)
+      $(this).hide()
+    'ajax:success': ->
+      $('#new_model_placeholder').remove()
+      $(this).show()
+  }
+
   # Change delete button icon to a spinner when user clicks confirm button
-  $(document).on 'confirm:complete', (e, answer) ->
-    if answer && $(e.target).hasClass('destroy-mesh')
-      $(e.target).find('i').attr('class', 'fa fa-spinner fa-spin')
+  $(document).on 'confirm:complete', '.destroy-mesh', (e, answer) ->
+    $(this).find('i').attr('class', 'fa fa-spinner fa-spin') if answer
