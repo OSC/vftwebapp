@@ -1,0 +1,20 @@
+@mixin stage($bgcolor, $badgecolor) {
+  display: inline-block;
+  padding: 4px;
+  margin: 0px;
+  background-color: #ddd;
+  min-width: 95px;
+
+  background-color: $bgcolor;
+
+  .badge {
+    background-color: $badgecolor;
+  }
+}
+
+.stage-vftsolid { @include stage(#d9edf7, #337ab7) }
+.stage-thermal { @include stage(lighten(#9b26b6, 50%), #9b26b6) }
+.stage-structural { @include stage(lighten(#ffa300, 40%), #ffa300) }
+.stage-results { @include stage(#dff0d8, #3c763d) }
+
+

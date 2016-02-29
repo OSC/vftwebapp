@@ -10,14 +10,27 @@ class ViewModel < SimpleDelegator
     "sessions/#{self.class.name.underscore}"
   end
 
-  #FIXME: the subclasses should specify these; even tiny duplication is OK - for
-  #the benefit of flexibility of diverting in the future
-  def workflow_stage
-    return "1/3<br>VFTSolid".html_safe if [VftsolidFormView, VftsolidStatusView].include? self.class
-    return "2/3<br>Thermal".html_safe if [ThermalFormView, ThermalStatusView].include? self.class
-    return "3/3<br>Structural".html_safe if [StructuralFormView, StructuralStatusView].include? self.class
+  def workflow_stage_name
+    return @workflow_stage_name if @workflow_stage_name
 
-    "Results:"
+    sn = ""
+    if self.class.name =~ /(.*)(FormView|StatusView)$/
+      sn = $1
+    elsif self.class.name =~ /(.*)(View)$/
+      sn = $1
+    end
+
+    @workflow_stage_name ||= (sn == "Vftsolid" ? "VFTSolid" : sn)
+  end
+
+  def workflow_stage
+    total = 4
+
+    #FIXME: dangerous superclass knowledge of subclasses
+    current = ["vftsolid", "thermal", "structural", "results"].find_index(workflow_stage_name.downcase)+1
+    class_name = "stage-#{workflow_stage_name.downcase}"
+
+    view_context.content_tag("div", view_context.content_tag("badge", current, class: "badge") + " " + workflow_stage_name, class: class_name)
   end
 
   # the subject of the workflow stage is
