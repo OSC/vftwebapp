@@ -57,3 +57,9 @@ gem "osc_machete_rails", "~> 1.0"
 gem "awesim_rails", "~> 1.0"
 gem "awesim_rails_logging", "~> 0.0", group: :production
 gem "osc-vnc", "~> 1.0"
+
+# Use best_in_place for inline form editing
+gem "best_in_place", github: "bernat/best_in_place"
+
+# Use dropzone for AJAX file uploads
+gem "dropzonejs-rails", github: "ncuesta/dropzonejs-rails"

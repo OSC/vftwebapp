@@ -1,3 +1,18 @@
+GIT
+  remote: git://github.com/bernat/best_in_place.git
+  revision: 57b525e487cd6ba10467b47d8bf8907c645f6917
+  specs:
+    best_in_place (3.1.0)
+      actionpack (>= 3.2)
+      railties (>= 3.2)
+
+GIT
+  remote: git://github.com/ncuesta/dropzonejs-rails.git
+  revision: e21e68c87f2cd7923f4a2019d20cbbba825189d5
+  specs:
+    dropzonejs-rails (0.7.3)
+      rails (> 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -161,10 +176,12 @@ DEPENDENCIES
   autoprefixer-rails
   awesim_rails (~> 1.0)
   awesim_rails_logging (~> 0.0)
+  best_in_place!
   bootstrap-sass (~> 3.3.1)
   bootstrap_form (~> 2.3.0)
   coffee-rails (~> 4.0.0)
   dotenv-rails (~> 2.0.0)
+  dropzonejs-rails!
   font-awesome-sass (~> 4.4.0)
   jbuilder (~> 1.2)
   jquery-datatables-rails (~> 3.3.0)

@@ -20,7 +20,7 @@ class Workflow < ActiveRecord::Base
 
   # Treat staged_dir as a Pathname object
   def staged_dir
-    Pathname.new(super)
+    Pathname.new(super) if super
   end
 
   def log_root
