@@ -3,7 +3,7 @@
   <h2>Listing Sessions</h2>
 </div>
 
-<table id="indexTable" class="table data-table" data-page-length="50" data-order="[[ 4, &quot;desc&quot; ]]" data-column-defs="[{&quot;searchable&quot;: false, &quot;targets&quot;: 3}]">
+<table id="indexTable" class="table data-table" data-page-length="50" data-order="[[ 4, &quot;desc&quot; ]]" data-column-defs="[{&quot;searchable&quot;: false, &quot;targets&quot;: 3}]" data-poller="true" data-url="<%= mesh_sessions_path(@mesh, format: :js) %>" data-interval="5000">
   <thead>
     <tr>
       <th>Name</th>

@@ -1,8 +1,8 @@
 <%# FIXME: this button should not do anything! Just a label! %>
 <% if session.conn_avail? %>
-  <%= link_to "Open VFTSolid", session.conn_view.render(:awesim), class: 'btn btn-primary btn-sm' %>
+  <%= link_to "Open VFTSolid", session.conn_view.render(:awesim), class: 'btn btn-default btn-sm' %>
 <% end %>
 
-<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm' if session.active? %>
+<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm pull-right' if session.active? %>
 
 <%= session.msg if session.msg %>

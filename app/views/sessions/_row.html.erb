@@ -1,4 +1,9 @@
-<tr class="<%= session.row_bg %>" id="session_row_<%= session.id %>">
+<tr class="<%= session.row_bg %>" id="session_row_<%= session.id %>" data-id="<%= session.id %>"
+<% if session.active? %>
+  data-poll="true"
+  data-status="<%= session.starting? ? 'Starting' : session.status %>"
+<% end %>
+>
   <td><%= best_in_place session, :name, place_holder: 'Click here to Edit' %></td>
   <td><%= session.workflow_stage %></td>
   <td><%= session.workflow_status %></td>

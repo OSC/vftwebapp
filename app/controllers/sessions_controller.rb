@@ -5,7 +5,15 @@ class SessionsController < ApplicationController
   # GET /sessions
   # GET /sessions.json
   def index
-    @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]])
+    if params[:session_list]
+      if params[:session_ids]
+        @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]]).find(params[:session_ids])
+      else
+        @sessions = []
+      end
+    else
+      @sessions = @mesh.sessions.preload(:jobs, thermal: [:jobs, structural: [:jobs]])
+    end
     @sessions.map! {|s| ViewModel.for_session(s, view_context) }
   end
 

@@ -17,4 +17,10 @@
 .stage-structural { @include stage(lighten(#ffa300, 40%), #ffa300) }
 .stage-results { @include stage(#dff0d8, #3c763d) }
 
-
+.status-label > span {
+  font-size: 12px;
+  display: block;
+  height: 18px;
+  width: 100px;
+  padding-top: 4px;
+}

@@ -1,4 +1,4 @@
-<%= link_to 'Verify CTSP results in Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-info btn-sm', target: "_blank" %>
+<%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-default btn-sm', target: "_blank" %>
 <hr>
 
 Solving Warp3D: <%= status_label(session.thermal.structural) %>
