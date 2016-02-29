@@ -1,6 +1,6 @@
 <tr id="mesh_row_<%= mesh.id %>">
   <td>
-    <%= best_in_place mesh, :name, place_holder: 'Click here to Edit' %>
+    <%= best_in_place mesh, :name, place_holder: 'Click here to Edit', class: 'name-field' %>
   </td>
   <td>
     <% if mesh.upload && mesh.sessions.empty? %>

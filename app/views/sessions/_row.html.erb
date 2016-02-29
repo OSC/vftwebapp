@@ -4,7 +4,7 @@
   data-status="<%= session.starting? ? 'Starting' : session.status %>"
 <% end %>
 >
-  <td><%= best_in_place session, :name, place_holder: 'Click here to Edit' %></td>
+  <td><%= best_in_place session, :name, place_holder: 'Click here to Edit', class: 'name-field' %></td>
   <td><%= session.workflow_stage %></td>
   <td><%= session.workflow_status %></td>
   <!-- <td><%# render session, :as => :session %></td> -->
