@@ -60,6 +60,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @session.destroy
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully destroyed.' }
+        format.js
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be destroyed: #{@session.errors.to_a}" }

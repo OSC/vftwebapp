@@ -23,5 +23,5 @@
     <% end %>
   </td>
   <td data-order="<%= mesh.id %>"><%= mesh.created_at.strftime("%m/%d/%y %I:%M %p") %></td>
-  <td><%= link_to icon('trash-o', 'Destroy'), mesh, method: :delete, class: 'btn btn-danger btn-sm destroy-mesh', data: { confirm: 'Are you sure? This is **irreversible**!' }, remote: true %></td>
+  <td><%= link_to icon('trash-o', 'Destroy'), mesh, method: :delete, class: 'btn btn-danger btn-sm destroy-model', data: { confirm: 'Are you sure? This is **irreversible**!' }, remote: true %></td>
 </tr>
