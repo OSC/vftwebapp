@@ -4,13 +4,13 @@
   var new_row = $("<%= j render "row", mesh: @mesh %>");
   if (row.length) {
     <%# If row exists, then remove it and re-add it %>
-    meshTable.row(row).remove();
-    meshTable.row.add(new_row);
-    meshTable.draw();
+    indexTable.row(row).remove();
+    indexTable.row.add(new_row);
+    indexTable.draw();
   } else {
     <%# If mesh row doesn't exist then add it and re-sort so it is at the top %>
-    meshTable.row.add(new_row);
-    meshTable.order([3, "desc"]).draw();
+    indexTable.row.add(new_row);
+    indexTable.order([3, "desc"]).draw();
   }
 
   <%# Dynamically add the dropzone to this element %>

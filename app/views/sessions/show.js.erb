@@ -4,12 +4,15 @@
   var new_row = $("<%= j render "row", session: @session %>");
   if (row.length) {
     <%# If row exists, then remove it and re-add it %>
-    sessionTable.row(row).remove();
-    sessionTable.row.add(new_row);
-    sessionTable.draw();
+    indexTable.row(row).remove();
+    indexTable.row.add(new_row);
+    indexTable.draw();
   } else {
     <%# If session row doesn't exist then add it and re-sort so it is at the top %>
-    sessionTable.row.add(new_row);
-    sessionTable.order([4, "desc"]).draw();
+    indexTable.row.add(new_row);
+    indexTable.order([4, "desc"]).draw();
   }
+
+  <%# Dynamically add the best_in_place to this element %>
+  $(row_id).find(".best_in_place").best_in_place();
 })();

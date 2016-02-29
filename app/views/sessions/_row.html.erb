@@ -1,5 +1,5 @@
 <tr class="<%= session.row_bg %>" id="session_row_<%= session.id %>">
-  <td><%= session.name %></td>
+  <td><%= best_in_place session, :name, place_holder: 'Click here to Edit' %></td>
   <td><%= session.workflow_stage %></td>
   <td><%= session.workflow_status %></td>
   <!-- <td><%# render session, :as => :session %></td> -->

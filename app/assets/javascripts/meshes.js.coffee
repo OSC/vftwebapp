@@ -37,8 +37,7 @@ Dropzone.autoDiscover = false
 
 jQuery ->
   # Set up datatables
-  root.meshTable = $('.data-table#meshTable').DataTable()
-  root.sessionTable = $('.data-table#sessionTable').DataTable()
+  root.indexTable = $('#indexTable').DataTable()
 
   # Initialize best_in_place
   $('.best_in_place').best_in_place()
@@ -51,7 +50,7 @@ jQuery ->
     'ajax:success': ->
       # Update datatable after inplace field change
       row = $(this).closest('tr')
-      meshTable.row(row).invalidate()
+      indexTable.row(row).invalidate()
     'ajax:error': (e, error) ->
       # Throw up alert error if something goes wrong
       data = $.parseJSON error.responseText
