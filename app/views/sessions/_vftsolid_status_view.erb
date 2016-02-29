@@ -3,6 +3,6 @@
   <%= link_to "Open VFTSolid", session.conn_view.render(:awesim), class: 'btn btn-default btn-sm' %>
 <% end %>
 
-<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm pull-right', remote: true if session.active? %>
-
 <%= session.msg if session.msg %>
+
+<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm pull-right', remote: true if session.active? %>

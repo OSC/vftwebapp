@@ -10,6 +10,8 @@ class VftsolidStatusView < ViewModel
   def msg
     if starting?
       "Starting..."
+    elsif queued?
+      "Submitted VFTSolid..."
     elsif failed?
       fail_msg
     end

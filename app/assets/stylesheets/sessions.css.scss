@@ -20,11 +20,13 @@ $structural-secondary-color: lighten(#ffa300, 40%);
 .btn-thermal-results { 
   @include button_variant(#000, $thermal-secondary-color, $thermal-primary-color);
   font-weight: bold;
+  min-width: 180px;
 }
 
 .btn-structural-results { 
   @include button_variant(#000, $structural-secondary-color, $structural-primary-color);
   font-weight: bold;
+  min-width: 180px;
 }
 // results_btn($thermal-secondary-color, $thermal-primary-color) }
 // .structural-results-btn { @include results_btn($structural-secondary-color, $structural-primary-color) }
@@ -40,4 +42,8 @@ $structural-secondary-color: lighten(#ffa300, 40%);
   height: 18px;
   width: 100px;
   padding-top: 4px;
+}
+
+.hours-form {
+  min-width: 60px;
 }

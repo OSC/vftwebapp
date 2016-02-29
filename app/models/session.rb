@@ -38,6 +38,10 @@ class Session < Workflow
     jobs.first.status.running?
   end
 
+  def queued?
+    jobs.first.status.queued?
+  end
+
   # Is the batch job starting? (i.e., running but no connection file yet)
   def starting?
     running? && !File.file?(conn_file)
