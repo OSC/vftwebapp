@@ -1,7 +1,6 @@
 <p>
+<%= link_to 'Stop', stop_thermal_path(session.thermal.structural), method: :put, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' }, remote: true if session.subject.active? %>
 <%= session.msg if session.msg %>
-
-<%= link_to 'Stop', stop_thermal_path(session.thermal.structural), method: :put, class: 'btn btn-danger btn-sm pull-right', data: { confirm: 'Are you sure?' }, remote: true if session.subject.active? %>
 </p>
 
 <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-thermal-results btn-sm', target: "_blank" %>

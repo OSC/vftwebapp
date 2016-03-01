@@ -1,8 +1,8 @@
+<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' }, remote: true if session.active? %>
+
 <%# FIXME: this button should not do anything! Just a label! %>
 <% if session.conn_avail? %>
   <%= link_to "Open VFTSolid", session.conn_view.render(:awesim), class: 'btn btn-default btn-sm' %>
 <% end %>
 
 <%= session.msg if session.msg %>
-
-<%= link_to 'Stop', stop_session_path(session), method: :put, class: 'btn btn-danger btn-sm pull-right', data: { confirm: 'Are you sure?' }, remote: true if session.active? %>
