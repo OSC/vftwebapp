@@ -7,7 +7,7 @@ class ViewModel < SimpleDelegator
   end
 
   def to_partial_path
-    "sessions/#{self.class.name.underscore}"
+    "shared/#{self.class.name.underscore}"
   end
 
   def workflow_stage_name

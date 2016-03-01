@@ -1,3 +1,0 @@
-<%= session.msg if session.msg %>
-
-<%= link_to 'Stop', stop_thermal_path(session.thermal), method: :put, class: 'btn btn-danger btn-sm pull-right' if session.thermal.active? %>

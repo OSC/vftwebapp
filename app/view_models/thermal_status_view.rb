@@ -4,9 +4,9 @@ class ThermalStatusView < ViewModel
   end
 
   def msg
-    if active?
+    if subject.active?
       "Submitted..."
-    elsif failed?
+    elsif subject.failed?
       fail_msg
     end
   end

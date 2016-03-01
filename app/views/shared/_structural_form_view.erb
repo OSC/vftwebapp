@@ -2,6 +2,6 @@
 <p>
   <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-thermal-results btn-sm', target: "_blank" %>
 </p>
-<%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put' do |f| %>
+<%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put', remote: true do |f| %>
   <%= f.number_field :hours, value: 1, in: 1..96, class: 'hours-form', hide_label: true, prepend: 'Hours:', append: f.submit('Submit', class: 'btn btn-success')%>
 <% end %>

@@ -9,10 +9,15 @@ class StructuralsController < ApplicationController
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Structural has already been submitted.' }
         format.json { head :no_content }
       elsif @structural.submit
+        set_structural
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Structural was successfully submitted.' }
+        format.js   { render 'sessions/show' }
         format.json { head :no_content }
       else
+        @errors = @structural.errors
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Structural failed to be submitted: #{@structural.errors.to_a}" }
+        format.js   { render 'sessions/error' }
         format.json { render json: @structural.errors, status: :internal_server_error }
       end
     end
@@ -42,7 +47,7 @@ class StructuralsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_structural
-      @structural = Structural.preload(:jobs).find(params[:id])
+      @structural = Structural.find(params[:id])
       @structural.hours = params[:hours] if params[:hours]
 
       @thermal = @structural.parent

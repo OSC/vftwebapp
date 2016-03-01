@@ -1,6 +1,0 @@
-<%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-default btn-sm', target: "_blank" %>
-<hr>
-
-Solving Warp3D: <%= status_label(session.thermal.structural) %>
-
-<%= link_to 'Stop', stop_thermal_path(session.thermal.structural), method: :put, class: 'btn btn-danger btn-sm' if session.thermal.structural.active? %>

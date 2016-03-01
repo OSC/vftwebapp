@@ -3,8 +3,12 @@
     var cached_status, row_id;
     row_id = "#session_row_<%= session.id %>";
     cached_status = $(row_id).data('status');
-    if (cached_status != "<%= session.starting? ? 'Starting' : session.status %>") {
-      <%= render "update_row", session: session %>
+    <% if session.subject.respond_to?(:starting?) %>
+    if (cached_status != "<%= session.subject.starting? ? 'Starting' : session.subject.status %>") {
+    <% else %>
+    if (cached_status != "<%= session.subject.status %>") {
+    <% end %>
+      <%= render "shared/update_row", session: session %>
     }
   <% end %>
 })();

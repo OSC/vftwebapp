@@ -92,7 +92,9 @@ class SessionsController < ApplicationController
         format.js   { render :show }
         format.json { head :no_content }
       else
+        @errors = @session.errors
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be submitted: #{@session.errors.to_a}" }
+        format.js   { render 'sessions/error' }
         format.json { render json: @session.errors, status: :internal_server_error }
       end
     end

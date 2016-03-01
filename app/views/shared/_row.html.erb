@@ -1,7 +1,11 @@
 <tr class="<%= session.row_bg %>" id="session_row_<%= session.id %>" data-id="<%= session.id %>"
-<% if session.active? %>
+<% if session.subject.active? %>
   data-poll="true"
-  data-status="<%= session.starting? ? 'Starting' : session.status %>"
+  <% if session.subject.respond_to?(:starting?) %>
+    data-status="<%= session.subject.starting? ? 'Starting' : session.subject.status %>"
+  <% else %>
+    data-status="<%= session.subject.status %>"
+  <% end %>
 <% end %>
 >
   <td><%= best_in_place session, :name, place_holder: 'Click here to Edit', class: 'name-field' %></td>
