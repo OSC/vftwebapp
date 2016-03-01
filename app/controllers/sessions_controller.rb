@@ -40,7 +40,7 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       if @session.save
-        format.html { redirect_to @session, notice: 'Session was successfully created.' }
+        format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully created.' }
         format.js   { render :show }
         format.json { render :show, status: :created, location: @session }
       else
