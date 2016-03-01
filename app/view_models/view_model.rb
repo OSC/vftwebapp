@@ -56,7 +56,7 @@ class ViewModel < SimpleDelegator
   end
 
   def row_bg
-    self.subject.failed? ? "" : "bg-warning"
+    self.subject.failed? ? "" : "success"
   end
 
   def self.for_session(session, view_context)
