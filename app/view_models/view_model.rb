@@ -6,6 +6,16 @@ class ViewModel < SimpleDelegator
     @view_context = view_context
   end
 
+  def hash
+    if subject.respond_to?(:starting?)
+      string = subject.starting? ? "Starting" : subject.status.to_s
+      string += subject.conn_view.password if subject.running? && !subject.starting?
+    else
+      string = subject.status.to_s
+    end
+    Digest::SHA1.hexdigest(string)
+  end
+
   def to_partial_path
     "shared/#{self.class.name.underscore}"
   end
