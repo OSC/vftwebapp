@@ -1,10 +1,19 @@
 ---
-name: Vftsim
+name: VFT Sim
 description: |-
-  Description should go here.
+    The VFT Sim app is a web interface for simulating the weld process
+    utilizing the Ohio Super Computer resources.
 
-  Format using **markdown**.
-documentation: |-
-  Links to documentation should go here, such as
+    Users of the VFT Sim app will be able to:
 
-  * `[Website](http://http://www.ansys.org/)`
+    - design weld passes on an uploaded mesh file in our interactive VFTSolid GUI
+    - run an analytical thermal analysis on these weld passes using CTSP
+    - follow it up with a structural analysis using WARP3D
+
+    Users can then visually analyze the:
+
+    - stresses
+    - displacements
+    - temperatures
+
+    using Paraview.
