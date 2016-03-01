@@ -30,7 +30,10 @@ class ThermalsController < ApplicationController
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Thermal has not been submitted.' }
         format.json { head :no_content }
       elsif @thermal.stop
+        set_thermal
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Thermal was successfully stopped.' }
+        format.js   { render 'sessions/show' }
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Thermal failed to be stopped: #{@thermal.errors.to_a}" }

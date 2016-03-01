@@ -30,7 +30,10 @@ class StructuralsController < ApplicationController
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Structural has not been submitted.' }
         format.json { head :no_content }
       elsif @structural.stop
+        set_structural
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Structural was successfully stopped.' }
+        format.js   { render 'sessions/show' }
         format.json { head :no_content }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Structural failed to be stopped: #{@structural.errors.to_a}" }
