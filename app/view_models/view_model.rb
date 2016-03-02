@@ -40,7 +40,7 @@ class ViewModel < SimpleDelegator
     current = ["vftsolid", "thermal", "structural", "results"].find_index(workflow_stage_name.downcase)+1
     class_name = "stage-#{workflow_stage_name.downcase}"
 
-    view_context.content_tag("div", view_context.content_tag("badge", current, class: "badge") + " " + workflow_stage_name, class: class_name)
+    view_context.content_tag("div", view_context.content_tag("badge", current, class: "badge") + " " + workflow_stage_name, class: class_name, title: staged_dir)
   end
 
   # the subject of the workflow stage is
