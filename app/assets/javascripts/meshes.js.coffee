@@ -73,3 +73,14 @@ jQuery ->
   # Change delete button icon to a spinner when user clicks confirm button
   $(document).on 'confirm:complete', '.destroy-model', (e, answer) ->
     $(this).find('i').attr('class', 'fa fa-spinner fa-spin') if answer
+
+  # Control behavior of Paraview popover
+  $(document).on {
+    'hidden.bs.popover': (e) ->
+      # destroy the popover if hidden (one time use anyways)
+      $(@).popover 'destroy'
+    'click': (e) ->
+      # make a spinner while we wait for popover to load
+      icon = $('<span class="spinner"><i class="fa fa-spinner fa-spin" /> </span>')
+      $(@).prepend icon
+  }, '.paraview-popover'

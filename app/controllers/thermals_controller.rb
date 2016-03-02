@@ -45,6 +45,10 @@ class ThermalsController < ApplicationController
   # PUT /thermals/1/paraview
   def paraview
     @conn = @thermal.submit_paraview
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   private

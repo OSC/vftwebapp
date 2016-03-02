@@ -3,4 +3,4 @@
 <%= session.msg if session.msg %>
 </p>
 
-<%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, class: 'btn btn-thermal-results btn-sm', target: "_blank" %>
+<%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, id: "thermal_paraview_#{session.id}", class: 'btn btn-thermal-results btn-sm paraview-popover', remote: true %>
