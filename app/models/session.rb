@@ -7,6 +7,9 @@ class Session < Workflow
   validates :name, presence: true, allow_blank: true
   validates :name, length: { maximum: 30 }
 
+  # Stage when session is first created
+  before_create :stage
+
   # This workflow has a single job, so set workflow pbsid to this value
   def pbsid
     jobs.first.pbsid
@@ -54,9 +57,11 @@ class Session < Workflow
 
   # Don't copy the template directory over
   def stage
-    staged_dir = OSC::Machete::JobDir.new(staging_target_dir).new_jobdir
-    staged_dir.mkpath
-    staged_dir
+    unless self.staged_dir
+      self.staged_dir = OSC::Machete::JobDir.new(staging_target_dir).new_jobdir
+      self.staged_dir.mkpath
+    end
+    self.staged_dir
   end
 
   # Copy the mesh upload over
