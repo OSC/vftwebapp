@@ -3,6 +3,7 @@
   elem_id = "#structural_paraview_<%= @session.id %>"
   elem = $(elem_id);
   content = "<%= j link_to 'Launch with AweSim Connect', @conn.render(:awesim).strip, class: 'btn btn-primary' %>";
-  elem.popover({placement: 'top', html: true, trigger: 'focus', content: content}).popover('show');
+  elem.removeClass('disabled');
+  elem.popover({placement: 'top', html: true, content: content}).popover('show');
   elem.find('.spinner').remove();
 })();
