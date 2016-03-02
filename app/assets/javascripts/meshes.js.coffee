@@ -5,7 +5,7 @@
 root = exports ? this
 
 # Default dropzone options for mesh file uploads
-root.dropzoneOpts =
+root.dropzoneMeshOpts =
   paramName: 'mesh[upload_attributes][file]'
   maxFiles: 1
   dictDefaultMessage: 'Drop your mesh here to upload'
@@ -43,7 +43,7 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   # Initialize dropzones with options
-  $('.dropzone').dropzone dropzoneOpts
+  $('.dropzone').dropzone dropzoneMeshOpts
 
   # best_in_place event handling
   $('.dataTable').on {
