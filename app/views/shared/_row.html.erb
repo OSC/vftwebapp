@@ -10,5 +10,6 @@
   <!-- <td><%# render session, :as => :session %></td> -->
   <td><%= render partial: session.to_partial_path, locals: { session: session } %></td>
   <td data-order="<%= session.id %>"><%= session.created_at.strftime("%m/%d/%y %I:%M %p") %></td>
+  <td><%= link_to icon('file-o', 'Files'), "awesim://sftp@#{session.staged_dir}/", class: 'btn btn-default btn-sm' %></td>
   <td><%= link_to icon('trash-o', 'Destroy'), session, method: :delete, class: 'btn btn-danger btn-sm destroy-model', data: { confirm: 'Are you sure? This is **irreversible**!' }, remote: true %></td>
 </tr>
