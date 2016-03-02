@@ -88,6 +88,7 @@ class SessionsController < ApplicationController
         format.json { head :no_content }
       elsif @session.submit
         set_session
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully submitted.' }
         format.js   { render :show }
         format.json { head :no_content }
@@ -108,6 +109,7 @@ class SessionsController < ApplicationController
         format.json { head :no_content }
       elsif @session.stop
         set_session
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), notice: 'Session was successfully stopped.' }
         format.js   { render :show }
         format.json { head :no_content }
@@ -137,7 +139,6 @@ class SessionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_session
       @session = Session.find(params[:id])
-      @session = ViewModel.for_session(@session, view_context)
       @mesh = @session.parent
     end
 
