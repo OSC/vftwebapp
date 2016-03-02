@@ -76,7 +76,7 @@ class Session < Workflow
     File.open(script, 'w') do |f|
       f.write "#PBS -N VFTSolid\n"
       f.write "#PBS -l nodes=1:ppn=1:ruby\n"
-      f.write "#PBS -l walltime=01:00:00\n"
+      f.write "#PBS -l walltime=04:00:00\n"
       f.write "#PBS -j oe\n"
       f.write "#PBS -S /bin/bash\n\n"
       f.write script_view.render
