@@ -9,7 +9,7 @@ class VftsolidStatusView < ViewModel
 
   def msg
     if starting?
-      "Starting..."
+      view_context.link_to view_context.icon('spinner', "Starting VFTSolid", class: 'fa-spin'), '#', class: 'btn btn-default btn-sm disabled'
     elsif queued?
       "Submitted VFTSolid..."
     elsif failed?
