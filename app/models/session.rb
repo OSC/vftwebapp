@@ -10,6 +10,16 @@ class Session < Workflow
   # Stage when session is first created
   before_create :stage
 
+  attr_accessor :resx, :resy
+
+  def resx
+    @resx ||= 1024
+  end
+
+  def resy
+    @resy ||= 768
+  end
+
   # This workflow has a single job, so set workflow pbsid to this value
   def pbsid
     jobs.first.pbsid
@@ -22,7 +32,7 @@ class Session < Workflow
       'ruby',
       xstartup: staging_template_dir.join('xstartup'),
       outdir: staged_dir,
-      geom: '1024x768'
+      geom: "#{resx}x#{resy}"
     )
   end
 

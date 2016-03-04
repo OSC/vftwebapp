@@ -139,6 +139,8 @@ class SessionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_session
       @session = Session.find(params[:id])
+      @session.resx = params[:resx] if params[:resx]
+      @session.resy = params[:resy] if params[:resy]
       @mesh = @session.parent
     end
 

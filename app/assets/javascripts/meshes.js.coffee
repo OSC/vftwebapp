@@ -86,3 +86,12 @@ jQuery ->
   # Destroy all Paraview popovers if user clicks anywhere
   $(document).on 'click', ->
     $('.paraview-popover').popover 'destroy'
+
+  # Set default resolution for VNC sessions
+  $('#indexTable').on {
+    'ajax:before': ->
+      href = $(this).attr 'href'
+      resx = window.screen.width * 0.8
+      resy = window.screen.height * 0.8
+      $(this).attr 'href', href + "?resx=" + resx + "&resy=" + resy
+  }, '.launch-vftsolid'
