@@ -7,3 +7,21 @@ Read $[FVWM_COMMON_DIR]/functions
 Read $[FVWM_COMMON_DIR]/bindings
 Read $[FVWM_COMMON_DIR]/menus
 Read $[FVWM_COMMON_DIR]/modules
+
+#------------------------------------------------------------------------------
+#--------- Taskbar's start menu
+#------------------------------------------------------------------------------
+
+DestroyMenu StartMenu
+AddToMenu   StartMenu
++ "&VFTSolid"   Exec exec $[XSTARTUP_DIR]/bin/launch_vftsolid.sh
+# + "&Terminal"   Exec exec gnome-terminal
+# + "&Htop"       Exec exec xterm -T Htop -n Htop -e htop
+# + "&Restart"    Restart
++ "Help &Guide" Module FvwmScript $[XSTARTUP_DIR]/fvwm/startup_dialog
++ ""            Nop
++ "&Logout"     Exec exec $[XSTARTUP_DIR]/bin/logout.sh
+
+
+AddToFunc InitFunction
++ I Module FvwmScript $[XSTARTUP_DIR]/fvwm/startup_dialog

@@ -9,6 +9,7 @@
 
 AddToFunc StartFunction
 + I Module FvwmTaskBar
++ I Module FvwmCommandS
 
 # The InitFunction is used at FVWM start
 
