@@ -16,6 +16,8 @@ class ThermalsController < ApplicationController
         format.json { head :no_content }
       else
         @errors = @thermal.errors
+        set_thermal
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Thermal failed to be submitted: #{@thermal.errors.to_a}" }
         format.js   { render 'sessions/error' }
         format.json { render json: @thermal.errors, status: :internal_server_error }
@@ -36,7 +38,11 @@ class ThermalsController < ApplicationController
         format.js   { render 'sessions/show' }
         format.json { head :no_content }
       else
+        @errors = @thermal.errors
+        set_thermal
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Thermal failed to be stopped: #{@thermal.errors.to_a}" }
+        format.js   { render 'sessions/error' }
         format.json { render json: @thermal.errors, status: :internal_server_error }
       end
     end

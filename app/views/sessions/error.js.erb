@@ -1,3 +1,4 @@
 (function() {
+  <%= render "shared/update_row", session: @session %>
   alert("<%= j @errors.to_a.join("\n") %>");
 })();
