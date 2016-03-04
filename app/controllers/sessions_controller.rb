@@ -126,7 +126,9 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       if @session.save
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to @session, notice: 'Session was successfully copied.' }
+        format.js   { render :show }
         format.json { render :show, status: :created, location: @session }
       else
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be copied: #{@session.errors.to_a}" }

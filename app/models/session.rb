@@ -94,6 +94,13 @@ class Session < Workflow
     job_list << OSC::Machete::Job.new(script: script, host: 'quick')
   end
 
+  def copy
+    new_session = Session.new parent: self.parent, name: "Copy of #{self.name}"
+    new_session.stage
+    FileUtils.cp_r "#{self.staged_dir}/.", new_session.staged_dir
+    new_session
+  end
+
   def ctsp_files_valid?
     files = %w(input.in node.in element.in param.in preWARP.txt time.out)
     if files.all? {|f| File.file? staged_dir.join(f)}
