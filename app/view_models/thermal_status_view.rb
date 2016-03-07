@@ -7,7 +7,7 @@ class ThermalStatusView < ViewModel
     if subject.active?
       "Submitted..."
     elsif subject.failed?
-      fail_msg
+      subject.fail_msg
     end
   end
 end

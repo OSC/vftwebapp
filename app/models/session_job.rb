@@ -14,6 +14,7 @@ class SessionJob < Job
     if update && status.running? && results_valid?
       update(status: OSC::Machete::Status.passed)
     elsif update
+      workflow.update(fail_msg: 'User killed VFTSolid session before it started')
       update(status: OSC::Machete::Status.failed)
     end
   end

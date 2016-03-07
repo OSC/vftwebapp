@@ -9,4 +9,9 @@ class Job < ActiveRecord::Base
       true
     end
   end
+
+  def stop(update: true)
+    workflow.update(fail_msg: 'User killed job') if update
+    super(update: update)
+  end
 end

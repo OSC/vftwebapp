@@ -13,7 +13,7 @@ class VftsolidStatusView < ViewModel
     elsif queued?
       "Submitted VFTSolid..."
     elsif failed?
-      fail_msg
+      subject.fail_msg
     end
   end
 end
