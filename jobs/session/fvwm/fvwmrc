@@ -15,6 +15,7 @@ Read $[FVWM_COMMON_DIR]/modules
 DestroyMenu StartMenu
 AddToMenu   StartMenu
 + "&VFTSolid"   Exec exec $[XSTARTUP_DIR]/bin/launch_vftsolid.sh
++ "&Terminal"   Exec exec gnome-terminal
 + ""            Nop
 + "&Logout"     Exec exec $[XSTARTUP_DIR]/bin/logout.sh
 
