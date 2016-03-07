@@ -13,7 +13,10 @@ class VftsolidStatusView < ViewModel
     elsif queued?
       "Submitted VFTSolid..."
     elsif failed?
-      subject.fail_msg
+      msg = view_context.content_tag :p do
+        subject.fail_msg
+      end
+      msg << view_context.link_to(view_context.icon('check-square-o', 'Re-Validate'), view_context.submit_session_path(self), method: :put, class: 'btn btn-default btn-sm launch-btn', remote: true)
     end
   end
 end

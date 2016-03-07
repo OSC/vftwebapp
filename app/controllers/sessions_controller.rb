@@ -88,7 +88,10 @@ class SessionsController < ApplicationController
   def submit
     respond_to do |format|
       if @session.submitted?
+        @session.jobs.each {|j| j.update_status!(force: true)}
+        @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Session has already been submitted.' }
+        format.js   { render :show }
         format.json { head :no_content }
       elsif @session.submit
         set_session
