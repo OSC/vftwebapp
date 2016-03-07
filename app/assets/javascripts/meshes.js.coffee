@@ -99,3 +99,12 @@ jQuery ->
       resy = window.screen.height * 0.8
       $(this).attr 'href', href + "?resx=" + resx + "&resy=" + resy
   }, '.launch-vftsolid'
+
+  # Control job submission behavior
+  $('#indexTable').on {
+    'click': ->
+      # make a spinner while we wait for job submission
+      icon = $('<span class="spinner"><i class="fa fa-spinner fa-spin" /> </span>')
+      $(@).prepend icon
+      $(@).addClass('disabled')
+  }, '.launch-btn'
