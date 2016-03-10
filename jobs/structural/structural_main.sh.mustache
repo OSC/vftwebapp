@@ -6,7 +6,7 @@
 #PBS -S /bin/bash
 
 # Global Settings
-WORKSPACE="${TMPDIR}"
+WORKSPACE="${PBS_O_WORKDIR}"
 STAGEDDIR="${PBS_O_WORKDIR}"
 LOGDIR="{{{log_root}}}"
 ERRORFILE="{{{error_file}}}"
