@@ -62,6 +62,8 @@ class ThermalsController < ApplicationController
     def set_thermal
       @thermal = Thermal.find(params[:id])
       @thermal.hours = params[:hours] if params[:hours]
+      @thermal.resx = params[:resx] if params[:resx]
+      @thermal.resy = params[:resy] if params[:resy]
 
       @session = @thermal.parent
       @mesh = @session.parent

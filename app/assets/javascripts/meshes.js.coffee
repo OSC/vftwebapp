@@ -98,7 +98,7 @@ jQuery ->
       resx = window.screen.width * 0.8
       resy = window.screen.height * 0.8
       $(this).attr 'href', href + "?resx=" + resx + "&resy=" + resy
-  }, '.launch-vftsolid'
+  }, '.launch-vftsolid,.paraview-popover'
 
   # Control job submission behavior
   $('#indexTable').on {

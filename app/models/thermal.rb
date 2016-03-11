@@ -5,6 +5,16 @@ class Thermal < Workflow
 
   attr_accessor :hours
 
+  attr_accessor :resx, :resy
+
+  def resx
+    @resx ||= 1024
+  end
+
+  def resy
+    @resy ||= 768
+  end
+
   def nodes
     processes = Dir[parent.staged_dir.join("CTSPsubd*")].length
     processes.zero? ? 1 : (processes - 1) / ppn + 1
@@ -45,7 +55,7 @@ class Thermal < Workflow
       subtype: :shared,
       xstartup: Rails.root.join("jobs", "paraview", "xstartup"),
       outdir: File.join(AwesimRails.dataroot, "paraview"),
-      geom: '1024x768'
+      geom: "#{resx}x#{resy}"
     )
     session = OSC::VNC::Session.new job, script
 

@@ -4,6 +4,17 @@ class Structural < Workflow
 
   attr_accessor :hours
 
+  attr_accessor :resx, :resy
+
+  def resx
+    @resx ||= 1024
+  end
+
+  def resy
+    @resy ||= 768
+  end
+
+
   def hours
     @hours ||= 1
   end
@@ -35,7 +46,7 @@ class Structural < Workflow
       subtype: :shared,
       xstartup: Rails.root.join("jobs", "paraview", "xstartup"),
       outdir: File.join(AwesimRails.dataroot, "paraview"),
-      geom: '1024x768'
+      geom: "#{resx}x#{resy}"
     )
     session = OSC::VNC::Session.new job, script
 

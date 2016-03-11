@@ -62,6 +62,8 @@ class StructuralsController < ApplicationController
     def set_structural
       @structural = Structural.find(params[:id])
       @structural.hours = params[:hours] if params[:hours]
+      @structural.resx = params[:resx] if params[:resx]
+      @structural.resy = params[:resy] if params[:resy]
 
       @thermal = @structural.parent
       @session = @thermal.parent
