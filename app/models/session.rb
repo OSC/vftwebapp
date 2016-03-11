@@ -99,7 +99,7 @@ class Session < Workflow
     new_session.stage
     FileUtils.cp_r "#{self.staged_dir}/.", new_session.staged_dir
     new_session.log_root.rmtree if new_session.log_root.exist?
-    new_session.error_root.rmtree if new_session.log_root.exist?
+    new_session.error_root.rmtree if new_session.error_root.exist?
     new_session
   end
 
