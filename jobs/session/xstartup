@@ -5,6 +5,20 @@ if [ -e $HOME/.Xresources ]; then
 fi
 xsetroot -solid grey
 
+# Set up temporary wine prefix but be careful it doesn't write any data in
+# WINEPREFIX
+# note: `wine` can detect symlinks, so we make symlinks of contents
+# this allows for separate `wineserver` processes (fixes resolution bug when
+# expanding VFTSolid GUI)
+DEFAULT_WINEPREFIX="${HOME}/.wine-vft"
+if [ -d "${DEFAULT_WINEPREFIX}" ]; then
+  export WINEPREFIX="${TMPDIR}"
+  ln -s "${DEFAULT_WINEPREFIX}/*" "${WINEPREFIX}/."
+else
+  export WINEPREFIX="${DEFAULT_WINEPREFIX}"
+fi
+
+# Start up FVWM which also starts up VFTSolid GUI
 export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 /usr/bin/fvwm -f ${XSTARTUP_DIR}/fvwm/fvwmrc &
 

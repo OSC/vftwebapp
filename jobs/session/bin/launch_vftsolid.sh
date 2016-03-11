@@ -9,4 +9,4 @@ module use /nfs/gpfs/PZS0645/local-ruby/emc2/share/modulefiles
 module load vft/i686
 
 cd ${VFT_HOME}
-WINEPREFIX=~/.wine-vft VFTHOME="Z:\\${PBS_O_WORKDIR}" MATDIR="${MATDIR}" wine Project2.exe
+VFTHOME="Z:\\${PBS_O_WORKDIR}" MATDIR="${MATDIR}" wine Project2.exe
