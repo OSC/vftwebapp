@@ -95,11 +95,11 @@ class Session < Workflow
   end
 
   def copy
-    new_session = Session.new parent: self.parent, name: "Copy of #{self.name}"
+    new_session = Session.new parent: self.parent, name: self.name
     new_session.stage
     FileUtils.cp_r "#{self.staged_dir}/.", new_session.staged_dir
-    new_session.log_root.rmtree
-    new_session.error_root.rmtree
+    new_session.log_root.rmtree if new_session.log_root.exist?
+    new_session.error_root.rmtree if new_session.log_root.exist?
     new_session
   end
 

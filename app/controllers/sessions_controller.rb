@@ -145,7 +145,7 @@ class SessionsController < ApplicationController
         format.json { render :show, status: :created, location: @session }
       else
         @errors = @session.errors
-        @session = ViewModel.for_session(@session, view_context)
+        @session = nil
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be copied: #{@session.errors.to_a}" }
         format.js   { render 'sessions/error' }
         format.json { render json: @session.errors, status: :unprocessable_entity }
