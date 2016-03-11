@@ -8,6 +8,6 @@ xsetroot -solid grey
 export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 /usr/bin/fvwm -f ${XSTARTUP_DIR}/fvwm/fvwmrc &
 
-sleep ${PBS_WALLTIME}
+sleep $((PBS_WALLTIME-300))
 
 vncserver -kill ${DISPLAY}
