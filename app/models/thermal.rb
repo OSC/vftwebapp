@@ -3,6 +3,11 @@ class Thermal < Workflow
   has_one :structural, foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Session"
 
+  # Set staged dir when first created
+  before_create do
+    self.staged_dir = parent.staged_dir
+  end
+
   attr_accessor :hours
 
   attr_accessor :resx, :resy
@@ -42,9 +47,8 @@ class Thermal < Workflow
 
   # Re-use staged dir from Session
   def stage
-    staged_dir = parent.staged_dir
-    FileUtils.cp_r staging_template_dir.to_s + "/.", staged_dir
-    staged_dir
+    FileUtils.cp_r staging_template_dir.to_s + "/.", self.staged_dir
+    self.staged_dir
   end
 
   def submit_paraview

@@ -5,9 +5,13 @@ class StructuralStatusView < ViewModel
 
   def msg
     if subject.active?
-      "Submitted..."
+      view_context.content_tag :p do
+        "Submitted..."
+      end
     elsif subject.failed?
-      subject.fail_msg
+      view_context.content_tag :p do
+        subject.fail_msg
+      end
     end
   end
 end

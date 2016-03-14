@@ -5,7 +5,13 @@ class ThermalsController < ApplicationController
   # PUT /thermals/1/submit.json
   def submit
     respond_to do |format|
-      if @thermal.submitted?
+      if params[:validate]
+        @thermal.jobs.create if @thermal.jobs.empty?
+        @thermal.jobs.each {|j| j.update(status: j.results_valid? ? OSC::Machete::Status.passed : OSC::Machete::Status.failed)}
+        set_thermal
+        @session = ViewModel.for_session(@session, view_context)
+        format.js   { render 'sessions/show' }
+      elsif @thermal.submitted?
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Thermal has already been submitted.' }
         format.json { head :no_content }
       elsif @thermal.submit

@@ -1,7 +1,10 @@
 <%# FIXME: put is wrong method %>
 <p>
-  <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, id: "thermal_paraview_#{session.id}", class: 'btn btn-thermal-results btn-sm paraview-popover', remote: true %>
+  <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, id: "thermal_paraview_#{session.id}", class: 'btn btn-thermal-results btn-sm paraview-popover btn-fixwidth', remote: true %>
 </p>
-<%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put', remote: true do |f| %>
-  <%= f.number_field :hours, value: 1, in: 1..96, class: 'hours-form', hide_label: true, prepend: 'Hours:', append: f.submit('Submit', class: 'btn btn-success launch-btn')%>
-<% end %>
+<p>
+  <%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put', remote: true do |f| %>
+    <%= f.number_field :hours, value: 1, in: 1..96, class: 'hours-form', hide_label: true, prepend: 'Hours:', append: f.submit('Submit', class: 'btn btn-success launch-btn')%>
+  <% end %>
+</p>
+<%= link_to icon('check-square-o', 'Force Validate'), submit_structural_path(session.thermal.structural, {validate: true}), method: :put, class: 'btn btn-default btn-sm launch-btn btn-fixwidth', remote: true %>

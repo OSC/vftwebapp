@@ -87,8 +87,13 @@ class SessionsController < ApplicationController
   # PUT /sessions/1/submit.json
   def submit
     respond_to do |format|
-      if @session.submitted?
-        @session.jobs.each {|j| j.update_status!(force: true)}
+      if params[:validate]
+        @session.jobs.create if @session.jobs.empty?
+        @session.jobs.each {|j| j.update(status: j.results_valid? ? OSC::Machete::Status.passed : OSC::Machete::Status.failed)}
+        set_session
+        @session = ViewModel.for_session(@session, view_context)
+        format.js   { render :show }
+      elsif @session.submitted?
         @session = ViewModel.for_session(@session, view_context)
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Session has already been submitted.' }
         format.js   { render :show }

@@ -5,7 +5,13 @@ class StructuralsController < ApplicationController
   # PUT /structurals/1/submit.json
   def submit
     respond_to do |format|
-      if @structural.submitted?
+      if params[:validate]
+        @structural.jobs.create if @structural.jobs.empty?
+        @structural.jobs.each {|j| j.update(status: j.results_valid? ? OSC::Machete::Status.passed : OSC::Machete::Status.failed)}
+        set_structural
+        @session = ViewModel.for_session(@session, view_context)
+        format.js   { render 'sessions/show' }
+      elsif @structural.submitted?
         format.html { redirect_to mesh_sessions_url(@mesh), alert: 'Structural has already been submitted.' }
         format.json { head :no_content }
       elsif @structural.submit
