@@ -55,7 +55,8 @@ class Structural < Workflow
         PBS::ATTR[:N] => "VFT-Structural-Paraview"
       },
       envvars: {
-        DATAFILE: staged_dir.join("wrp.exo")
+        DATAFILE: staged_dir.join("wrp.exo"),
+        IS_STRUCTURAL: true
       }
     )
 

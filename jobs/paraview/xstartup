@@ -14,6 +14,10 @@ module load virtualgl/2.3
 module use /nfs/gpfs/PZS0645/local-oakley/share/modulefiles
 module load paraview/4.4.0
 
-vglrun paraview --data=${DATAFILE}
+if [ -n "${IS_STRUCTURAL}" ]; then
+  PARAVIEW_SCRIPT="from paraview.simple import *; GetActiveSource().PointVariables = ['Displacement', 'Stress-xx', 'Stress-yy', 'Stress-zz', 'mises stress', 'Temperature']"
+fi
+
+vglrun paraview --data=${DATAFILE} --script=<(echo "${PARAVIEW_SCRIPT}")
 
 vncserver -kill ${DISPLAY}
