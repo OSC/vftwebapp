@@ -56,7 +56,8 @@ class Structural < Workflow
 
     session.submit(
       headers: {
-        PBS::ATTR[:N] => "VFT-Structural-Paraview"
+        PBS::ATTR[:N] => "VFT-Structural-Paraview",
+        PBS::ATTR[:A] => Etc.getgrgid(Process.gid).name
       },
       envvars: {
         DATAFILE: staged_dir.join("wrp.exo"),

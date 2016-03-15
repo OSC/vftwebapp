@@ -65,7 +65,8 @@ class Thermal < Workflow
 
     session.submit(
       headers: {
-        PBS::ATTR[:N] => "VFT-Thermal-Paraview"
+        PBS::ATTR[:N] => "VFT-Thermal-Paraview",
+        PBS::ATTR[:A] => Etc.getgrgid(Process.gid).name
       },
       envvars: {
         DATAFILE: staged_dir.join("ctsp.case")
