@@ -23,6 +23,14 @@ class Workflow < ActiveRecord::Base
     Pathname.new(super) if super
   end
 
+  def running?
+    jobs.first.status.running?
+  end
+
+  def queued?
+    jobs.first.status.queued?
+  end
+
   def log_root
     staged_dir.join "results", "logs"
   end

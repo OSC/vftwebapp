@@ -7,9 +7,13 @@ class Structural < Workflow
     self.staged_dir = parent.staged_dir
   end
 
-  attr_accessor :hours
+  after_initialize do
+    parse_warp3d_log_file if submitted? && running?
+  end
 
+  attr_accessor :hours
   attr_accessor :resx, :resy
+  attr_accessor :cur_profile, :num_profile
 
   def resx
     @resx ||= 1024
@@ -34,6 +38,28 @@ class Structural < Workflow
 
   def host
     "ruby"
+  end
+
+  def warp3d_log_file_name
+    "warp3d.log"
+  end
+
+  def warp3d_log_file
+    log_root.join warp3d_log_file_name
+  end
+
+  def parse_warp3d_log_file
+    FileUtils.touch warp3d_log_file
+    if File.file? warp3d_log_file
+      File.open(warp3d_log_file) do |f|
+        lines = f.grep(/last profile read/)
+        self.num_profile = lines.first.split.last.to_i unless lines.empty?
+      end
+      File.open(warp3d_log_file) do |f|
+        lines = f.grep(/new profile/)
+        self.cur_profile = lines.last.split[7].to_i unless lines.empty?
+      end
+    end
   end
 
   # Re-use staged dir from Thermal
@@ -74,6 +100,17 @@ class Structural < Workflow
       return true
     else
       update_attribute(:fail_msg, "Paraview input file was not generated")
+      return false
+    end
+  end
+
+  # Check if solution diverged
+  def soln_valid?
+    parse_warp3d_log_file
+    if cur_profile == num_profile
+      return true
+    else
+      update_attribute(:fail_msg, "WARP3D solution may have diverged")
       return false
     end
   end

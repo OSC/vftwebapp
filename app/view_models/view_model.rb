@@ -7,11 +7,16 @@ class ViewModel < SimpleDelegator
   end
 
   def hash
+    string = subject.status.to_s
     if subject.respond_to?(:starting?)
-      string = subject.starting? ? "Starting" : subject.status.to_s
+      string += subject.starting? ? "starting" : ""
       string += subject.conn_view.password if subject.running? && !subject.starting?
-    else
-      string = subject.status.to_s
+    end
+    if subject.respond_to?(:cur_profile)
+      string += subject.cur_profile.to_s if subject.running?
+    end
+    if subject.respond_to?(:num_profile)
+      string += subject.num_profile.to_s if subject.running?
     end
     Digest::SHA1.hexdigest(string)
   end
