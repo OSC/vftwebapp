@@ -68,21 +68,13 @@ trap "die 'Unexpected termination'" TERM
 # Create workspace in tmp directory
 init
 
-# Find first *.wrp file and use as input file
-FILES=( ${PATTERN} )
-INPUT="${FILES[0]}"
-if [[ "${INPUT}" == "${PATTERN}" ]]; then
-  die "Unable to find input file matching pattern (${PATTERN})"
-fi
-echo "Using input file: ${INPUT}"
-
 # Create common log file
 LOGFILE="${LOGDIR}/warp3d.log"
 > ${LOGFILE}
 
 # WARP3D execution
 echo "Running WARP3D"
-time warp3d.omp < "${INPUT}" &>> "${LOGFILE}"
+time warp3d.omp < "{{{warp3d_input_file_name}}}" &>> "${LOGFILE}"
 check_status $? warp3d.omp
 
 # Simple error checking
@@ -100,7 +92,7 @@ fi
 
 # Generate Paraview files
 # First find the flat file
-FLATFILE=$(awk -F\" '/output model flat/{getline; print $2".text"}' "${INPUT}")
+FLATFILE=$(awk -F\" '/output model flat/{getline; print $2".text"}' "{{{warp3d_input_file_name}}}")
 if [[ ! -f "${FLATFILE}" ]]; then
   die "Unable to find the flat file (${FLATFILE})"
 fi

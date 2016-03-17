@@ -40,32 +40,43 @@ class Structural < Workflow
     "ruby"
   end
 
-  def warp3d_log_file_name
-    "warp3d.log"
+  def warp3d_input_file_name
+    File.basename Dir.glob(staged_dir.join("*.wrp")).first
   end
 
-  def warp3d_log_file
-    log_root.join warp3d_log_file_name
+  def warp3d_name
+    File.basename(warp3d_input_file_name, ".wrp")
+  end
+
+  def warp3d_batch_messages
+    "#{warp3d_name}.batch_messages"
+  end
+
+  def warp3d_batch_messages_file
+    staged_dir.join warp3d_batch_messages
   end
 
   def parse_warp3d_log_file
-    FileUtils.touch warp3d_log_file
-    if File.file? warp3d_log_file
-      File.open(warp3d_log_file) do |f|
-        lines = f.grep(/last profile read/)
-        self.num_profile = lines.first.split.last.to_i unless lines.empty?
-      end
-      File.open(warp3d_log_file) do |f|
-        lines = f.grep(/new profile/)
-        self.cur_profile = lines.last.split[7].to_i unless lines.empty?
-      end
+    FileUtils.touch warp3d_batch_messages_file
+    File.open(warp3d_batch_messages_file) do |f|
+      lines = f.grep(/new profile/)
+      self.cur_profile = lines.last.split[7].to_i unless lines.empty?
     end
+
+    temp_file = staged_dir.join "warp_temp_2_files.txt"
+    self.num_profile = IO.readlines(temp_file).last.split[0].to_i
   end
 
   # Re-use staged dir from Thermal
   def stage
     FileUtils.cp_r staging_template_dir.to_s + "/.", self.staged_dir
     self.staged_dir
+  end
+
+  # Clear out *.batch_messages
+  def after_stage(staged_dir)
+    super(staged_dir)
+    warp3d_batch_messages_file.delete
   end
 
   def submit_paraview
