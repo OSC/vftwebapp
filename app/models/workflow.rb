@@ -24,11 +24,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def running?
-    jobs.first.status.running?
+    submitted? && jobs.first.status.running?
   end
 
   def queued?
-    jobs.first.status.queued?
+    submitted? && jobs.first.status.queued?
   end
 
   def log_root

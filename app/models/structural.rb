@@ -8,7 +8,7 @@ class Structural < Workflow
   end
 
   after_initialize do
-    parse_warp3d_log_file if submitted? && running?
+    parse_warp3d_log_file if running?
   end
 
   attr_accessor :hours
