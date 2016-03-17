@@ -76,7 +76,7 @@ class Structural < Workflow
   # Clear out *.batch_messages
   def after_stage(staged_dir)
     super(staged_dir)
-    warp3d_batch_messages_file.delete
+    warp3d_batch_messages_file.delete if warp3d_batch_messages_file.file?
   end
 
   def submit_paraview
