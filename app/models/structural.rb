@@ -57,7 +57,7 @@ class Structural < Workflow
   end
 
   def parse_warp3d_log_file
-    FileUtils.touch warp3d_batch_messages_file
+    FileUtils.touch staged_dir.join("update")
     File.open(warp3d_batch_messages_file) do |f|
       lines = f.grep(/new profile/)
       self.cur_profile = lines.last.split[7].to_i unless lines.empty?
