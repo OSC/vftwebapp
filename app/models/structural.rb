@@ -58,12 +58,21 @@ class Structural < Workflow
 
   def parse_warp3d_log_file
     return unless staged_dir.exist?
+
+    # sync nfs faster by updating empty file
     FileUtils.touch staged_dir.join("update")
-    File.open(warp3d_batch_messages_file) do |f|
-      lines = f.grep(/new profile/)
-      self.cur_profile = lines.last.split[7].to_i unless lines.empty?
+
+    # get current profile step
+    if warp3d_batch_messages_file.file?
+      File.open(warp3d_batch_messages_file) do |f|
+        lines = f.grep(/new profile/)
+        self.cur_profile = lines.last.split[7].to_i unless lines.empty?
+      end
+    else
+      self.cur_profile = 0
     end
 
+    # get total number of profile steps
     temp_file = staged_dir.join "warp_temp_2_files.txt"
     self.num_profile = IO.readlines(temp_file).last.split[0].to_i
   end
