@@ -92,7 +92,7 @@ fi
 
 # Generate Paraview files
 # First find the flat file
-FLATFILE=$(awk -F\" '/output model flat/{getline; print $2".text"}' "{{{warp3d_input_file_name}}}")
+FLATFILE="{{{warp3d_flat_file_name}}}"
 if [[ ! -f "${FLATFILE}" ]]; then
   die "Unable to find the flat file (${FLATFILE})"
 fi

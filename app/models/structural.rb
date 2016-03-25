@@ -48,12 +48,20 @@ class Structural < Workflow
     File.basename(warp3d_input_file_name, ".wrp")
   end
 
-  def warp3d_batch_messages
+  def warp3d_batch_messages_file_name
     "#{warp3d_name}.batch_messages"
   end
 
   def warp3d_batch_messages_file
-    staged_dir.join warp3d_batch_messages
+    staged_dir.join warp3d_batch_messages_file_name
+  end
+
+  def warp3d_flat_file_name
+    "#{warp3d_name}_flat.text"
+  end
+
+  def warp3d_flat_file
+    staged_dir.join warp3d_flat_file_name
   end
 
   def parse_warp3d_log_file
