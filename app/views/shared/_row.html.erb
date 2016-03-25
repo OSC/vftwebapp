@@ -15,7 +15,7 @@
   </td>
   <td>
     <p>
-      <%= link_to icon('copy', 'Copy'), copy_session_path(session), method: :put, class: 'btn btn-default btn-sm btn-utility', remote: true %>
+      <%= link_to icon('copy', 'Copy'), copy_session_path(session), method: :put, class: 'btn btn-default btn-sm btn-utility remote-spinner', remote: true %>
     </p>
     <%= link_to icon('file-o', 'Files'), "awesim://sftp@#{session.staged_dir}/", class: 'btn btn-default btn-sm btn-utility' %>
   </td>

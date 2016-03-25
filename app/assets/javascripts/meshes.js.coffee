@@ -57,19 +57,6 @@ jQuery ->
       alert 'Name ' + data.name
   }, '.best_in_place'
 
-  # Don't let users click multiple times the 'Add Mesh' link
-  $('#new_mesh,#new_session').on {
-    'ajax:beforeSend': ->
-      text = $(this).html()
-      $placeholder = $('<a href="#" id="new_model_placeholder">').html(text)
-      $placeholder.find('i').attr('class', 'fa fa-spinner fa-spin')
-      $(this).parent().append($placeholder)
-      $(this).hide()
-    'ajax:success': ->
-      $('#new_model_placeholder').remove()
-      $(this).show()
-  }
-
   # Change delete button icon to a spinner when user clicks confirm button
   $(document).on {
     'confirm:complete': (e, answer) ->
@@ -78,14 +65,24 @@ jQuery ->
         $(this).find('i').attr('class', 'fa fa-spinner fa-spin')
   }, '.destroy-model'
 
-  # Control behavior of Paraview popover
+  # Change button icons to a spinner when user clicks button & disable link
   $(document).on {
-    'click': (e) ->
-      # make a spinner while we wait for popover to load
-      icon = $('<span class="spinner"><i class="fa fa-spinner fa-spin" /> </span>')
-      $(@).prepend icon
-      $(@).addClass('disabled')
-  }, '.paraview-popover'
+    'click': ->
+      $link = $(this).clone()
+      $link.attr 'href', '#'
+      $link.removeAttr 'id'
+      $link.addClass('disabled')
+      $icon = $link.find('i')
+      if $icon.length == 1
+        $icon.attr 'class', 'fa fa-spinner fa-spin'
+      else
+        $link.prepend $('<span><i class="fa fa-spinner fa-spin" /> </span>')
+      $(this).parent().append $link
+      $(this).hide()
+    'ajax:complete': ->
+      $(this).parent().find('a.disabled').remove()
+      $(this).show()
+  }, '.remote-spinner'
 
   # Destroy all Paraview popovers if user clicks anywhere
   $(document).on 'click', ->

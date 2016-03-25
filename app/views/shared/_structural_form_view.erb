@@ -1,6 +1,6 @@
 <%# FIXME: put is wrong method %>
 <p>
-  <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, id: "thermal_paraview_#{session.id}", class: 'btn btn-thermal-results btn-sm paraview-popover btn-fixwidth', remote: true %>
+  <%= link_to 'Open Thermal Paraview', paraview_thermal_path(session.thermal), method: :put, id: "thermal_paraview_#{session.id}", class: 'btn btn-thermal-results btn-sm remote-spinner paraview-popover btn-fixwidth', remote: true %>
 </p>
 <p>
   <%= bootstrap_form_tag url: submit_structural_path(session.thermal.structural), method: 'put', remote: true do |f| %>

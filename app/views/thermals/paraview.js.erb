@@ -1,9 +1,8 @@
 (function() {
-  var elem_id, elem, content;
+  var elem_id, $elem, content;
   elem_id = "#thermal_paraview_<%= @session.id %>"
-  elem = $(elem_id);
+  $elem = $(elem_id);
   content = "<%= j link_to 'Launch with AweSim Connect', @conn.render(:awesim).strip, class: 'btn btn-primary' %>";
-  elem.removeClass('disabled');
-  elem.popover({placement: 'top', html: true, content: content}).popover('show');
-  elem.find('.spinner').remove();
+  $elem.show();
+  $elem.popover({placement: 'top', html: true, content: content}).popover('show');
 })();
