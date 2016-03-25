@@ -12,6 +12,7 @@ Vftsim::Application.routes.draw do
         put 'submit'
         put 'stop'
         put 'copy'
+        put 'reset'
       end
     end
   end

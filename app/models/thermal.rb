@@ -51,6 +51,10 @@ class Thermal < Workflow
     self.staged_dir
   end
 
+  # Not responsible for deleting staged_dir
+  def delete_staging
+  end
+
   def submit_paraview
     job = PBS::Job.new(conn: PBS::Conn.batch('quick'))
     script = OSC::VNC::ScriptView.new(

@@ -95,6 +95,14 @@ class Session < Workflow
     new_session
   end
 
+  def reset
+    log_root.rmtree if log_root.exist?
+    error_root.rmtree if error_root.exist?
+    jobs.each(&:destroy)
+    thermal.destroy if thermal
+    self
+  end
+
   def ctsp_files_valid?
     files = %w(input.in node.in element.in param.in preWARP.txt time.out)
     if files.all? {|f| File.file? staged_dir.join(f)}

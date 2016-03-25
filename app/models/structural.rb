@@ -91,6 +91,10 @@ class Structural < Workflow
     self.staged_dir
   end
 
+  # Not responsible for deleting staged_dir
+  def delete_staging
+  end
+
   # Clear out *.batch_messages
   def after_stage(staged_dir)
     super(staged_dir)

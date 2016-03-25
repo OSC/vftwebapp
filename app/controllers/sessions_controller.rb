@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :set_session, only: [:show, :edit, :update, :destroy, :submit, :stop, :copy]
+  before_action :set_session, only: [:show, :edit, :update, :destroy, :submit, :stop, :copy, :reset]
   before_action :set_mesh, only: [:index, :new, :create]
 
   # GET /sessions
@@ -152,6 +152,25 @@ class SessionsController < ApplicationController
         @errors = @session.errors
         @session = nil
         format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be copied: #{@session.errors.to_a}" }
+        format.js   { render 'sessions/error' }
+        format.json { render json: @session.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /sessions/1/reset
+  def reset
+    respond_to do |format|
+      if @session.reset
+        set_session
+        @session = ViewModel.for_session(@session, view_context)
+        format.html { redirect_to @session, notice: 'Session was successfully reset.' }
+        format.js   { render :show }
+        format.json { render :show, status: :created, location: @session }
+      else
+        @errors = @session.errors
+        @session = nil
+        format.html { redirect_to mesh_sessions_url(@mesh), alert: "Session failed to be reset: #{@session.errors.to_a}" }
         format.js   { render 'sessions/error' }
         format.json { render json: @session.errors, status: :unprocessable_entity }
       end
