@@ -68,6 +68,9 @@ class Thermal < Workflow
     session = OSC::VNC::Session.new job, script
 
     session.submit(
+      resources: {
+        walltime: '08:00:00'
+      },
       headers: {
         PBS::ATTR[:N] => "VFT-Thermal-Paraview",
       },
