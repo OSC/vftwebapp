@@ -20,7 +20,7 @@ class VftsolidStatusView < ViewModel
       msg = view_context.content_tag :p do
         subject.fail_msg
       end
-      msg << view_context.link_to(view_context.icon('check-square-o', 'Re-Validate'), view_context.submit_session_path(self, {validate: true}), method: :put, class: 'btn btn-default btn-sm launch-btn btn-fixwidth', remote: true)
+      msg << view_context.link_to(view_context.icon('check-square-o', 'Check Again'), view_context.submit_session_path(self, {validate: true}), method: :put, class: 'btn btn-default btn-sm launch-btn btn-fixwidth', remote: true)
     end
   end
 end
