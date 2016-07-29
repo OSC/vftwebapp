@@ -1,0 +1,28 @@
+---
+name: VFT Sim
+description: |-
+    The VFT Sim app is a web interface for simulating the weld process
+    utilizing the Ohio Super Computer resources.
+
+    Users of the VFT Sim app will be able to:
+
+    - design weld passes on an uploaded mesh file in our interactive VFTSolid GUI
+    - run an analytical thermal analysis on these weld passes using CTSP
+    - follow it up with a structural analysis using WARP3D
+
+    Users can then visually analyze the:
+
+    - stresses
+    - displacements
+    - temperatures
+
+    using Paraview.
+documentation: |-
+    **Requirements**:
+
+    - Windows XP, 7, 8, 10
+    - [AweSim Connect](https://apps.awesim.org/assets/wiag/connect/latest/AweSimConnect.exe) v0.90+
+
+    **Resources**:
+
+    - [Documentation](/awesim_dev/shared_apps/awe0011/vftwebapp/docs/Home)
