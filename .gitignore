@@ -19,6 +19,7 @@
 # OOD App
 /data
 /public/.htaccess
+/public/assets
 /.env.local
 /wiki
 /vendor/bundle
