@@ -1,0 +1,52 @@
+<div class="row">
+  <%= form_for :mesh, html: {id: 'new_mesh'} do |f| %>
+    <div id="actions" class="col-md-7">
+      <button class="btn btn-success fileinput-button dz-clickable">
+        <%= icon('plus', 'Add meshes...') %>
+      </button>
+      <button class="btn btn-primary start">
+        <%= icon('upload', 'Start upload') %>
+      </button>
+      <button class="btn btn-warning cancel">
+        <%= icon('ban', 'Cancel upload') %>
+      </button>
+    </div>
+    <div class="col-md-5">
+      <!-- The global file processing state -->
+      <span class="fileupload-process">
+        <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+      </span>
+    </div>
+  <% end %>
+</div>
+
+<div id="previews">
+  <script id="mesh_dropzone_template" type="text/template">
+    <div class="row file-row">
+      <!-- This is used as the file preview template -->
+      <div class="col-xs-3">
+        <p class="name" data-dz-name></p>
+        <strong class="error text-danger dz-error-message" data-dz-errormessage></strong>
+      </div>
+      <div class="col-xs-4">
+        <p class="size" data-dz-size></p>
+        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+      </div>
+      <div class="col-xs-5">
+        <button class="btn btn-primary start">
+          <%= icon('upload', 'Upload') %>
+        </button>
+        <button data-dz-remove class="btn btn-warning cancel">
+          <%= icon('ban', 'Cancel') %>
+        </button>
+        <button data-dz-remove class="btn btn-danger delete">
+          <%= icon('trash-o', 'Remove') %>
+        </button>
+      </div>
+    </div>
+  </script>
+</div>

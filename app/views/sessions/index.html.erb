@@ -1,0 +1,10 @@
+<div class="page-header">
+  <h2>Listing Sessions</h2>
+</div>
+
+<%= render 'new' %>
+
+<br />
+
+<table id="sessions_table" class="table table-striped" data-ajax="<%= %({"url": "#{mesh_sessions_path @mesh, format: :json}", "dataSrc": "sessions"}) %>">
+</table>
