@@ -78,9 +78,9 @@ meshTable = $('#meshes_table').DataTable
       # type == set, display, filter, sort
       data: (row, type, val, meta) ->
         if type == 'display'
-          return """<a href="#{row.upload.link}" download>#{row.upload.name}</a>"""
+          """<a href="#{row.upload.link}" download>#{row.upload.name}</a>"""
         else
-          return row.upload.name
+          row.upload.name
     }
     {
       title: 'Sessions'
@@ -91,42 +91,42 @@ meshTable = $('#meshes_table').DataTable
       searchable: false
       data: (row, type, val, meta) ->
         if type == 'display'
-          return """
+          """
             <a class="btn btn-default" href="#{row.meta.sessions.link}">
               <i class="fa fa-folder-open-o"></i> Open Sessions...
             </a>
            """
         else
-          return row.meta.sessions.link
+          row.meta.sessions.link
     }
     {
       title: 'File Size'
       data: (row, type, val, meta) ->
         if type == 'display'
-          return numeral(row.upload.size).format('0 b')
+          numeral(row.upload.size).format('0 b')
         else
-          return row.upload.size
+          row.upload.size
     }
     {
       title: 'Created'
       data: (row, type, val, meta) ->
         if type == 'display' || type == 'filter'
-          return moment(row.created_at).format('lll')
+          moment(row.created_at).format('lll')
         else
-          return row.created_at
+          row.created_at
     }
     {
       orderable: false
       searchable: false
       data: (row, type, val, meta) ->
         if type == 'display'
-          return """
+          """
             <a class="btn btn-danger pull-right delete-mesh" href="#{row.link}" title="Delete #{row.upload.name}" data-remote="true" data-method="delete" data-confirm="Are you sure you want to delete this mesh? This will delete <strong>ALL</strong> sessions for this mesh and is <strong>irreversible</strong>!" rel="nofollow">
               <i class="fa fa-trash-o"></i> Delete
             </a>
           """
         else
-          return row.link
+          row.link
     }
   ]
 

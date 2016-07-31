@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   shallow do
     resources :meshes, :except => [:new, :edit] do
-      resources :sessions, :except => [:new, :edit]
+      resources :sessions, :except => [:new, :edit] do
+        member do
+          patch 'submit'
+        end
+      end
     end
   end
 

@@ -2,9 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+# Only run in Sessions index page
+return unless $('#new_session').length && $('#sessions_table').length
+
 #
 # Datatables
 #
+
 
 # Set up datatable
 sessTable = $('#sessions_table').DataTable
@@ -16,25 +21,107 @@ sessTable = $('#sessions_table').DataTable
       data: 'id'
     }
     {
+      title: 'State'
+      data: 'state'
+    }
+    {
+      title: 'Stage'
+      data: (row, type, val, meta) ->
+        if type == 'display'
+          """
+            <div class="session-stage-#{row.stage.step}">
+              <badge class="badge">#{row.stage.step}</badge> #{row.stage.name}
+            </div>
+          """
+        else if type == 'sort'
+          row.stage.step
+        else
+          row.stage.name
+    }
+    {
+      title: 'Status'
+      data: (row, type, val, meta) ->
+        if type == 'display'
+          if row.status.failed
+            label = 'danger'
+          else if row.status.complete
+            label = 'success'
+          else if row.status.not_submitted
+            label = 'default'
+          else
+            label = 'primary'
+          """
+            <h4 class="session-status">
+              <span class="status-label label label-#{label}">#{row.status.name}</span
+            </h4>
+           """
+        else
+          row.status
+    }
+    {
+      orderable: false
+      searchable: false
+      className: 'workflow-column'
+      data: (row, type, val, meta) ->
+        if row.status.active
+          'Active'
+        else if row.status.not_submitted
+          """
+            <a class="btn btn-success submit-session" href="#{row.links.submit}" data-remote="true" data-method="patch" rel="nofollow">
+              <i class="fa fa-play-circle"></i> Launch
+            </a>
+          """
+        else if row.status.failed
+          """
+            <div class="alert alert-danger">
+              <p>Please fix the errors below:</p>
+              <ul class="stage-errors">
+                #{("<li>#{msg}</li>" for msg in row.fails).join('')}
+              </ul>
+            </div>
+          """
+        else
+          'Other'
+    }
+    {
       title: 'Created'
       data: (row, type, val, meta) ->
         if type == 'display' || type == 'filter'
-          return moment(row.created_at).format('lll')
+          moment(row.created_at).format('lll')
         else
-          return row.created_at
+          row.created_at
+    }
+    {
+      title: "Results"
+      orderable: false
+      searchable: false
+      data: (row, type, val, meta) ->
+        """
+          Thermal Structural
+        """
+    }
+    {
+      orderable: false
+      searchable: false
+      data: (row, type, val, meta) ->
+        """
+          <a class="btn btn-default" href="awesim://sftp@#{row.staged_dir}/">
+            <i class="fa fa-file-o"></i> Files
+          </a>
+        """
     }
     {
       orderable: false
       searchable: false
       data: (row, type, val, meta) ->
         if type == 'display'
-          return """
-            <a class="btn btn-danger pull-right delete-session" href="#{row.link}" title="Delete #{row.id}" data-remote="true" data-method="delete" data-confirm="Are you sure you want to delete this session? This is <strong>irreversible</strong>!" rel="nofollow">
+          """
+            <a class="btn btn-danger pull-right delete-session" href="#{row.links.self}" title="Delete #{row.id}" data-remote="true" data-method="delete" data-confirm="Are you sure you want to delete this session? This is <strong>irreversible</strong>!" rel="nofollow">
               <i class="fa fa-trash-o"></i> Delete
             </a>
           """
         else
-          return row.link
+          row.links.self
     }
   ]
 

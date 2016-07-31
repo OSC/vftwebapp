@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :set_session, only: [:show, :edit, :update, :destroy]
+  before_action :update_jobs
 
   # GET /sessions
   # GET /sessions.json
@@ -16,6 +16,8 @@ class SessionsController < ApplicationController
   # GET /sessions/1
   # GET /sessions/1.json
   def show
+    @session = Session.find(params[:id])
+
     render json: @session
   end
 
@@ -33,7 +35,20 @@ class SessionsController < ApplicationController
 
   # PATCH/PUT /sessions/1.json
   def update
+    @session = Session.find(params[:id])
+
     if @session.update(session_params)
+      render json: @session, status: :ok, location: @session
+    else
+      render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH /sessions/1/submit.json
+  def submit
+    @session = Session.find(params[:id])
+
+    if @session.submit!
       render json: @session, status: :ok, location: @session
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
@@ -42,6 +57,8 @@ class SessionsController < ApplicationController
 
   # DELETE /sessions/1.json
   def destroy
+    @session = Session.find(params[:id])
+
     if @session.destroy
       head :no_content
     else
@@ -50,13 +67,13 @@ class SessionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_session
-      @session = Session.find(params[:id])
-    end
-
     # Only allow a trusted parameter "white list" through.
     def session_params
       params.require(:session).permit! if params[:session]
+    end
+
+    # Update the status of all the jobs
+    def update_jobs
+      SessionJob.all.to_a.each(&:update_status!)
     end
 end

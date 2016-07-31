@@ -4,7 +4,14 @@ class SessionJob < ActiveRecord::Base
   belongs_to :session
 
   # Determine if the results are valid
-  # def results_valid?
-  #   # CODE GOES HERE
-  # end
+  def results_valid?
+    session.finished!
+  end
+
+  # Destroy self if finished
+  def update_status!(force: false)
+    super(force: force)
+
+    destroy if status.completed?
+  end
 end
