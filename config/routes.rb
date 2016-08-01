@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   shallow do
     resources :meshes, :except => [:new, :edit] do
-      resources :sessions, :except => [:new, :edit] do
+      resources :sessions, :except => [:new] do
         member do
           patch 'submit'
+          patch 'validate'
+          patch 'stop'
+          patch 'back'
+          patch 'skip'
+          get 'thermal_paraview'
+          get 'structural_paraview'
         end
       end
     end

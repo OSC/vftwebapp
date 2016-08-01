@@ -74,19 +74,6 @@ meshTable = $('#meshes_table').DataTable
   order: [[ 4, 'desc' ]]
   columns: [
     {
-      title: 'File Name'
-      # type == set, display, filter, sort
-      data: (row, type, val, meta) ->
-        if type == 'display'
-          """<a href="#{row.upload.link}" download>#{row.upload.name}</a>"""
-        else
-          row.upload.name
-    }
-    {
-      title: 'Sessions'
-      data: 'meta.sessions.count'
-    }
-    {
       orderable: false
       searchable: false
       data: (row, type, val, meta) ->
@@ -98,6 +85,19 @@ meshTable = $('#meshes_table').DataTable
            """
         else
           row.meta.sessions.link
+    }
+    {
+      title: 'File Name'
+      # type == set, display, filter, sort
+      data: (row, type, val, meta) ->
+        if type == 'display'
+          """<a href="#{row.upload.link}" download>#{row.upload.name}</a>"""
+        else
+          row.upload.name
+    }
+    {
+      title: 'Sessions'
+      data: 'meta.sessions.count'
     }
     {
       title: 'File Size'

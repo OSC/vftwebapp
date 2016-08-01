@@ -3,6 +3,9 @@ class SessionJob < ActiveRecord::Base
 
   belongs_to :session
 
+  # Just to be extra safe
+  before_destroy { stop }
+
   # Determine if the results are valid
   def results_valid?
     session.finished!

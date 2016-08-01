@@ -13,5 +13,45 @@
 }
 
 .workflow-column {
-  min-width: 450px;
+  min-width: 400px;
+}
+
+.btn-fw-ctrls {
+  min-width: 70px;
+}
+
+.btn-fw-launch {
+  min-width: 140px;
+}
+
+.btn-fw-paraview {
+  min-width: 90px;
+}
+
+.skip-session {
+  @extend .btn-fw-ctrls;
+}
+
+.back-session {
+  @extend .btn-fw-ctrls;
+}
+
+.launch-session {
+  @extend .btn-fw-launch;
+}
+
+.stop-session {
+  @extend .btn-fw-launch;
+}
+
+.validate-session {
+  @extend .btn-fw-launch;
+}
+
+.submit-thermal-paraview {
+  @extend .btn-fw-paraview;
+}
+
+.submit-structural-paraview {
+  @extend .btn-fw-paraview;
 }

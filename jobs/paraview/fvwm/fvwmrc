@@ -1,0 +1,9 @@
+SetEnv FVWM_COMMON_DIR $[XSTARTUP_DIR]/fvwm/fvwm_common
+
+Read $[FVWM_COMMON_DIR]/decorations
+Read $[FVWM_COMMON_DIR]/globalfeel
+Read $[FVWM_COMMON_DIR]/startup
+Read $[FVWM_COMMON_DIR]/functions
+Read $[FVWM_COMMON_DIR]/bindings
+Read $[FVWM_COMMON_DIR]/menus
+Read $[FVWM_COMMON_DIR]/modules

@@ -1,0 +1,10 @@
+<p><strong>Resolution (W &times; H)</strong></p>
+<%= f.number_field :resx, hide_label: true, append: "px", min: 100 %>
+<%= f.number_field :resy, hide_label: true, append: "px", min: 100 %>
+
+<script type="text/javascript">
+(function() {
+  $('#session_resx').val(parseInt(window.screen.width * 0.8));
+  $('#session_resy').val(parseInt(window.screen.height * 0.8));
+})();
+</script>
