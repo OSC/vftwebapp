@@ -7,13 +7,6 @@ GIT
       rails (~> 4.0)
       redcarpet (~> 3.3)
 
-PATH
-  remote: /users/appl/jnicklas/Development/osc-vnc
-  specs:
-    osc-vnc (1.0.9)
-      mustache (~> 1.0)
-      pbs (~> 1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -116,6 +109,9 @@ GEM
     osc-machete (1.1.3)
       mustache
       pbs (~> 1.1)
+    osc-vnc (1.0.10)
+      mustache (~> 1.0)
+      pbs (~> 1.0)
     osc_machete_rails (1.2.1)
       osc-machete (~> 1.0)
       rails (~> 4.0)
@@ -216,7 +212,7 @@ DEPENDENCIES
   font-awesome-sass (~> 4.6)
   jquery-rails
   osc-machete (~> 1.1)
-  osc-vnc!
+  osc-vnc (~> 1.0)
   osc_machete_rails (~> 1.2)
   paperclip (~> 4.3)
   rails (= 4.2.7)
