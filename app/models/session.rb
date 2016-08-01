@@ -78,6 +78,9 @@ class Session < ActiveRecord::Base
       transitions from: :vftsolid,   to: :thermal,    guard: :vftsolid_valid?
       transitions from: :thermal,    to: :structural, guard: :thermal_valid?
       transitions from: :structural, to: :complete,   guard: :structural_valid?
+      transitions from: :vftsolid,   to: :vftsolid_failed
+      transitions from: :thermal,    to: :thermal_failed
+      transitions from: :structural, to: :structural_failed
     end
   end
 
@@ -329,7 +332,7 @@ class Session < ActiveRecord::Base
 
   # Whether we can display thermal paraview
   def thermal_paraview?
-    ctsp_paraview_generated?
+    ctsp_paraview_generated?(false)
   end
 
   # Generate Thermal Paraview awesim connect link
@@ -349,7 +352,7 @@ class Session < ActiveRecord::Base
 
   # Whether we can display structural paraview
   def structural_paraview?
-    warp3d_paraview_generated?
+    warp3d_paraview_generated?(false)
   end
 
   # Generate Structural Paraview awesim connect link
@@ -529,10 +532,10 @@ class Session < ActiveRecord::Base
     end
 
     # Check that paraview inputs were generated
-    def ctsp_paraview_generated?
+    def ctsp_paraview_generated?(update_fails = true)
       files = %w(ctsp.case ctsp.geom ctsp.mtemp ctsp.mtemp_wp)
       unless files.all? {|f| File.file? staged_dir.join(f)}
-        update_attribute(:fails, fails + ["Paraview input files were not generated"])
+        update_fails && update_attribute(:fails, fails + ["Paraview input files were not generated"])
         return false
       end
       true
@@ -592,10 +595,10 @@ class Session < ActiveRecord::Base
     end
 
     # Chack if paraview input files were generated
-    def warp3d_paraview_generated?
+    def warp3d_paraview_generated?(update_fails = true)
       files = %w(wrp.exo)
       unless files.all? {|f| File.file? staged_dir.join(f)}
-        update_attribute(:fails, fails + ["Paraview input file 'wrp.exo' was not generated"])
+        update_fails && update_attribute(:fails, fails + ["Paraview input file 'wrp.exo' was not generated"])
         return false
       end
       true
