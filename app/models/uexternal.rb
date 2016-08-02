@@ -62,7 +62,7 @@ class Uexternal
 
   # Parse the file
   def parse
-    contents = File.read(file.to_s).scan(/^[^!].+/).map(&:strip)
+    contents = File.read(file.to_s).scan(/^[^!].*/).map(&:strip)
 
     # Read backwards since it is simplest
     @n3 = contents[-1]
