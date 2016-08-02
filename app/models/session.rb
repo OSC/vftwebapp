@@ -50,6 +50,8 @@ class Session < ActiveRecord::Base
 
     event :stop, guards: [:stop_job] do
       transitions from: :vftsolid_active,   to: :thermal,           guard: :vftsolid_valid?
+      transitions from: :thermal_active,    to: :structural,        guard: :thermal_valid?
+      transitions from: :structural_active, to: :complete,          guard: :structural_valid?
       transitions from: :vftsolid_active,   to: :vftsolid_failed
       transitions from: :thermal_active,    to: :thermal_failed
       transitions from: :structural_active, to: :structural_failed
