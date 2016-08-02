@@ -1,0 +1,41 @@
+// Load bootstrap & font-awesome sprockets first
+@import "bootstrap-sprockets";
+@import "font-awesome-sprockets";
+
+// Override bootstrap variables with OOD app kit variables
+// @import "ood_appkit/bootstrap-overrides";
+@import "awesim/bootstrap-overrides";
+
+// Load up bootstrap & font-awesome style sheets
+@import "bootstrap";
+@import "font-awesome";
+
+// Use OOD app kit styles
+// @import "ood_appkit";
+@import "awesim/banner";
+@import "awesim/awesim-navbar";
+@import "awesim/markdown";
+
+// Your custom css styles below (must be manually added)
+
+// add header image for awesim logo
+body {
+  @extend .awesim-banner-background-img;
+}
+
+// disable links
+a[disabled] {
+  pointer-events: none;
+}
+
+// load up datatables bootstrap styles
+@import "datatables.net-bs/css/dataTables.bootstrap";
+
+// load up dropzone styles
+@import "dropzone/dist/dropzone";
+
+// load in mesh specific styles
+@import "meshes";
+
+// load in session specific styles
+@import "sessions";

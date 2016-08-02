@@ -1,0 +1,57 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.session-status {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  > span {
+    display: block;
+    width: 120px;
+  }
+}
+
+.workflow-column {
+  min-width: 400px;
+}
+
+.btn-fw-ctrls {
+  min-width: 70px;
+}
+
+.btn-fw-launch {
+  min-width: 140px;
+}
+
+.btn-fw-paraview {
+  min-width: 90px;
+}
+
+.skip-session {
+  @extend .btn-fw-ctrls;
+}
+
+.back-session {
+  @extend .btn-fw-ctrls;
+}
+
+.launch-session {
+  @extend .btn-fw-launch;
+}
+
+.stop-session {
+  @extend .btn-fw-launch;
+}
+
+.validate-session {
+  @extend .btn-fw-launch;
+}
+
+.submit-thermal-paraview {
+  @extend .btn-fw-paraview;
+}
+
+.submit-structural-paraview {
+  @extend .btn-fw-paraview;
+}

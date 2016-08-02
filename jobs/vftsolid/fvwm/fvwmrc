@@ -1,0 +1,24 @@
+SetEnv FVWM_COMMON_DIR $[XSTARTUP_DIR]/fvwm/fvwm_common
+
+Read $[FVWM_COMMON_DIR]/decorations
+Read $[FVWM_COMMON_DIR]/globalfeel
+Read $[FVWM_COMMON_DIR]/startup
+Read $[FVWM_COMMON_DIR]/functions
+Read $[FVWM_COMMON_DIR]/bindings
+Read $[FVWM_COMMON_DIR]/menus
+Read $[FVWM_COMMON_DIR]/modules
+
+#------------------------------------------------------------------------------
+#--------- Taskbar's start menu
+#------------------------------------------------------------------------------
+
+DestroyMenu StartMenu
+AddToMenu   StartMenu
++ "&VFTSolid"   Exec exec $[XSTARTUP_DIR]/bin/launch_vftsolid.sh
+# + "&Terminal"   Exec exec gnome-terminal
++ ""            Nop
++ "&Logout"     Exec exec $[XSTARTUP_DIR]/bin/logout.sh
+
+
+AddToFunc InitFunction
++ I Exec exec $[XSTARTUP_DIR]/bin/launch_vftsolid.sh

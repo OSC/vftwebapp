@@ -1,0 +1,13 @@
+<div class="page-header">
+  <h2>Listing Sessions</h2>
+</div>
+
+<%= render 'new' %>
+
+<br />
+
+<table id="sessions_table" class="table table-striped table-hover" data-url="<%= mesh_sessions_path @mesh, format: :json %>">
+</table>
+
+<div class="modal fade" id="session_submit_modal" tabindex="-1" role="dialog" aria-labelledby="session_edit_label">
+</div><!-- /.modal -->

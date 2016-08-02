@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ -e $HOME/.Xresources ]; then
+  xrdb $HOME/.Xresources
+fi
+xsetroot -solid grey
+
+export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+/usr/bin/fvwm -f ${XSTARTUP_DIR}/fvwm/fvwmrc &
+
+. /etc/profile.d/lmod.sh
+module load virtualgl/2.3
+
+module use /nfs/gpfs/PZS0645/local-oakley/share/modulefiles
+module load paraview/4.4.0
+
+if [ -n "${IS_STRUCTURAL}" ]; then
+  PARAVIEW_SCRIPT="from paraview.simple import *; GetActiveSource().ElementVariables = ['temperat - Current temperature']; GetActiveSource().PointVariables = ['Displacement', 'Stress-xx', 'Stress-yy', 'Stress-zz', 'mises stress', 'Temperature']"
+fi
+
+vglrun paraview --data=${DATAFILE} --script=<(echo "${PARAVIEW_SCRIPT}")
+
+vncserver -kill ${DISPLAY}

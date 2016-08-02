@@ -1,0 +1,10 @@
+<div class="page-header">
+  <h2>Listing Meshes</h2>
+</div>
+
+<%= render 'new' %>
+
+<br />
+
+<table id="meshes_table" class="table table-striped" data-ajax="<%= %({"url": "#{meshes_path format: :json}", "dataSrc": "meshes"}) %>">
+</table>

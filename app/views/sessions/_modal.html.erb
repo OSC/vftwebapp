@@ -1,0 +1,24 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Submit <%= session.id %></h4>
+    </div><!-- /.modal-header -->
+    <%= bootstrap_form_for session, url: submit_session_path(session), remote: true do |f| %>
+      <div class="modal-body">
+        <% if session.vftsolid? %>
+          <%= render "modal_vftsolid", session: session, f: f %>
+        <% elsif session.thermal? %>
+          <%= render "modal_thermal", session: session, f: f %>
+        <% elsif session.structural? %>
+          <%= render "modal_structural", session: session, f: f %>
+        <% else %>
+          This is a bad state. You should not be here.
+        <% end %>
+      </div><!-- /.modal-body -->
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <%= f.submit 'Submit', class: 'btn btn-success submit-session' %>
+      </div><!-- /.modal-footer -->
+    <% end %>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
