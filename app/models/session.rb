@@ -613,6 +613,16 @@ class Session < ActiveRecord::Base
       structural_error_file.delete if File.file?(structural_error_file)
       warp3d_batch_messages_file.delete if File.file?(warp3d_batch_messages_file)
 
+      # add proper headers to material files
+      uexternal.materials.each_with_index do |file, idx|
+        file_path = staged_dir.join file
+        lines = File.readlines(file_path)
+        lines[0] = "#{idx + 1}\n"
+        File.open(file_path, 'w') do |f|
+          f.puts(lines)
+        end
+      end
+
       # build job
       job = OSC::Machete::Job.new(script: staged_dir.join('structural_main.sh'), host: 'ruby')
 
