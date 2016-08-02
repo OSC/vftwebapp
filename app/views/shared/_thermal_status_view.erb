@@ -1,2 +1,0 @@
-<%= session.msg if session.msg %>
-<%= link_to 'Stop', stop_thermal_path(session.thermal), method: :put, class: 'btn btn-danger btn-sm btn-fixwidth', data: { confirm: 'Are you sure?' }, remote: true if session.subject.active? %>

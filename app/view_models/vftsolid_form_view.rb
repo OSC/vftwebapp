@@ -1,2 +1,0 @@
-class VftsolidFormView < ViewModel
-end
