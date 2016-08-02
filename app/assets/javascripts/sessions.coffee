@@ -164,9 +164,14 @@ sessTable = $('#sessions_table').DataTable
           msg = '<div class="alert alert-info">'
           if row.stage.step == 1 && row.links.conn
             msg += """
-              <a href="#{row.links.conn}" class="btn btn-default">
-                <i class="fa fa-desktop"></i> Open VFTSolid
-              </a>
+              <p>
+                <a href="#{row.links.conn}" class="btn btn-default">
+                  <i class="fa fa-desktop"></i> Open VFTSolid
+                </a>
+              </p>
+              <p>
+                When you are done exporting CTSP, WARP3D, and VFTr files, feel free to click the "Stop" button to carry on.
+              </p>
             """
           else if row.status.percent
             msg += """
