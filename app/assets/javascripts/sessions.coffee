@@ -357,14 +357,10 @@ $(document).on {
 }, '.delete-session'
 
 
-# Session submit button
+# Session submit form
 $(document).on {
-  'click': ->
-    $(@).attr 'disabled', 'disabled'
-    $(@).parents('form').submit()
-}, '.submit-session:not([disabled])'
-
-$(document).on {
+  'submit': ->
+    $(@).find('.submit-session').attr 'disabled', 'disabled'
   'ajax:success': (e, data, status, xhr) ->
     $('#session_submit_modal').modal('hide')
     sessTable.row( $('#' + data.session.id) ).data(data.session).draw()
