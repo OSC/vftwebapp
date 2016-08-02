@@ -473,7 +473,7 @@ class Session < ActiveRecord::Base
     def vftsolid_exported_warp3d_constraints?
       wrp_files.each do |name, file|
         unless File.file?(staged_dir.join("#{name}.constraints"))
-          update_attribute(:fails, fails + ["WARP3D constraints file was not exported for #{file.basename}"])
+          update_attribute(:fails, fails + ["WARP3D constraints file was not exported for #{file.basename} (please add it and click \"Try again\")"])
           return false
         end
       end
