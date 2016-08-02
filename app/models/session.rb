@@ -216,7 +216,7 @@ class Session < ActiveRecord::Base
   # Number of nodes used in thermal calculation
   def thermal_nodes
     processes = Dir[staged_dir.join("CTSPsubd*")].length
-    processes.zero? ? 1 : (processes - 1) / ppn + 1
+    processes.zero? ? 1 : (processes - 1) / thermal_ppn + 1
   end
 
   # Procs per node used in thermal calculation
