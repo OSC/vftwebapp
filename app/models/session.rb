@@ -5,7 +5,6 @@ class Session < ActiveRecord::Base
   has_one :session_job, dependent: :destroy
 
   store :data, accessors: [ :fails ], coder: JSON
-  store :vftsolid_data, accessors: [ :resx, :resy ], coder: JSON
   store :thermal_data, accessors: [ :thermal_walltime ], coder: JSON
   store :structural_data, accessors: [ :structural_walltime ], coder: JSON
 
@@ -114,14 +113,28 @@ class Session < ActiveRecord::Base
     vftsolid_failed.thermal_failed.structural_failed
   end
 
+  # Uexternal model object
+  def uexternal
+    @uexternal ||= Uexternal.new(file: uexternal_file).parse
+  end
+
+  def uexternal_attributes=(attributes)
+    attributes.each do |k, v|
+      uexternal.send("#{k}=", v)
+    end
+    uexternal.write
+  end
+
   # Resolution used for VFTSolid desktop
   def resx
-    super || 1024
+    @resx || 1024
   end
 
   def resy
-    super || 768
+    @resy || 768
   end
+
+  attr_writer :resx, :resy
 
   # Provide getter/setter for staged_dir
   def staged_dir
@@ -261,6 +274,49 @@ class Session < ActiveRecord::Base
   # Path to batch messages output by structural calculation
   def warp3d_batch_messages_file
     staged_dir.join warp3d_batch_messages_file_name
+  end
+
+  # Parse the WARP3D log file
+  def parse_warp3d_log_file
+    return unless staged_dir.exist?
+
+    # get current profile step
+    cur_profile = 0
+    if warp3d_batch_messages_file.file?
+      File.open(warp3d_batch_messages_file) do |f|
+        lines = f.grep(/new profile/)
+        cur_profile = lines.last.split[7].to_i unless lines.empty?
+      end
+    end
+
+    # get total number of profile steps
+    temp_file = staged_dir.join('warp_temp_2_files.txt')
+    num_profile = 1
+    if temp_file.file?
+      num_profile = IO.readlines(temp_file).last.split[0].to_i
+    end
+
+    return cur_profile, num_profile
+  end
+
+  #
+  # Uexternal helpers
+  #
+
+  # Name of the uexternal file
+  def uexternal_file_name
+    "uexternal_data_file.inp"
+  end
+
+  # Path to the uexternal file
+  def uexternal_file
+    staged_dir.join uexternal_file_name
+  end
+
+  # Read an array from the contents of the file
+  def read_uexternal_file
+    return nil unless uexternal_file.file?
+    @contents ||= File.read(uexternal_file.to_s).scan(/^[^!].+/).map(&:strip)
   end
 
   #
@@ -602,29 +658,6 @@ class Session < ActiveRecord::Base
         return false
       end
       true
-    end
-
-    # Parse the WARP3D log file
-    def parse_warp3d_log_file
-      return unless staged_dir.exist?
-
-      # get current profile step
-      cur_profile = 0
-      if warp3d_batch_messages_file.file?
-        File.open(warp3d_batch_messages_file) do |f|
-          lines = f.grep(/new profile/)
-          cur_profile = lines.last.split[7].to_i unless lines.empty?
-        end
-      end
-
-      # get total number of profile steps
-      temp_file = staged_dir.join('warp_temp_2_files.txt')
-      num_profile = 1
-      if temp_file.file?
-        num_profile = IO.readlines(temp_file).last.split[0].to_i
-      end
-
-      return cur_profile, num_profile
     end
 
     # Submit a machete job object to PBS

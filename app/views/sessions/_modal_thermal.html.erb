@@ -1,1 +1,1 @@
-<%= f.number_field :thermal_walltime, append: "hrs", in: 1..96 %>
+<%= f.number_field :thermal_walltime, label: "Walltime", append: "hrs", in: 1..96, help: "The time you believe it will take to solve for the thermal calculation. It is best to over-estimate this time. <strong>Must be between 1 - 96 hours.</strong>".html_safe %>

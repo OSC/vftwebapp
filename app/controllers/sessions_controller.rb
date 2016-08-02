@@ -120,7 +120,7 @@ class SessionsController < ApplicationController
   def thermal_paraview
     @session = Session.find(params[:id])
 
-    if @session.thermal_paraview? && link = @session.thermal_paraview
+    if @session.thermal_paraview? && @session.update(session_params) && link = @session.thermal_paraview
       render json: {link: link}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
@@ -131,7 +131,7 @@ class SessionsController < ApplicationController
   def structural_paraview
     @session = Session.find(params[:id])
 
-    if @session.structural_paraview? && link = @session.structural_paraview
+    if @session.structural_paraview? && @session.update(session_params) && link = @session.structural_paraview
       render json: {link: link}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity

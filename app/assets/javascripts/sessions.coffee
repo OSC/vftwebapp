@@ -523,7 +523,7 @@ $(document).on {
     href = $(@).attr 'href'
     resx = parseInt(window.screen.width  * 0.8)
     resy = parseInt(window.screen.height * 0.8)
-    $(@).attr 'href', "#{href}?resx=#{resx}&resy=#{resy}"
+    $(@).attr 'href', "#{href}?session[resx]=#{resx}&session[resy]=#{resy}"
   'ajax:success': (e, data, status, xhr) ->
     $(@).removeAttr 'disabled'
     $(@).popover(
