@@ -130,6 +130,11 @@ class Session < ActiveRecord::Base
     uexternal.write
   end
 
+  # List of warp input files
+  def wrp_files
+    Dir[staged_dir.join('*.wrp')].map {|f| Wrp.parse(f)}
+  end
+
   # Wrp file name
   def wrp_file_name
     super || wrp_files.first.file.basename
@@ -138,6 +143,32 @@ class Session < ActiveRecord::Base
   # Wrp model object
   def wrp
     Wrp.parse(staged_dir.join(wrp_file_name))
+  end
+
+  # Profile step to start from
+  def profile_step
+    restart_file ? restart_file.profile : 0
+  end
+
+  # Load step to start from
+  def load_step
+    restart_file ? restart_file.step : 0
+  end
+
+  # Restart profiles
+  def restart_files
+    Dir[staged_dir.join('save_at_completed_profile*.db')].map {|f| RestartFile.new(file: f)}.sort.reverse
+  end
+
+  # Restart file chosen by user
+  attr_reader :restart_file
+  def restart_file=(file)
+    @restart_file = RestartFile.new(file: file) unless file.empty?
+  end
+
+  # Restart file name
+  def restart_file_name
+    restart_file.file_name if restart_file
   end
 
   # Resolution used for VFTSolid desktop
@@ -288,6 +319,16 @@ class Session < ActiveRecord::Base
     staged_dir.join warp3d_batch_messages_file_name
   end
 
+  # Number of thermal profile steps
+  def total_profile_steps
+    temp_file = staged_dir.join("#{uexternal.thermal_profiles_root}.txt")
+    num_profile = 1
+    if temp_file.file?
+      num_profile = IO.readlines(temp_file).last.split[0].to_i
+    end
+    num_profile
+  end
+
   # Parse the WARP3D log file
   def parse_warp3d_log_file
     return unless staged_dir.exist?
@@ -300,15 +341,7 @@ class Session < ActiveRecord::Base
         cur_profile = lines.last.split[7].to_i unless lines.empty?
       end
     end
-
-    # get total number of profile steps
-    temp_file = staged_dir.join('warp_temp_2_files.txt')
-    num_profile = 1
-    if temp_file.file?
-      num_profile = IO.readlines(temp_file).last.split[0].to_i
-    end
-
-    return cur_profile, num_profile
+    cur_profile
   end
 
   #
@@ -439,7 +472,7 @@ class Session < ActiveRecord::Base
     end
   end
 
-  # private
+  private
     # Data root where all data is stored for each user
     def ood_dataroot
       Pathname.new ENV['OOD_DATAROOT']
@@ -637,7 +670,7 @@ class Session < ActiveRecord::Base
       update_attribute(:fails, [])
       [
         ctsp_created_warp3d_files?,
-        wrp_input_files_valid?
+        restart_file ? true : wrp_input_files_valid?
       ].all? {|b| b}
     end
 
@@ -668,9 +701,39 @@ class Session < ActiveRecord::Base
 
       # clean up any previous runs
       structural_error_file.delete if structural_error_file.file?
+      structural_log_file.delete if structural_log_file.file?
       warp3d_batch_messages_file.delete if warp3d_batch_messages_file.file? # used for progress bar
-      %w(wrp.exo).each do |f|
+      %w(wrp.exo).each do |f| # clean up paraview
         staged_dir.join(f).delete if staged_dir.join(f).file?
+      end
+      restart_files.each do |f| # clean up future restart files
+        f.file.delete if f.profile > profile_step
+      end
+      Dir[staged_dir.join('*_text*')].each do |f| # clean up future results
+        f = Pathname.new(f)
+        # wemXXXXX_text_umat, wndXXXXX_text, wnsXXXXX_text, wntXXXXX_text
+        /^w[en][mdst](\d+)_text(_umat)?$/.match(f.basename.to_s) do
+          results_step = $1.to_i  # only clean up results after restart step
+          f.delete if results_step > load_step
+        end
+      end
+
+      # write out compute cmds file with all profile steps we intend to run
+      cc_file = staged_dir.join( restart_file ? 'compute_commands_all_profiles.inp' : wrp.compute_cmds_file )
+      File.open(cc_file, 'w') do |f|
+        ((load_step + 1)..uexternal.max_profiles.to_i).each do |i|
+          f.write <<-EOF.gsub(/^ {12}/, '')
+             compute displacements loading weld_sim step #{i}
+               *input from 'vft_solution_cmds.inp'
+          EOF
+        end
+        f.write "stop\n"
+      end
+
+      # write out wrp file if we intend on restarting from a different profile step
+      if profile_step > 0
+        File.open(staged_dir.join('restart_wrp')) do |f|
+        end
       end
 
       # add proper headers to material files
@@ -711,7 +774,8 @@ class Session < ActiveRecord::Base
 
     # Check if WARP3D diverged
     def warp3d_soln_valid?
-      cur_profile, num_profile = parse_warp3d_log_file
+      cur_profile = parse_warp3d_log_file
+      num_profile = total_profile_steps
 
       unless cur_profile == num_profile
         update_attribute(:fails, fails + ["WARP3D solution may have diverged"])
@@ -753,10 +817,5 @@ class Session < ActiveRecord::Base
       errors[:base] << msg
       Rails.logger.error(msg)
       false
-    end
-
-    # List of warp input files
-    def wrp_files
-      Dir[staged_dir.join('*.wrp')].map {|f| Wrp.parse(f)}
     end
 end

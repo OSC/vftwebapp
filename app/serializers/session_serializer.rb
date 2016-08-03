@@ -40,7 +40,8 @@ class SessionSerializer < ActiveModel::Serializer
         end,
       percent:
         if object.structural_active?
-          step, total = object.parse_warp3d_log_file
+          step  = object.parse_warp3d_log_file
+          total = object.total_profile_steps
           step * 100 / total
         else
           nil

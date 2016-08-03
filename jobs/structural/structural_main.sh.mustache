@@ -74,7 +74,7 @@ LOGFILE="${LOGDIR}/warp3d.log"
 
 # WARP3D execution
 echo "Running WARP3D"
-time warp3d.omp < "{{{warp3d_input_file_name}}}" &>> "${LOGFILE}"
+time warp3d.omp < "{{#restart_file}}restart_wrp{{/restart_file}}{{^restart_file}}{{{warp3d_input_file_name}}}{{/restart_file}}" &>> "${LOGFILE}"
 check_status $? warp3d.omp
 
 # Simple error checking

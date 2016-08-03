@@ -54,7 +54,7 @@ class Wrp
 
   # Get file name of this wrp file
   def file_name
-    file.basename
+    file.basename.to_s
   end
 
   # Check whether input files specified in *.wrp file exist

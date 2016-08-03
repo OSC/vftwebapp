@@ -9,11 +9,21 @@
 <hr>
 
 <%= f.fields_for :uexternal do |u| %>
-  <%= u.number_field :max_profiles, label: 'Max steps', help: 'Stop analysis after this number of profile steps is completed.' %>
-  <%= u.number_field :restart_profiles, label: 'Restart steps', help: 'Number of profile steps between saving restart file.' %>
-  <%= u.number_field :output_profiles, label: 'Output steps', help: 'Number of profile steps between generation of output file.' %>
+  <% total_profile_steps = f.object.total_profile_steps %>
+  <%= u.number_field :max_profiles, label: 'Max total WARP3D load steps', help: 'Stop analysis after this number of total WARP3D load steps is completed.' %>
+  <%= u.number_field :restart_profiles, label: 'Restart thermal profile steps', in: 1..(total_profile_steps+1), help: 'Number of thermal profile steps between saving restart file.' %>
+  <%= u.number_field :output_profiles, label: 'Output thermal profile steps', in: 1..(total_profile_steps+1), help: 'Number of thermal profile steps between generation of output file.' %>
+  <p>
+    <strong>Total thermal profile steps</strong>: <%= total_profile_steps.to_s %>
+  </p>
   <hr>
-  <%= u.number_field :n1, help: 'Number of sequential profile steps overs which to use a larger number of WARP3D load steps.' %>
-  <%= u.number_field :n2, help: 'Number of the increased WARP3D load steps to use during the N1 profile steps period.' %>
-  <%= u.number_field :n3, help: 'Number of WARP3D load steps to use after the N1 profile steps period.' %>
+  <%= u.number_field :n1, help: 'Number of sequential thermal profile steps overs which to use a larger number of WARP3D load steps.' %>
+  <%= u.number_field :n2, help: 'Number of the increased WARP3D load steps for each thermal profile step to use during the first few <code>N1</code> thermal profile steps.'.html_safe %>
+  <%= u.number_field :n3, help: 'Number of WARP3D load steps for each thermal profile step to use <strong>after</strong> the <code>N1</code> thermal profile steps.'.html_safe %>
+<% end %>
+
+<% unless f.object.restart_files.empty? %>
+  <hr>
+
+  <%= f.select :restart_file, [['Start over...', nil]] + f.object.restart_files.map {|f| [f.profile, f.file]}, label: "Choose what profile step to restart from" %>
 <% end %>

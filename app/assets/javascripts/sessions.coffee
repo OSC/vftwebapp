@@ -103,9 +103,9 @@ sessTable = $('#sessions_table').DataTable
         else
           """
             <p>
-              <button class="btn btn-success launch-session disabled">
+              <a class="btn btn-success launch-session" href="#{row.links.edit}" data-remote="true" disabled="disabled">
                 <i class="fa fa-play-circle"></i> Launch
-              </button>
+              </a>
             </p>
             <div class="btn-group" role="group" aria-label="...">
               <a class="btn btn-default back-session" href="#{row.links.back}" data-remote="true" data-method="patch">
@@ -165,7 +165,7 @@ sessTable = $('#sessions_table').DataTable
           if row.stage.step == 1 && row.links.conn
             msg += """
               <p>
-                <a href="#{row.links.conn}" class="btn btn-default">
+                <a href="#{row.links.conn}" class="btn btn-default btn-block">
                   <i class="fa fa-desktop"></i> Open VFTSolid
                 </a>
               </p>
