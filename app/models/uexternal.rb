@@ -43,6 +43,39 @@ class Uexternal
   # steps per profile.  Then it starts again at the next heating or cooling
   # cycle.
 
+  # Parse the file
+  def self.parse(file)
+    file = Pathname.new(file)
+    contents = File.read(file.to_s).scan(/^[^!].*/).map(&:strip)
+
+    # Read backwards since it is simplest
+    n3 = contents[-1]
+    n1, n2 = contents[-2].split(',').map(&:strip)
+    output_commands_file = contents[-3]
+    restart_profiles, output_profiles = contents[-4].split(',').map(&:strip)
+    max_profiles = contents[-5]
+    thermal_profiles_root = contents[-6]
+    ved_file = contents[-7]
+
+    # Get materials
+    num_mats = contents[0].to_i
+    materials = contents[1, num_mats]
+
+    new(
+      file: file,
+      n1: n1,
+      n2: n2,
+      n3: n3,
+      output_commands_file: output_commands_file,
+      restart_profiles: restart_profiles,
+      output_profiles: output_profiles,
+      max_profiles: max_profiles,
+      thermal_profiles_root: thermal_profiles_root,
+      ved_file: ved_file,
+      materials: materials
+    )
+  end
+
   # Write this out to the uexternal file
   def write
     File.open(file, 'w') do |f|
@@ -60,23 +93,16 @@ class Uexternal
     end
   end
 
-  # Parse the file
-  def parse
-    contents = File.read(file.to_s).scan(/^[^!].*/).map(&:strip)
+  # Check that all the files listed in uexternal exist
+  def valid?(thermal: false)
+    root = file.dirname
 
-    # Read backwards since it is simplest
-    @n3 = contents[-1]
-    @n1, @n2 = contents[-2].split(',').map(&:strip)
-    @output_commands_file = contents[-3]
-    @restart_profiles, @output_profiles = contents[-4].split(',').map(&:strip)
-    @max_profiles = contents[-5]
-    @thermal_profiles_root = contents[-6]
-    @ved_file = contents[-7]
-
-    # Get materials
-    num_mats = contents[0].to_i
-    @materials = contents[1, num_mats]
-
-    self
+    root.join(output_commands_file).file? &&
+      root.join(ved_file).file? &&
+      materials.all? {|f| root.join(f).file?} &&
+      ( thermal ?
+        root.join("#{thermal_profiles_root}.txt").file? &&
+        root.join("#{thermal_profiles_root}.bin").file? : true
+      )
   end
 end

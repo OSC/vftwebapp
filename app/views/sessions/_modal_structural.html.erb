@@ -1,13 +1,19 @@
 <%= f.number_field :structural_walltime, label: "Walltime", append: "hrs", in: 1..96, help: "The time you believe it will take to solve for the structural calculation. It is best to over-estimate this time. <strong>Must be between 1 - 96 hours.</strong>".html_safe %>
 
+<% if f.object.wrp_files.length > 1 %>
+  <hr>
+
+  <%= f.select :wrp_file_name, f.object.wrp_files.map {|f| f.file.basename}, label: "Choose a <code>*.wrp</code> file to use".html_safe, help: "Note: If you restart from a restart file, then this WARP3D input file is irrelevant." %>
+<% end %>
+
 <hr>
 
 <%= f.fields_for :uexternal do |u| %>
-  <%= u.number_field :max_profiles, label: 'Max steps', help: 'Stop analysis after this number of steps is completed.' %>
-  <%= u.number_field :restart_profiles, label: 'Restart steps', help: 'Number of steps between saving restart file.' %>
-  <%= u.number_field :output_profiles, label: 'Output steps', help: 'Number of steps between generation of output file.' %>
+  <%= u.number_field :max_profiles, label: 'Max steps', help: 'Stop analysis after this number of profile steps is completed.' %>
+  <%= u.number_field :restart_profiles, label: 'Restart steps', help: 'Number of profile steps between saving restart file.' %>
+  <%= u.number_field :output_profiles, label: 'Output steps', help: 'Number of profile steps between generation of output file.' %>
   <hr>
-  <%= u.number_field :n1, help: 'Number of sequential steps overs which to use a larger number of WARP3D load steps.' %>
-  <%= u.number_field :n2, help: 'Number of the increased WARP3D load steps to use during the N1 period.' %>
-  <%= u.number_field :n3, help: 'Number of WARP3D load steps to use after the N1 period.' %>
+  <%= u.number_field :n1, help: 'Number of sequential profile steps overs which to use a larger number of WARP3D load steps.' %>
+  <%= u.number_field :n2, help: 'Number of the increased WARP3D load steps to use during the N1 profile steps period.' %>
+  <%= u.number_field :n3, help: 'Number of WARP3D load steps to use after the N1 profile steps period.' %>
 <% end %>

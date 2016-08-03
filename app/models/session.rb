@@ -6,7 +6,7 @@ class Session < ActiveRecord::Base
 
   store :data, accessors: [ :fails ], coder: JSON
   store :thermal_data, accessors: [ :thermal_walltime ], coder: JSON
-  store :structural_data, accessors: [ :structural_walltime ], coder: JSON
+  store :structural_data, accessors: [ :structural_walltime, :wrp_file_name ], coder: JSON
 
   enum state: {
     vftsolid: 0,
@@ -34,51 +34,54 @@ class Session < ActiveRecord::Base
     state :complete
 
     event :submit do
-      transitions from: :vftsolid,   to: :vftsolid_active,   guard: :submit_vftsolid
-      transitions from: :thermal,    to: :thermal_active,    guard: :submit_thermal
-      transitions from: :structural, to: :structural_active, guard: :submit_structural
+      transitions from: :vftsolid,   to: :vftsolid_failed,   unless: :vftsolid_submit_valid?
+      transitions from: :thermal,    to: :thermal_failed,    unless: :thermal_submit_valid?
+      transitions from: :structural, to: :structural_failed, unless: :structural_submit_valid?
+      transitions from: :vftsolid,   to: :vftsolid_active,   guard:  :submit_vftsolid
+      transitions from: :thermal,    to: :thermal_active,    guard:  :submit_thermal
+      transitions from: :structural, to: :structural_active, guard:  :submit_structural
     end
 
     event :finished do
-      transitions from: :vftsolid_active,   to: :thermal,           guard: :vftsolid_valid?
-      transitions from: :thermal_active,    to: :structural,        guard: :thermal_valid?
-      transitions from: :structural_active, to: :complete,          guard: :structural_valid?
+      transitions from: :vftsolid_active,   to: :thermal,           if: :vftsolid_valid?
+      transitions from: :thermal_active,    to: :structural,        if: :thermal_valid?
+      transitions from: :structural_active, to: :complete,          if: :structural_valid?
       transitions from: :vftsolid_active,   to: :vftsolid_failed
       transitions from: :thermal_active,    to: :thermal_failed
       transitions from: :structural_active, to: :structural_failed
     end
 
     event :stop, guards: [:stop_job] do
-      transitions from: :vftsolid_active,   to: :thermal,           guard: :vftsolid_valid?
-      transitions from: :thermal_active,    to: :structural,        guard: :thermal_valid?
-      transitions from: :structural_active, to: :complete,          guard: :structural_valid?
+      transitions from: :vftsolid_active,   to: :thermal,           if: :vftsolid_valid?
+      transitions from: :thermal_active,    to: :structural,        if: :thermal_valid?
+      transitions from: :structural_active, to: :complete,          if: :structural_valid?
       transitions from: :vftsolid_active,   to: :vftsolid_failed
       transitions from: :thermal_active,    to: :thermal_failed
       transitions from: :structural_active, to: :structural_failed
     end
 
     event :validate do
-      transitions from: :vftsolid_failed,   to: :thermal,           guard: :vftsolid_valid?
-      transitions from: :thermal_failed,    to: :structural,        guard: :thermal_valid?
-      transitions from: :structural_failed, to: :complete,          guard: :structural_valid?
+      transitions from: :vftsolid_failed,   to: :thermal,           if: :vftsolid_valid?
+      transitions from: :thermal_failed,    to: :structural,        if: :thermal_valid?
+      transitions from: :structural_failed, to: :complete,          if: :structural_valid?
       transitions from: :vftsolid_failed,   to: :vftsolid_failed
       transitions from: :thermal_failed,    to: :thermal_failed
       transitions from: :structural_failed, to: :structural_failed
     end
 
     event :back do
-      transitions from: :thermal,    to: :vftsolid
-      transitions from: :structural, to: :thermal
-      transitions from: :complete,   to: :structural
+      transitions from: :thermal,           to: :vftsolid
+      transitions from: :structural,        to: :thermal
+      transitions from: :complete,          to: :structural
       transitions from: :vftsolid_failed,   to: :vftsolid
       transitions from: :thermal_failed,    to: :thermal
       transitions from: :structural_failed, to: :structural
     end
 
     event :skip do
-      transitions from: :vftsolid,   to: :thermal,    guard: :vftsolid_valid?
-      transitions from: :thermal,    to: :structural, guard: :thermal_valid?
-      transitions from: :structural, to: :complete,   guard: :structural_valid?
+      transitions from: :vftsolid,   to: :thermal,           if: :vftsolid_valid?
+      transitions from: :thermal,    to: :structural,        if: :thermal_valid?
+      transitions from: :structural, to: :complete,          if: :structural_valid?
       transitions from: :vftsolid,   to: :vftsolid_failed
       transitions from: :thermal,    to: :thermal_failed
       transitions from: :structural, to: :structural_failed
@@ -117,7 +120,7 @@ class Session < ActiveRecord::Base
 
   # Uexternal model object
   def uexternal
-    @uexternal ||= Uexternal.new(file: uexternal_file).parse
+    @uexternal ||= Uexternal.parse(uexternal_file)
   end
 
   def uexternal_attributes=(attributes)
@@ -125,6 +128,16 @@ class Session < ActiveRecord::Base
       uexternal.send("#{k}=", v)
     end
     uexternal.write
+  end
+
+  # Wrp file name
+  def wrp_file_name
+    super || wrp_files.first.file.basename
+  end
+
+  # Wrp model object
+  def wrp
+    Wrp.parse(staged_dir.join(wrp_file_name))
   end
 
   # Resolution used for VFTSolid desktop
@@ -257,20 +270,17 @@ class Session < ActiveRecord::Base
 
   # Input *.wrp file for structural calculation
   def warp3d_input_file_name
-    name, file = wrp_files.first
-    file.basename.to_s
+    wrp.file.basename.to_s
   end
 
   # Flat file used for structural calculation
   def warp3d_flat_file_name
-    name, file = wrp_files.first
-    "#{name}_flat.text"
+    "#{wrp.flat_file}.text"
   end
 
   # Batch messages output by structural calculation
   def warp3d_batch_messages_file_name
-    name, file = wrp_files.first
-    "#{name}.batch_messages"
+    "#{wrp.name}.batch_messages"
   end
 
   # Path to batch messages output by structural calculation
@@ -429,7 +439,7 @@ class Session < ActiveRecord::Base
     end
   end
 
-  private
+  # private
     # Data root where all data is stored for each user
     def ood_dataroot
       Pathname.new ENV['OOD_DATAROOT']
@@ -453,6 +463,14 @@ class Session < ActiveRecord::Base
         outdir: staged_dir,
         geom: "#{resx}x#{resy}"
       )
+    end
+
+    # Check if vftsolid can be submitted
+    def vftsolid_submit_valid?
+      update_attribute(:fails, [])
+      [
+        true
+      ].all? {|b| b}
     end
 
     # Submit VFTSolid job
@@ -484,15 +502,14 @@ class Session < ActiveRecord::Base
       update_attribute(:fails, [])
       [
         vftsolid_exported_ctsp_files?,
-        vftsolid_exported_warp3d_files?,
-        vftsolid_exported_warp3d_constraints?
+        vftsolid_exported_warp3d_files?
       ].all? {|b| b}
     end
 
     # Check CTSP input files were exported
     def vftsolid_exported_ctsp_files?
       files = %w(input.in node.in element.in param.in preWARP.txt time.out)
-      unless files.all? {|f| File.file? staged_dir.join(f)}
+      unless files.all? {|f| staged_dir.join(f).file?}
         update_attribute(:fails, fails + ["CTSP files were not properly exported"])
         return false
       end
@@ -507,31 +524,22 @@ class Session < ActiveRecord::Base
         return false
       end
 
-      # For now only allow one *.wrp
-      if wrp_files.length > 1
-        update_attribute(:fails, fails + ["Only allows a single *.wrp file in directory (please rename or delete the other)"])
+      # Check that the uexternal file exists
+      unless uexternal_file.file?
+        update_attribute(:fails, fails + ["Missing \"uexternal_data_file.inp\""])
+        return false
+      end
+
+      # Check that uexternal is valid
+      unless uexternal.valid?
+        update_attribute(:fails, fails + ["Some files specified in \"uexternal_data_file.inp\" may be missing"])
         return false
       end
 
       # Check that each *.wrp has necessary files
-      wrp_files.each do |name, file|
-        files = %W(
-          #{name}.coordinates #{name}.incid VED.dat uexternal_data_file.inp
-          output_commands.inp compute_commands_all_profiles.inp
-        )
-        unless files.all? {|f| File.file? staged_dir.join(f)}
-          update_attribute(:fails, fails + ["WARP3D files were not properly exported for #{file.basename}"])
-          return false
-        end
-      end
-      true
-    end
-
-    # Check WARP3D constraints was exported
-    def vftsolid_exported_warp3d_constraints?
-      wrp_files.each do |name, file|
-        unless File.file?(staged_dir.join("#{name}.constraints"))
-          update_attribute(:fails, fails + ["WARP3D constraints file was not exported for #{file.basename} (please add it and click \"Try again\")"])
+      wrp_files.each do |wrp_file|
+        unless wrp_file.valid?
+          update_attribute(:fails, fails + ["WARP3D input files were not properly exported for \"#{wrp_file.file.basename}\""])
           return false
         end
       end
@@ -542,6 +550,14 @@ class Session < ActiveRecord::Base
     # Thermal helpers
     #
 
+    # Check if thermal can be submitted
+    def thermal_submit_valid?
+      update_attribute(:fails, [])
+      [
+        vftsolid_exported_ctsp_files?
+      ].all? {|b| b}
+    end
+
     # Submit thermal job
     def submit_thermal
       # render mustache files
@@ -551,7 +567,13 @@ class Session < ActiveRecord::Base
       # stage roots
       log_root.mkpath
       error_root.mkpath
-      thermal_error_file.delete if File.file?(thermal_error_file)
+
+      # clean up any previous runs
+      thermal_log_file.delete if thermal_log_file.file?
+      thermal_error_file.delete if thermal_error_file.file?
+      %w(warp_temp_2_files.txt warp_temp_2_files.bin ctsp.case ctsp.geom ctsp.mtemp ctsp.mtemp_wp).each do |f|
+        staged_dir.join(f).delete if staged_dir.join(f).file?
+      end
 
       # build job
       job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: 'ruby')
@@ -572,7 +594,7 @@ class Session < ActiveRecord::Base
 
     # Check if CTSP generated an error file
     def ctsp_generated_error_file?
-      if File.file? thermal_error_file
+      if thermal_error_file.file?
         update_attribute(:fails, fails + [File.read(thermal_error_file).strip])
         return false
       end
@@ -581,18 +603,25 @@ class Session < ActiveRecord::Base
 
     # Check WARP3D inputs were generated
     def ctsp_created_warp3d_files?
-      files = %w(warp_temp_2_files.bin warp_temp_2_files.txt)
-      unless files.all? {|f| File.file? staged_dir.join(f)}
-        update_attribute(:fails, fails + ["WARP3D input files were not generated"])
+      # Check that the uexternal file exists
+      unless uexternal_file.file?
+        update_attribute(:fails, fails + ["Missing \"uexternal_data_file.inp\""])
         return false
       end
+
+      # Check that uexternal is valid
+      unless uexternal.valid?(thermal: true)
+        update_attribute(:fails, fails + ["Files specified in \"uexternal_data_file.inp\" may be missing"])
+        return false
+      end
+
       true
     end
 
     # Check that paraview inputs were generated
     def ctsp_paraview_generated?(update_fails = true)
       files = %w(ctsp.case ctsp.geom ctsp.mtemp ctsp.mtemp_wp)
-      unless files.all? {|f| File.file? staged_dir.join(f)}
+      unless files.all? {|f| staged_dir.join(f).file?}
         update_fails && update_attribute(:fails, fails + ["Paraview input files were not generated"])
         return false
       end
@@ -603,6 +632,30 @@ class Session < ActiveRecord::Base
     # Structural helpers
     #
 
+    # Check if structural can be submitted
+    def structural_submit_valid?
+      update_attribute(:fails, [])
+      [
+        ctsp_created_warp3d_files?,
+        wrp_input_files_valid?
+      ].all? {|b| b}
+    end
+
+    # Check if warp3d input files are valid
+    def wrp_input_files_valid?
+      # Check that wrp is valid
+      unless wrp.valid?
+        update_attribute(:fails, fails + ["Files specified in \"#{wrp.file.basename}\" may be missing"])
+        return false
+      end
+      # Check that wrp constraints exists
+      unless wrp.valid_constraints?
+        update_attribute(:fails, fails + ["Missing constraints file \"#{wrp.constraints_file}\""])
+        return false
+      end
+      true
+    end
+
     # Submit structural job
     def submit_structural
       # render mustache files
@@ -612,8 +665,13 @@ class Session < ActiveRecord::Base
       # stage roots
       log_root.mkpath
       error_root.mkpath
-      structural_error_file.delete if File.file?(structural_error_file)
-      warp3d_batch_messages_file.delete if File.file?(warp3d_batch_messages_file)
+
+      # clean up any previous runs
+      structural_error_file.delete if structural_error_file.file?
+      warp3d_batch_messages_file.delete if warp3d_batch_messages_file.file? # used for progress bar
+      %w(wrp.exo).each do |f|
+        staged_dir.join(f).delete if staged_dir.join(f).file?
+      end
 
       # add proper headers to material files
       uexternal.materials.each_with_index do |file, idx|
@@ -644,7 +702,7 @@ class Session < ActiveRecord::Base
 
     # Check if WARP3D generated an error file
     def warp3d_generated_error_file?
-      if File.file? structural_error_file
+      if structural_error_file.file?
         update_attribute(:fails, fails + [File.read(structural_error_file).strip])
         return false
       end
@@ -665,7 +723,7 @@ class Session < ActiveRecord::Base
     # Chack if paraview input files were generated
     def warp3d_paraview_generated?(update_fails = true)
       files = %w(wrp.exo)
-      unless files.all? {|f| File.file? staged_dir.join(f)}
+      unless files.all? {|f| staged_dir.join(f).file?}
         update_fails && update_attribute(:fails, fails + ["Paraview input file 'wrp.exo' was not generated"])
         return false
       end
@@ -699,9 +757,6 @@ class Session < ActiveRecord::Base
 
     # List of warp input files
     def wrp_files
-      Dir[staged_dir.join('*.wrp')].each_with_object({}) do |f, h|
-        name = File.basename(f, '.*')
-        h[name.to_sym] = Pathname.new f
-      end
+      Dir[staged_dir.join('*.wrp')].map {|f| Wrp.parse(f)}
     end
 end
