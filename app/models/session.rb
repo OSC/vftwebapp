@@ -127,7 +127,6 @@ class Session < ActiveRecord::Base
     attributes.each do |k, v|
       uexternal.send("#{k}=", v)
     end
-    # uexternal.write
   end
 
   # List of warp input files

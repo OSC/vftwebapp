@@ -81,23 +81,6 @@ class Uexternal
     materials.length
   end
 
-  # Write this out to the uexternal file
-  def write
-    File.open(file, 'w') do |f|
-      f.write <<-EOF.gsub(/^ {8}/, '')
-        #{materials.length}
-        #{materials.join("\n")}
-        #{ved_file}
-        #{thermal_profiles_root}
-          #{max_profiles}
-          #{restart_profiles}, #{output_profiles}
-        #{output_commands_file}
-          #{n1}, #{n2}
-          #{n3}
-      EOF
-    end
-  end
-
   # Check that all the files listed in uexternal exist
   def valid?(thermal: false)
     root = file.dirname
