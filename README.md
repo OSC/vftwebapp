@@ -57,6 +57,7 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 9.  Compile assets:
 
     ```
+    bin/rake assets:clobber RAILS_ENV=production
     bin/rake assets:precompile RAILS_ENV=production
     bin/rake tmp:clear RAILS_ENV=production
     ```
