@@ -28,7 +28,7 @@ class Wrp
   # Parse the file
   def self.parse(file)
     file = Pathname.new file
-    contents = File.read(file.to_s).scan(/^[^c].*/).map(&:strip)
+    contents = File.read(file.to_s).scan(/^[^c].*/).map(&:strip).reject(&:blank?)
 
     inputs = contents.grep(/^\*input/)
     list         = inputs.grep(/^\*input from '(.+\.list)'$/){$1}.first

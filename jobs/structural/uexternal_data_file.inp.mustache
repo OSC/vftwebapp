@@ -1,0 +1,58 @@
+!  Three non-comment lines with file names required
+!   1 - name of material.dat file for VFT
+!   2 - name of VED.dat file
+!   3 - root of file names for thermal profiles
+!       There must be file names with extensions
+!       *.txt & *.bin
+!       Omit extensions here.
+!
+!  File names may have ~/ to denote user home directory.
+!  WARP3D will resolve to full path name.
+!
+{{uexternal.num_materials}}
+{{#uexternal.materials}}
+{{{.}}}
+{{/uexternal.materials}}
+{{{uexternal.ved_file}}}
+{{{uexternal.thermal_profiles_root}}}
+!
+!  Stop when analysis for this thermal profile completed.
+!  If this number of profiles is not defined, WARP3D will
+!  write output files, a restart file, and execute normal termination.
+!
+  {{uexternal.max_profiles}}
+!
+!  Values to control output:
+!  - number of thermal profiles between saving restart file
+!  - number of thermal profiles between generation of output file
+!  - file of WARP3D output commands to be executed
+!
+  {{uexternal.restart_profiles}}, {{uexternal.output_profiles}}
+{{{uexternal.output_commands_file}}}
+!
+!  Values to control solution when:
+!  o - a torch or torches comes on
+!  o - cooling starts
+!  o - analysis startup and on restarts
+!
+! - (N1) number of sequential thermal profiles over which
+!        to use a larger number of WARP3D load steps
+! - (N2) number of increased load steps to use (>=1) for
+!        solution over these profiles
+!
+  {{uexternal.n1}}, {{uexternal.n2}}
+!  Value to control solution when:
+!  o - heating is occurring and has continued beyond N1 above
+!  o - cooling is occurring and has continued beyond N1 above
+! - (N1) number of sequential thermal profiles over which
+!N3 is the number of load steps per profile for all profiles after the number of
+!profiles dictated by N1.
+!
+!For example,  N1 = 5, N2 = 10, N3=15
+!The first 5 profiles in any heating or cooling cycle will use 10 load steps per profile.
+!All load steps after that in that profile will use 15 load steps per profile.  Then it
+!starts again at the next heating or cooling cycle.
+!
+!  N3 =1 is the most common value.
+!
+  {{uexternal.n3}}

@@ -127,7 +127,7 @@ class Session < ActiveRecord::Base
     attributes.each do |k, v|
       uexternal.send("#{k}=", v)
     end
-    uexternal.write
+    # uexternal.write
   end
 
   # List of warp input files
@@ -356,12 +356,6 @@ class Session < ActiveRecord::Base
   # Path to the uexternal file
   def uexternal_file
     staged_dir.join uexternal_file_name
-  end
-
-  # Read an array from the contents of the file
-  def read_uexternal_file
-    return nil unless uexternal_file.file?
-    @contents ||= File.read(uexternal_file.to_s).scan(/^[^!].+/).map(&:strip)
   end
 
   #

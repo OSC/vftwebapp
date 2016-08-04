@@ -46,7 +46,7 @@ class Uexternal
   # Parse the file
   def self.parse(file)
     file = Pathname.new(file)
-    contents = File.read(file.to_s).scan(/^[^!].*/).map(&:strip)
+    contents = File.read(file.to_s).scan(/^[^!].*/).map(&:strip).reject(&:blank?)
 
     # Read backwards since it is simplest
     n3 = contents[-1]
@@ -74,6 +74,11 @@ class Uexternal
       ved_file: ved_file,
       materials: materials
     )
+  end
+
+  # Number of material files
+  def num_materials
+    materials.length
   end
 
   # Write this out to the uexternal file
