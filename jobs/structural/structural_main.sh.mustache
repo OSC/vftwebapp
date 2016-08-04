@@ -25,6 +25,7 @@ echo ""
 # Clean up and copy back workspace
 clean_up ()
 {
+  paraview
   echo "Cleaning up temporary workspace (${WORKSPACE})..."
   time rsync -avu "${WORKSPACE}/" "${STAGEDDIR}"
   echo "Done cleaning up"
@@ -56,6 +57,29 @@ init ()
   cd "${WORKSPACE}"
 }
 
+# Run paraview output
+paraview ()
+{
+  # Generate Paraview files
+  # First find the flat file
+  FLATFILE="{{{warp3d_flat_file_name}}}"
+  if [[ ! -f "${FLATFILE}" ]]; then
+    die "Unable to find the flat file (${FLATFILE})"
+  fi
+
+  # Execute warp3d2exii
+  echo "Generating Paraview input files"
+  echo "" >> "${LOGFILE}"
+  time cat <<EOF | warp3d2exii &>> "${LOGFILE}"
+wrp
+1
+${FLATFILE}
+.
+n
+EOF
+  check_status $? warp3d2exii
+}
+
 # Set up WARP3D environment (use default WARP3D module)
 module use /nfs/gpfs/PZS0645/local-ruby/emc2/share/modulefiles
 module load python/2.7.8
@@ -74,7 +98,7 @@ LOGFILE="${LOGDIR}/warp3d.log"
 
 # WARP3D execution
 echo "Running WARP3D"
-time warp3d.omp < "{{#restart_file}}restart_wrp{{/restart_file}}{{^restart_file}}{{{warp3d_input_file_name}}}{{/restart_file}}" &>> "${LOGFILE}"
+time timeout $((PBS_WALLTIME-600)) warp3d.omp < "{{#restart_file}}restart_wrp{{/restart_file}}{{^restart_file}}{{{warp3d_input_file_name}}}{{/restart_file}}" &>> "${LOGFILE}"
 check_status $? warp3d.omp
 
 # Simple error checking
@@ -89,25 +113,6 @@ fi
 if grep -aq "FATAL ERROR:" "${LOGFILE}"; then
   die "A fatal error was detected in the WARP3D calculation"
 fi
-
-# Generate Paraview files
-# First find the flat file
-FLATFILE="{{{warp3d_flat_file_name}}}"
-if [[ ! -f "${FLATFILE}" ]]; then
-  die "Unable to find the flat file (${FLATFILE})"
-fi
-
-# Execute warp3d2exii
-echo "Generating Paraview input files"
-echo "" >> "${LOGFILE}"
-time cat <<EOF | warp3d2exii &>> "${LOGFILE}"
-wrp
-1
-${FLATFILE}
-.
-n
-EOF
-check_status $? warp3d2exii
 
 # Always clean up after yourself
 clean_up
