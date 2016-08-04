@@ -1,0 +1,14 @@
+PassengerEnabled on
+PassengerBaseURI /awesim_dev/shared_apps/awe0011/vftwebapp_v2
+PassengerAppRoot /users/PAW0001/awe0011/awesim_shared_apps/vftwebapp_v2
+PassengerRestartDir /users/PAW0001/awe0011/awesim_shared_apps/.tmp/vftwebapp_v2
+
+ErrorDocument 503 /awesim_dev/shared_apps/awe0011/vftwebapp_v2/503.html
+RewriteCond /users/PAW0001/awe0011/awesim_shared_apps/.tmp/vftwebapp_v2/stop.txt -f
+RewriteCond %{REQUEST_URI} !^.*503.html$
+RewriteRule ^(.*)$ /$1 [R=503,L]
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_URI} ^(.*)$
+RewriteRule ^$ %1meshes [L]
