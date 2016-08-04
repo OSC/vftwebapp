@@ -271,11 +271,13 @@ class Session < ActiveRecord::Base
 
   # Log file for thermal calculation
   def thermal_log_file
+    Dir.open(log_root.to_s).close if log_root.directory? # flush nfs cache
     log_root.join 'thermal.log'
   end
 
   # Error file for thermal calculation
   def thermal_error_file
+    Dir.open(error_root.to_s).close if error_root.directory? # flush nfs cache
     error_root.join 'thermal.err'
   end
 
@@ -290,11 +292,13 @@ class Session < ActiveRecord::Base
 
   # Log file for structural calculation
   def structural_log_file
+    Dir.open(log_root.to_s).close if log_root.directory? # flush nfs cache
     log_root.join 'structural.log'
   end
 
   # Error file for structural calculation
   def structural_error_file
+    Dir.open(error_root.to_s).close if error_root.directory? # flush nfs cache
     error_root.join 'structural.err'
   end
 
