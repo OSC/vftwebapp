@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :meshes, :except => [:new, :edit] do
       resources :sessions, :except => [:new] do
         member do
+          post 'copy'
           patch 'submit'
           patch 'validate'
           patch 'stop'

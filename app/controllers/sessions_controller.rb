@@ -39,6 +39,15 @@ class SessionsController < ApplicationController
     end
   end
 
+  # POST /sessions/1/copy.json
+  def copy
+    if @session = Session.find(params[:id]).copy
+      render json: @session, status: :created, location: @session
+    else
+      render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /sessions/1.json
   def update
     @session = Session.find(params[:id])

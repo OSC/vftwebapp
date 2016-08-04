@@ -55,6 +55,7 @@ class SessionSerializer < ActiveModel::Serializer
       edit: edit_session_url(object, only_path: true),
       submit: submit_session_url(object, only_path: true),
       validate: validate_session_url(object, only_path: true),
+      copy: copy_session_url(object, only_path: true),
       back: back_session_url(object, only_path: true),
       skip: skip_session_url(object, only_path: true),
       stop: stop_session_url(object, only_path: true),

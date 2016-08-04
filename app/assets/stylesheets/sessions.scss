@@ -28,6 +28,10 @@
   min-width: 90px;
 }
 
+.btn-fw-files {
+  min-width: 80px;
+}
+
 .skip-session {
   @extend .btn-fw-ctrls;
 }
@@ -54,4 +58,12 @@
 
 .submit-structural-paraview {
   @extend .btn-fw-paraview;
+}
+
+.files-session {
+  @extend .btn-fw-files;
+}
+
+.copy-session {
+  @extend .btn-fw-files;
 }

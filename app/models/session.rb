@@ -118,6 +118,13 @@ class Session < ActiveRecord::Base
     vftsolid_failed.thermal_failed.structural_failed
   end
 
+  # Copy session
+  def copy
+    new_session = mesh.sessions.create
+    FileUtils.cp_r "#{staged_dir}/.", new_session.staged_dir
+    new_session
+  end
+
   # Uexternal model object
   def uexternal
     @uexternal ||= Uexternal.parse(uexternal_file)

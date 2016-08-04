@@ -243,9 +243,16 @@ sessTable = $('#sessions_table').DataTable
       searchable: false
       data: (row, type, val, meta) ->
         """
-          <a class="btn btn-default" href="awesim://sftp@#{row.staged_dir}/">
-            <i class="fa fa-file-o"></i> Files
-          </a>
+          <p>
+            <a class="btn btn-default files-session" href="awesim://sftp@#{row.staged_dir}/">
+              <i class="fa fa-file-o"></i> Files
+            </a>
+          </p>
+          <p>
+            <a class="btn btn-default copy-session" href="#{row.links.copy}" data-remote="true" data-method="post">
+              <i class="fa fa-files-o"></i> Copy
+            </a>
+          </p>
         """
     }
     {
@@ -498,6 +505,33 @@ $(document).on {
       type: 'error'
       theme: 'relax'
 }, '.skip-session'
+
+# Session copy button
+$(document).on {
+  'click': ->
+    $(@).attr 'disabled', 'disabled'
+  'ajax:success': (e, data, status, xhr) ->
+    $(@).removeAttr 'disabled'
+    rowNode = sessTable.row.add(data.session).draw().node()
+    $(rowNode).hide().fadeIn('slow')
+    noty
+      text: 'Session was successfully copied.'
+      type: 'success'
+      theme: 'relax'
+      timeout: 2000
+  'ajax:error': (e, xhr, status, error) ->
+    $(@).removeAttr 'disabled'
+    errors = xhr.responseJSON? && xhr.responseJSON.errors || []
+    noty
+      text: """
+        Session failed to be copied: #{error}<br />
+        <ul class="notify-errors">
+        #{("<li>#{msg}</li>" for msg in errors).join('')}
+        </ul>
+      """
+      type: 'error'
+      theme: 'relax'
+}, '.copy-session'
 
 # Session launch button
 $(document).on {
