@@ -12,7 +12,7 @@
   <% total_profile_steps = f.object.total_profile_steps %>
   <%= u.number_field :max_profiles, label: 'Max total WARP3D load steps', help: 'Stop analysis after this number of total WARP3D load steps is completed.' %>
   <%= u.number_field :restart_profiles, label: 'Restart thermal profile steps', in: 1..(total_profile_steps+1), help: 'Number of thermal profile steps between saving restart file.' %>
-  <%= u.number_field :output_profiles, label: 'Output thermal profile steps', in: 1..(total_profile_steps+1), help: 'Number of thermal profile steps between generation of output file.' %>
+  <%= u.number_field :output_profiles, label: 'Output thermal profile steps', in: 1..(total_profile_steps+1), help: 'Number of thermal profile steps between generation of output file.<br/>Note: Each output step corresponds to a frame in Paraview.'.html_safe %>
   <p>
     <strong>Total thermal profile steps</strong>: <%= total_profile_steps.to_s %>
   </p>
