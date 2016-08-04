@@ -85,10 +85,15 @@ sessTable = $('#sessions_table').DataTable
             </div>
           """
         else if row.status.failed
+            # <p>
+            #   <a class="btn btn-default validate-session" href="#{row.links.validate}" data-remote="true" data-method="patch" rel="nofollow">
+            #     <i class="fa fa-check-square-o"></i> Try again</i>
+            #   </a>
+            # </p>
           """
             <p>
-              <a class="btn btn-default validate-session" href="#{row.links.validate}" data-remote="true" data-method="patch" rel="nofollow">
-                <i class="fa fa-check-square-o"></i> Try again</i>
+              <a class="btn btn-success launch-session" href="#{row.links.edit}" data-remote="true" disabled="disabled">
+                <i class="fa fa-play-circle"></i> Launch
               </a>
             </p>
             <div class="btn-group" role="group" aria-label="...">
