@@ -32,7 +32,7 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 5.  Create a symlink for your app directory under the shared apps root `.apps/`:
 
     ```
-    ln -s ../vftwebapp_v2 ../.apps/.
+    ln -s ../vftwebapp_v2/public ../.apps/vftwebapp_v2
     ```
 
 6.  Remove permissions to access this app:
