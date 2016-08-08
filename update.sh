@@ -1,12 +1,12 @@
 #!/bin/bash -l
 
-module load ruby
-
 if [ $# -eq 0  ]; then
   echo "Please supply a tag version"
   echo "e.g.: $0 v0.0.2"
   exit 1
 fi
+
+module load ruby
 
 git fetch --tags
 git checkout ${2}
