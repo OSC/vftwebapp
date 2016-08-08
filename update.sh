@@ -19,3 +19,4 @@ bin/bundle install --path=vendor/bundle
 bin/rake assets:clobber RAILS_ENV=production
 bin/rake assets:precompile RAILS_ENV=production
 bin/rake tmp:clear RAILS_ENV=production
+touch ../.tmp/vftwebapp_v2/restart.txt
