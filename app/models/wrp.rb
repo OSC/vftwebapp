@@ -61,9 +61,13 @@ class Wrp
   def valid?
     root = file.dirname
 
-    root.join(list_file).file? &&
+    !list_file.nil? &&
+      root.join(list_file).file? &&
+      !coord_file.nil? &&
       root.join(coords_file).file? &&
+      !incids_file.nil? &&
       root.join(incids_file).file? &&
+      !compute_cmds_file.nil? &&
       root.join(compute_cmds_file).file?
   end
 
