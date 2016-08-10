@@ -9,7 +9,7 @@ fi
 module load ruby
 
 git fetch --tags
-git checkout ${2}
+git checkout ${1}
 if [ -d "wiki" ]; then
   cd wiki
   git pull
