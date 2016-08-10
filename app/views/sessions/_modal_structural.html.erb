@@ -11,7 +11,7 @@
 <%= f.fields_for :uexternal do |u| %>
   <% total_profile_steps = f.object.total_profile_steps %>
   <%= u.number_field :max_profiles, label: 'Max total WARP3D load steps', help: "Stop analysis after this number of total WARP3D load steps is completed." %>
-  <%= u.number_field :restart_profiles, label: 'Restart thermal profile steps', in: 1..(total_profile_steps+1), help: "Number of thermal profile steps between saving restart file. Restart files are necessary if divergence occurs or if loading is changed.<br /><strong>Recommended value for this session is: #{total_profile_steps / 5}</strong>".html_safe %>
+  <%= u.number_field :restart_profiles, label: 'Restart thermal profile steps', in: 1..(total_profile_steps+1), help: "Number of thermal profile steps between saving restart file. Restart files are necessary if divergence occurs or if loading is changed. Too many restart files can fill up disk space.<br /><strong>Recommended value for this session is: #{total_profile_steps / 5}</strong>".html_safe %>
   <%= u.number_field :output_profiles, label: 'Output thermal profile steps', in: 1..(total_profile_steps+1), help: "Number of thermal profile steps between generation of output file.<br/>Note: Each output step corresponds to a frame in Paraview.".html_safe %>
   <div class="alert alert-info">
     <strong>Total thermal profile steps</strong>: <%= total_profile_steps.to_s %>
