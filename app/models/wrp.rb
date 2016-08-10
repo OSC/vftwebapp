@@ -37,7 +37,7 @@ class Wrp
     constraints  = inputs.grep(/^\*input from '(.+\.constraints)'$/){$1}.first
     compute_cmds = inputs.grep(/^\*input '(.+\.inp)'$/){$1}.first
 
-    name = contents.grep(/^structure (.+)$/){$1}.first
+    name = contents.grep(/^structure (.+)$/){$1}.first[0..7] # name can only be 8 chars
     flat = contents.grep(/^file "(.+_flat)"$/){$1}.first
 
     new(
