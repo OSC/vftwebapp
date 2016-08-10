@@ -63,7 +63,7 @@ class Wrp
 
     !list_file.nil? &&
       root.join(list_file).file? &&
-      !coord_file.nil? &&
+      !coords_file.nil? &&
       root.join(coords_file).file? &&
       !incids_file.nil? &&
       root.join(incids_file).file? &&
