@@ -35,7 +35,7 @@ clean_up ()
 die ()
 {
   echo "ERROR: $1" 1>&2
-  echo "$1" > ${ERRORFILE}
+  echo "$1" >> ${ERRORFILE}
   clean_up
   exit 1
 }
@@ -60,6 +60,10 @@ init ()
 # Run paraview output
 paraview ()
 {
+  # Only ever call this once
+  [[ -n ${RAN_PARAVIEW} ]] && return
+  RAN_PARAVIEW="true"
+
   # Generate Paraview files
   # First find the flat file
   FLATFILE="{{{warp3d_flat_file_name}}}"
@@ -94,7 +98,7 @@ init
 
 # Create common log file
 LOGFILE="${LOGDIR}/warp3d.log"
-> ${LOGFILE}
+> "${LOGFILE}"
 
 # WARP3D execution
 echo "Running WARP3D"

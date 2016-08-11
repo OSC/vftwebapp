@@ -632,7 +632,7 @@ class Session < ActiveRecord::Base
     # Check if CTSP generated an error file
     def ctsp_generated_error_file?
       if thermal_error_file.file?
-        update_attribute(:fails, fails + [File.read(thermal_error_file).strip])
+        update_attribute(:fails, fails + File.readlines(thermal_error_file).map(&:strip))
         return false
       end
       true
@@ -770,7 +770,7 @@ class Session < ActiveRecord::Base
     # Check if WARP3D generated an error file
     def warp3d_generated_error_file?
       if structural_error_file.file?
-        update_attribute(:fails, fails + [File.read(structural_error_file).strip])
+        update_attribute(:fails, fails + File.readlines(structural_error_file).map(&:strip))
         return false
       end
       true
