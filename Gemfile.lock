@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/AweSim-OSC/awesim_rails.git
+  remote: git@github.com:AweSim-OSC/awesim_rails.git
   revision: f7291083586f415c24d11a72a0f40ae91c7ac2cd
   tag: v1.2.3
   specs:

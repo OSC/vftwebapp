@@ -51,7 +51,7 @@ gem 'active_model_serializers', '~> 0.9.0'
 gem 'aasm', '~> 4.11'
 gem 'data-confirm-modal', '~> 1.2'
 
-gem 'awesim_rails', git: 'https://github.com/AweSim-OSC/awesim_rails.git', tag: 'v1.2.3'
+gem 'awesim_rails', git: 'git@github.com:AweSim-OSC/awesim_rails.git', tag: 'v1.2.3'
 gem 'osc-machete', '~> 1.1'
 gem 'osc_machete_rails', '~> 1.2'
 gem 'osc-vnc', '~> 1.0'
