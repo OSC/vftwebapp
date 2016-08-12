@@ -84,6 +84,14 @@ EOF
   check_status $? warp3d2exii
 }
 
+# Rotate a file
+rotate () {
+  [[ -e "$1" ]]
+  local suffix=0
+  while [[ -e "$1.$((++suffix))" ]]; do true; done
+  mv -v "$1" "$1.${suffix}"
+}
+
 # Set up WARP3D environment (use default WARP3D module)
 module use /nfs/gpfs/PZS0645/local-ruby/emc2/share/modulefiles
 module load python/2.7.8
@@ -98,6 +106,7 @@ init
 
 # Create common log file
 LOGFILE="${LOGDIR}/warp3d.log"
+rotate "${LOGFILE}"
 > "${LOGFILE}"
 
 # WARP3D execution
