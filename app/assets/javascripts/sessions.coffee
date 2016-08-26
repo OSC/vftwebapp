@@ -180,7 +180,7 @@ sessTable = $('#sessions_table').DataTable
               <p>
                 <strong>Requirement:</strong> You are required to download and
                 run <a href="https://apps.awesim.org/awesim_dev/dashboard/docs/AweSim-Connect"
-                style="color: #444444" target="_blank"><strong>AweSim Connect</strong></a> on
+                target="_blank"><strong>AweSim Connect</strong></a> on
                 your Windows PC before the above button will work on your
                 machine.
               </p>
