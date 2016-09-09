@@ -560,25 +560,49 @@ $(document).on {
 # Submit thermal paraview for session
 $(document).on {
   'click': ->
-    $(@).attr 'disabled', 'disabled'
+    $('#paraview_modal').html(
+      """
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              Loading...
+            </div>
+          </div>
+        </div>
+      """
+    )
+    $('#paraview_modal').modal 'show'
   'ajax:before': ->
     href = $(@).attr 'href'
     resx = parseInt(window.screen.width  * 0.8)
     resy = parseInt(window.screen.height * 0.8)
     $(@).attr 'href', "#{href}?session[resx]=#{resx}&session[resy]=#{resy}"
   'ajax:success': (e, data, status, xhr) ->
-    $(@).removeAttr 'disabled'
-    $(@).popover(
-      placement: 'top'
-      html: true
-      content: """
-        <a href="#{data.link}" class="btn btn-primary">
-          Launch with AweSim Connect
-        </a>
-      """
-    ).popover('show')
+    $('#paraview_modal').html """
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">View Paraview</h4>
+          </div><!-- /.modal-header -->
+          <div class="modal-body">
+            <p class="text-center">
+              <a href="#{data.link}" class="btn btn-primary">
+                Launch with AweSim Connect
+              </a>
+            </p>
+            <p>
+              <strong>Requirement:</strong> You are required to download and
+              run <a href="https://apps.awesim.org/awesim_dev/dashboard/docs/AweSim-Connect"
+              target="_blank"><strong>AweSim Connect</strong></a> on
+              your Windows PC before the above button will work on your
+              machine.
+            </p>
+          </div><!-- /.modal-body -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    """
   'ajax:error': (e, xhr, status, error) ->
-    $(@).removeAttr 'disabled'
+    $('#paraview_modal').modal 'hide'
     errors = xhr.responseJSON? && xhr.responseJSON.errors || []
     noty
       text: """
@@ -591,8 +615,8 @@ $(document).on {
       theme: 'relax'
 }, '.submit-thermal-paraview,.submit-structural-paraview'
 
-# Destroy all paraview popovers if user clicks anywhere
+# Destroy all paraview modals if user clicks anywhere
 $(document).on {
   'click': ->
-    $('.paraview-popover').popover 'destroy'
+    $('#paraview_modal').modal 'hide'
 }
