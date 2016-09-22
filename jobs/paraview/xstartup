@@ -10,8 +10,6 @@ export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 . /etc/profile.d/lmod.sh
 module load virtualgl/2.3
-
-module use /nfs/gpfs/PZS0645/local-oakley/share/modulefiles
 module load paraview/4.4.0
 
 if [ -n "${IS_STRUCTURAL}" ]; then
