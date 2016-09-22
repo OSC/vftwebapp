@@ -348,10 +348,10 @@ class Session < ActiveRecord::Base
     if warp3d_batch_messages_file.file?
       File.open(warp3d_batch_messages_file) do |f|
         lines = f.grep(/new profile/)
-        cur_profile = lines.last.split[7].to_i unless lines.empty?
+        /->(?<cur_profile>.+) / =~ lines.last unless lines.empty?
       end
     end
-    cur_profile
+    cur_profile.to_i
   end
 
   #
