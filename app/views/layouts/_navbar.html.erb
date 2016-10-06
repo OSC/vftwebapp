@@ -20,7 +20,7 @@
         <ul class="nav navbar-nav navbar-right">
           <% if File.exist?(Rails.root.join('wiki', 'Home.md')) %>
           <li>
-            <%= link_to "Documentation", docs_path('Home') %>
+            <%= link_to "Documentation", wiki_path('Home') %>
           </li>
           <% end %>
         </ul>
