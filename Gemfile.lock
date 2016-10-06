@@ -224,6 +224,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.1)
   font-awesome-sass (~> 4.6)
   jquery-rails
+  ood_appkit (~> 0.3)
   osc-vnc (~> 1.0)
   osc_machete_rails (~> 1.2)
   paperclip (~> 4.3)

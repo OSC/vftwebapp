@@ -54,3 +54,4 @@ gem 'data-confirm-modal', '~> 1.2'
 gem 'awesim_branding', '~> 0.0.1', :git => "https://github.com/AweSim-OSC/awesim_branding.git"
 gem 'osc_machete_rails', '~> 1.2'
 gem 'osc-vnc', '~> 1.0'
+gem 'ood_appkit', '~> 0.3'
