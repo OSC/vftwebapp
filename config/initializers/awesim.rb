@@ -11,7 +11,6 @@ class MyFilesRackApp
 end
 
 OodAppkit.configure do |config|
-  config.docs.uri = "/wiki"
-  config.docs.path = "wiki"
-  config.files_rack_app = MyFilesRackApp
+  config.routes.wiki = true
+  config.routes.files_rack_app = MyFilesRackApp
 end
