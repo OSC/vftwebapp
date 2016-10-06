@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7'
+gem 'rails', '4.2.7.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -10,7 +10,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 
@@ -40,7 +40,7 @@ group :development do
   gem 'web-console', '~> 2.0'
 end
 
-gem 'dotenv-rails', '~> 2.0', require: 'dotenv/rails-now'
+gem 'dotenv-rails', '~> 2.1', require: 'dotenv/rails-now'
 gem 'autoprefixer-rails', '~> 6.3'
 gem 'bootstrap-sass', '~> 3.3'
 gem 'bootstrap_form', '~> 2.4'
@@ -51,7 +51,6 @@ gem 'active_model_serializers', '~> 0.9.0'
 gem 'aasm', '~> 4.11'
 gem 'data-confirm-modal', '~> 1.2'
 
-gem 'awesim_rails', git: 'git@github.com:AweSim-OSC/awesim_rails.git', tag: 'v1.2.3'
-gem 'osc-machete', '~> 1.1'
+gem 'awesim_branding', '~> 0.0.1', :git => "https://github.com/AweSim-OSC/awesim_branding.git"
 gem 'osc_machete_rails', '~> 1.2'
 gem 'osc-vnc', '~> 1.0'
