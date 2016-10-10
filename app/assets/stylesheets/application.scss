@@ -4,7 +4,7 @@
 
 // Override bootstrap variables with OOD app kit variables
 // @import "ood_appkit/bootstrap-overrides";
-@import "awesim/bootstrap-overrides";
+@import "ood_appkit/bootstrap-overrides";
 
 // Load up bootstrap & font-awesome style sheets
 @import "bootstrap";
@@ -12,16 +12,9 @@
 
 // Use OOD app kit styles
 // @import "ood_appkit";
-@import "awesim/banner";
-@import "awesim/awesim-navbar";
-@import "awesim/markdown";
+@import "ood_appkit";
 
 // Your custom css styles below (must be manually added)
-
-// add header image for awesim logo
-body {
-  @extend .awesim-banner-background-img;
-}
 
 // disable links
 a[disabled] {

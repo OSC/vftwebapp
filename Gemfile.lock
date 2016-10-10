@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/AweSim-OSC/awesim_branding.git
-  revision: 8a911514b84f40e0afb8f4a20120d9ea04d96901
-  specs:
-    awesim_branding (0.0.1)
-      ood_appkit (~> 0.3.0)
-      rails (~> 4.0)
-      redcarpet (~> 3.3)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -215,7 +206,6 @@ DEPENDENCIES
   aasm (~> 4.11)
   active_model_serializers (~> 0.9.0)
   autoprefixer-rails (~> 6.3)
-  awesim_branding (~> 0.0.1)!
   bootstrap-sass (~> 3.3)
   bootstrap_form (~> 2.4)
   byebug
