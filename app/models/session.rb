@@ -143,7 +143,7 @@ class Session < ActiveRecord::Base
 
   # Wrp file name
   def wrp_file_name
-    super || wrp_files.first.file.basename
+    super && staged_dir.join(super).file? ? super : wrp_files.first.file.basename
   end
 
   # Wrp model object
