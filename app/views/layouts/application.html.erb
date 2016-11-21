@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>VFTSim</title>
-  <%= favicon_link_tag       'favicon.ico' %>
+  <%= favicon_link_tag nil, href: OodAppkit.public.url.join('favicon.ico') %>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>

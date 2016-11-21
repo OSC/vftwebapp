@@ -242,8 +242,8 @@ class Session < ActiveRecord::Base
     return nil unless vftsolid_active?
     conn_file = staged_dir.join("#{session_job.pbsid}.conn")
     return nil unless conn_file.file?
-    session = OpenStruct.new(conn_file: conn_file, script: vftsolid_script_view)
-    OSC::VNC::ConnView.new session
+    session = OpenStruct.new(script: vftsolid_script_view)
+    OSC::VNC::ConnView.new session, conn_file
   end
 
   # Staged log root

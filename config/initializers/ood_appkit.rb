@@ -1,4 +1,4 @@
-# AweSim configuration
+# OodAppkit configuration
 
 class MyFilesRackApp
   def self.call(env)
@@ -11,6 +11,5 @@ class MyFilesRackApp
 end
 
 OodAppkit.configure do |config|
-  config.routes.wiki = true
   config.routes.files_rack_app = MyFilesRackApp
 end
