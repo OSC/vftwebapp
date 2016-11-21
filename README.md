@@ -5,87 +5,66 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 
 ## Deployment
 
-1.  Based on deployment location you will need to determine the URI used to
-    access this app, e.g.:
+1.  Git clone this project into the deployment location:
 
-    ```
-   /awesim_dev/shared_apps/awe0011/vftwebapp_v2
-    ```
-
-2.  Update the `.env.production` with corresponding deployment location and URI
-    information.
-
-3.  Copy over and modify the `.htaccess` file:
-
-    ```
-    cp public/.htaccess.production public/.htaccess
-    vim public/.htaccess
+    ```sh
+    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
     ```
 
-4.  Create a matching directory under the shared apps root `.tmp/`:
+2.  Update permissions of this app so that only registered users can access it:
 
-    ```
-    mkdir ../.tmp/vftwebapp_v2
-    touch ../.tmp/vftwebapp_v2/restart.txt
-    ```
-
-5.  Create a symlink for your app directory under the shared apps root `.apps/`:
-
-    ```
-    ln -s ../vftwebapp_v2/public ../.apps/vftwebapp_v2
+    ```sh
+    chmod 750 vftwebapp
+    nfs4_setfacl -a A:g:emc2vft@osc.edu:rx vftwebapp
     ```
 
-6.  Remove permissions to access this app:
+3.  Install the documentation:
 
-    ```
-    chmod 750 ../vftwebapp_v2
-    ```
+    ```sh
+    cd vftwebapp
 
-7.  Add permissions to who ever you want to access this app:
-
-    ```
-    nfs4_setfacl -a A::<user>@osc.edu:rx ../vftwebapp_v2
-    nfs4_setfacl -a A:g:<group>@osc.edu:rx ../vftwebapp_v2
+    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.wiki.git wiki
     ```
 
-8.  Bundle install gems:
+4.  Run the update script to build the app:
 
-    ```
-    bin/bundle install --path=vendor/bundle
-    ```
-
-9.  Compile assets:
-
-    ```
-    bin/rake assets:clobber RAILS_ENV=production
-    bin/rake assets:precompile RAILS_ENV=production
-    bin/rake tmp:clear RAILS_ENV=production
+    ```sh
+    # Examples:
+    #   ./update.sh v1.0.0
+    #   ./update.sh master
+    ./update.sh <tag>
     ```
 
-10. Restart the app for users:
+## Update
 
-    ```
-    touch ../.tmp/vftwebapp_v2/restart.txt
+1.  To update the app to a later tagged version, just run the update script
+    specifying the version as an argument:
+
+    ```sh
+    # Examples:
+    #   ./update.sh v1.0.0
+    #   ./update.sh master
+    ./update.sh <tag>
     ```
 
 ## Development
 
-1.  Git clone down this project
+1.  Git clone this project into development directory and go into it:
 
-2.  Set up the `.htaccess` file:
+    ```sh
+    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
 
+    cd vftwebapp
     ```
-    cat public/.htaccess.development public/.htaccess.passenger_fix > public/.htaccess
-    ```
 
-3.  Bundle install gems:
+2.  Bundle install gems:
 
-    ```
-    bin/bundle install --path=vendor/bundle
+    ```sh
+    scl enable git19 rh-ruby22 -- bin/bundle install --path=vendor/bundle
     ```
 
 4.  Setup the development database:
 
     ```
-    bin/rake db:setup
+    scl enable git19 rh-ruby22 -- bin/rake db:setup
     ```
