@@ -4,7 +4,7 @@ class MyFilesRackApp < OodAppkit::FilesRackApp
   def call(env)
     Rack::Directory.new(
       root,
-      Rack::File.new(root, {}, 'application/octet-stream')
+      Rack::File.new(root, {'Content-Disposition' => 'attachment'}, 'application/octet-stream')
     ).call(env)
   end
 end
