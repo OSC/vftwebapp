@@ -1,8 +1,7 @@
 # OodAppkit configuration
 
-class MyFilesRackApp
-  def self.call(env)
-    root = OodAppkit.dataroot
+class MyFilesRackApp < OodAppkit::FilesRackApp
+  def call(env)
     Rack::Directory.new(
       root,
       Rack::File.new(root, {}, 'application/octet-stream')
@@ -11,5 +10,5 @@ class MyFilesRackApp
 end
 
 OodAppkit.configure do |config|
-  config.routes.files_rack_app = MyFilesRackApp
+  config.routes.files_rack_app = false
 end
