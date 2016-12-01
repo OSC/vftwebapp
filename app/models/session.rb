@@ -242,8 +242,7 @@ class Session < ActiveRecord::Base
     return nil unless vftsolid_active?
     conn_file = staged_dir.join("#{session_job.pbsid}.conn")
     return nil unless conn_file.file?
-    session = OpenStruct.new(conn_file: conn_file, script: vftsolid_script_view)
-    OSC::VNC::ConnView.new session
+    OSC::VNC::ConnView.new vftsolid_script_view, conn_file
   end
 
   # Staged log root
@@ -399,8 +398,7 @@ class Session < ActiveRecord::Base
   def paraview_conn_view(job_id)
     conn_file = paraview_outdir.join("#{job_id}.conn")
     return nil unless conn_file.file?
-    session = OpenStruct.new(conn_file: conn_file, script: paraview_script_view)
-    OSC::VNC::ConnView.new session
+    OSC::VNC::ConnView.new paraview_script_view, conn_file
   end
 
   # Generate Paraview AweSim connect link

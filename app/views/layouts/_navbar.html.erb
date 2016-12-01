@@ -10,7 +10,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <%= awesim_breadcrumbs title %>
+        <ul class="navbar-breadcrumbs">
+          <li><%= link_to OodAppkit.dashboard.title, OodAppkit.dashboard.url.to_s %></li>
+          <li><%= link_to title, root_path %></li>
+        </ul>
       </div><!-- /.navbar-header -->
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -20,7 +23,7 @@
         <ul class="nav navbar-nav navbar-right">
           <% if File.exist?(Rails.root.join('wiki', 'Home.md')) %>
           <li>
-            <%= link_to "Documentation", docs_path('Home') %>
+            <%= link_to "Documentation", wiki_path('Home') %>
           </li>
           <% end %>
         </ul>

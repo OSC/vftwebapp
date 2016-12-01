@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount MyFilesRackApp.new => '/files', as: :files
+
   shallow do
     resources :meshes, :except => [:new, :edit] do
       resources :sessions, :except => [:new] do
