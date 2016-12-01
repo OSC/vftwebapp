@@ -52,5 +52,5 @@ gem 'aasm', '~> 4.11'
 gem 'data-confirm-modal', '~> 1.2'
 
 gem 'osc_machete_rails', '~> 1.2'
-gem 'osc-vnc', '~> 1.0'
+gem 'osc-vnc', '~> 1.0', '>= 1.1.3'
 gem 'ood_appkit', '~> 0.3'

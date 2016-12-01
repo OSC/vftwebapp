@@ -114,7 +114,7 @@ GEM
     osc-machete (1.2.0)
       mustache
       pbs (~> 2.0)
-    osc-vnc (1.1.2)
+    osc-vnc (1.1.3)
       mustache (~> 1.0)
       pbs (~> 2.0)
     osc_machete_rails (1.2.2)
@@ -215,7 +215,7 @@ DEPENDENCIES
   font-awesome-sass (~> 4.6)
   jquery-rails
   ood_appkit (~> 0.3)
-  osc-vnc (~> 1.0)
+  osc-vnc (~> 1.0, >= 1.1.3)
   osc_machete_rails (~> 1.2)
   paperclip (~> 4.3)
   rails (= 4.2.7.1)
