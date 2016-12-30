@@ -113,7 +113,7 @@ check_status $? cutoff.x
 
 # Convert temperature file to binary
 echo "Convert temperature file into binary format"
-time echo "CTSP" | temp_convert.x >> "${LOGFILE}"
+time temp_convert.x >> "${LOGFILE}"
 echo "" >> "${LOGFILE}"
 check_status $? temp_convert.x
 
