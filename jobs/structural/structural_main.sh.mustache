@@ -80,6 +80,7 @@ wrp
 ${FLATFILE}
 .
 n
+y
 EOF
   check_status $? warp3d2exii
 }
@@ -94,8 +95,8 @@ rotate () {
 
 # Set up WARP3D environment (use default WARP3D module)
 module use /users/PZS0645/wiag/local-ruby/emc2/share/modulefiles
+module load intel/17.0.2
 module load python/2.7.8
-module load intel/16.0.0
 module load warp3d
 
 # Set up trap function
