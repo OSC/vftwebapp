@@ -112,7 +112,7 @@ GEM
     ood_cluster (0.0.1)
       addressable (~> 2.4)
     ood_support (0.0.2)
-    osc-machete (1.2.1)
+    osc-machete (1.2.2)
       mustache
       pbs (~> 2.0)
     osc-vnc (1.1.3)
