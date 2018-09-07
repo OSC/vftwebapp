@@ -390,7 +390,8 @@ class Session < ActiveRecord::Base
       xstartup: paraview_assets.join('xstartup'),
       outdir: paraview_outdir,
       geom: "#{resx}x#{resy}",
-      tcp_server?: false
+      tcp_server?: false,
+      load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91"
     )
   end
 
@@ -496,7 +497,8 @@ class Session < ActiveRecord::Base
         'ruby',
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
-        geom: "#{resx}x#{resy}"
+        geom: "#{resx}x#{resy}",
+        load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91"
       )
     end
 
