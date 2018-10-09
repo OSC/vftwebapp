@@ -385,7 +385,7 @@ class Session < ActiveRecord::Base
   def paraview_script_view
     OSC::VNC::ScriptView.new(
       :vnc,
-      'oakley',
+      'owens',
       subtype: :shared,
       xstartup: paraview_assets.join('xstartup'),
       outdir: paraview_outdir,
@@ -444,7 +444,7 @@ class Session < ActiveRecord::Base
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
         #PBS -N Thermal-Paraview
-        #PBS -l nodes=1:ppn=1:oakley
+        #PBS -l nodes=1:ppn=1:owens
         #PBS -l walltime=04:00:00
         #PBS -j oe
         #PBS -S /bin/bash
@@ -464,7 +464,7 @@ class Session < ActiveRecord::Base
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
         #PBS -N Structural-Paraview
-        #PBS -l nodes=1:ppn=1:oakley
+        #PBS -l nodes=1:ppn=1:ruby
         #PBS -l walltime=04:00:00
         #PBS -j oe
         #PBS -S /bin/bash
@@ -494,7 +494,7 @@ class Session < ActiveRecord::Base
     def vftsolid_script_view
       OSC::VNC::ScriptView.new(
         :vnc,
-        'ruby',
+        'owens',
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
         geom: "#{resx}x#{resy}",
@@ -521,7 +521,7 @@ class Session < ActiveRecord::Base
       File.open(script, 'w') do |f|
         f.write <<-EOF.gsub(/^ {8}/, '')
           #PBS -N VFTSolid
-          #PBS -l nodes=1:ppn=1:ruby
+          #PBS -l nodes=1:ppn=1:owens
           #PBS -l walltime=04:00:00
           #PBS -j oe
           #PBS -S /bin/bash
@@ -613,7 +613,7 @@ class Session < ActiveRecord::Base
       end
 
       # build job
-      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: 'ruby')
+      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: 'owens')
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
