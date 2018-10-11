@@ -464,7 +464,7 @@ class Session < ActiveRecord::Base
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
         #PBS -N Structural-Paraview
-        #PBS -l nodes=1:ppn=1:ruby
+        #PBS -l nodes=1:ppn=1:owens
         #PBS -l walltime=04:00:00
         #PBS -j oe
         #PBS -S /bin/bash
