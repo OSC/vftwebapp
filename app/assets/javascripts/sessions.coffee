@@ -179,7 +179,7 @@ sessTable = $('#sessions_table').DataTable
               </p>
               <p>
                 <strong>Requirement:</strong> You are required to download and
-                run <a href="https://apps.awesim.org/awesim_dev/dashboard/docs/AweSim-Connect"
+                run <a href="https://github.com/OSC/osc-connect/releases/latest"
                 target="_blank"><strong>AweSim Connect</strong></a> on
                 your Windows PC before the above button will work on your
                 machine.
@@ -592,7 +592,7 @@ $(document).on {
             </p>
             <p>
               <strong>Requirement:</strong> You are required to download and
-              run <a href="https://apps.awesim.org/awesim_dev/dashboard/docs/AweSim-Connect"
+              run <a href="https://github.com/OSC/osc-connect/releases/latest"
               target="_blank"><strong>AweSim Connect</strong></a> on
               your Windows PC before the above button will work on your
               machine.
