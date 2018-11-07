@@ -425,7 +425,7 @@ class Session < ActiveRecord::Base
       while true
         Dir.open(paraview_outdir.to_s).close # flush nfs cache
         if conn_view = paraview_conn_view(job_id)
-          return conn_view.render(:awesim)
+          return conn_view.render(:awesim_vnc)
         end
         sleep 1
       end
