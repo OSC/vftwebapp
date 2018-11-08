@@ -40,7 +40,7 @@ group :development do
   gem 'web-console', '~> 2.0'
 end
 
-gem "loofah", "~> 2.2.3"
+gem 'loofah', '~> 2.2.3'
 gem 'dotenv-rails', '~> 2.1', require: 'dotenv/rails-now'
 gem 'autoprefixer-rails', '~> 6.3'
 gem 'bootstrap-sass', '~> 3.3'
