@@ -60,11 +60,11 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 2.  Bundle install gems:
 
     ```sh
-    scl enable git19 rh-ruby22 -- bin/bundle install --path=vendor/bundle
+    scl enable git19 rh-ruby24 -- bin/bundle install --path=vendor/bundle
     ```
 
 4.  Setup the development database:
 
     ```
-    scl enable git19 rh-ruby22 -- bin/rake db:setup
+    scl enable git19 rh-ruby24 -- bin/rake db:setup
     ```
