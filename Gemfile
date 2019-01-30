@@ -40,12 +40,13 @@ group :development do
   gem 'web-console', '~> 2.0'
 end
 
+gem 'loofah', '~> 2.2.3'
 gem 'dotenv-rails', '~> 2.1', require: 'dotenv/rails-now'
 gem 'autoprefixer-rails', '~> 6.3'
 gem 'bootstrap-sass', '~> 3.3'
 gem 'bootstrap_form', '~> 2.4'
 gem 'font-awesome-sass', '~> 4.6'
-gem 'paperclip', '~> 4.3'
+gem 'paperclip', '~> 6.0'
 gem 'rails_12factor', group: :production
 gem 'active_model_serializers', '~> 0.9.0'
 gem 'aasm', '~> 4.11'
