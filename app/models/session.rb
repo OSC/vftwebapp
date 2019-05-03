@@ -494,7 +494,7 @@ class Session < ActiveRecord::Base
     def vftsolid_script_view
       OSC::VNC::ScriptView.new(
         :vnc,
-        'ruby',
+        'owens',
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
         geom: "#{resx}x#{resy}",
@@ -521,7 +521,7 @@ class Session < ActiveRecord::Base
       File.open(script, 'w') do |f|
         f.write <<-EOF.gsub(/^ {8}/, '')
           #PBS -N VFTSolid
-          #PBS -l nodes=1:ppn=1:ruby
+          #PBS -l nodes=1:ppn=1:owens
           #PBS -l walltime=04:00:00
           #PBS -j oe
           #PBS -S /bin/bash
