@@ -8,7 +8,7 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 1.  Git clone this project into the deployment location:
 
     ```sh
-    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
+    scl enable rh-git29 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
     ```
 
 2.  Update permissions of this app so that only registered users can access it:
@@ -23,7 +23,7 @@ The VFT Sim app is a web interface for simulating the weld process designed by
     ```sh
     cd vftwebapp
 
-    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.wiki.git wiki
+    scl enable rh-git29 -- git clone git@github.com:AweSim-OSC/vftwebapp.wiki.git wiki
     ```
 
 4.  Run the update script to build the app:
@@ -52,7 +52,7 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 1.  Git clone this project into development directory and go into it:
 
     ```sh
-    scl enable git19 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
+    scl enable rh-git29 -- git clone git@github.com:AweSim-OSC/vftwebapp.git vftwebapp
 
     cd vftwebapp
     ```
@@ -60,11 +60,11 @@ The VFT Sim app is a web interface for simulating the weld process designed by
 2.  Bundle install gems:
 
     ```sh
-    scl enable git19 rh-ruby22 -- bin/bundle install --path=vendor/bundle
+    scl enable rh-git29 rh-ruby24 -- bin/bundle install --path=vendor/bundle
     ```
 
 4.  Setup the development database:
 
     ```
-    scl enable git19 rh-ruby22 -- bin/rake db:setup
+    scl enable rh-git29 rh-ruby24 -- bin/rake db:setup
     ```
