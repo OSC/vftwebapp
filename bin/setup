@@ -53,6 +53,9 @@ chdir APP_ROOT do
     sh "bin/rake assets:precompile"
   end
 
+  puts "\n== Preparing database =="
+  sh "bin/rake db:setup"
+  
   puts "\n== Removing old logs and tempfiles =="
   sh "bin/rake log:clear tmp:clear"
 
