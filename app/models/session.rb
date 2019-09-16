@@ -391,7 +391,8 @@ class Session < ActiveRecord::Base
       outdir: paraview_outdir,
       geom: "#{resx}x#{resy}",
       tcp_server?: false,
-      load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91"
+      load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91",
+      novnc?: true,
     )
   end
 
@@ -425,7 +426,7 @@ class Session < ActiveRecord::Base
       while true
         Dir.open(paraview_outdir.to_s).close # flush nfs cache
         if conn_view = paraview_conn_view(job_id)
-          return conn_view.render(:awesim_vnc)
+          return {vnc_link: conn_view.render(:awesim_vnc), novnc_link: conn_view.render(:novnc)}
         end
         sleep 1
       end
@@ -439,7 +440,7 @@ class Session < ActiveRecord::Base
     ctsp_paraview_generated?(false)
   end
 
-  # Generate Thermal Paraview awesim connect link
+  # Generate Thermal Paraview awesim connect link and novnc link
   def thermal_paraview
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
@@ -498,7 +499,8 @@ class Session < ActiveRecord::Base
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
         geom: "#{resx}x#{resy}",
-        load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91"
+        load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91",
+        novnc?: true,
       )
     end
 
