@@ -8,7 +8,7 @@ ENV["RAILS_ENV"]               ||= ENV["PASSENGER_APP_ENV"] || "development"
 ENV["RAILS_RELATIVE_URL_ROOT"] ||= ENV["PASSENGER_BASE_URI"]
 
 # if relative url root not set, use default for this app
-ENV['RAILS_RELATIVE_URL_ROOT'] ||= "pun/usr/wiag/vftwebapp" if ENV['RAILS_ENV'] == 'production'
+ENV['RAILS_RELATIVE_URL_ROOT'] ||= "/pun/usr/wiag/vftwebapp" if ENV['RAILS_ENV'] == 'production'
 
 # define application object
 class App
@@ -52,14 +52,12 @@ chdir APP_ROOT do
     sh "bin/rake assets:clobber"
     sh "bin/rake assets:precompile"
   end
-
-  puts "\n== Preparing database =="
-  sh "bin/rake db:setup"
   
   puts "\n== Removing old logs and tempfiles =="
   sh "bin/rake log:clear tmp:clear"
 
   puts "\n== Restarting application server =="
+  sh "mkdir -p tmp"
   touch "tmp/restart.txt"
   puts ""
 end
