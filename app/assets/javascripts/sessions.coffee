@@ -173,7 +173,7 @@ sessTable = $('#sessions_table').DataTable
                 <a href="#{row.links.conn}" class="btn btn-default btn-block">
                   <i class="fa fa-desktop"></i> Open VFTSolid with AweSim Connect
                 </a>
-                <a href="#{row.links.novnc_conn}" class="btn btn-default btn-block">
+                <a href="#{row.links.novnc_conn}&compressionsetting=0&qualitysetting=9" class="btn btn-default btn-block">
                   <i class="fa fa-desktop"></i> Open VFTSolid in the browser
                 </a>
               </p>
@@ -594,7 +594,7 @@ $(document).on {
               </a>
             </p>
             <p class="text-center">
-              <a href="#{data.novnc_link}" class="btn btn-primary">
+              <a href="#{data.novnc_link}&compressionsetting=0&qualitysetting=9" class="btn btn-primary">
                 Launch in the broswer
               </a>
             </p>
