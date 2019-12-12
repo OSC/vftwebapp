@@ -129,8 +129,8 @@ class SessionsController < ApplicationController
   def thermal_paraview
     @session = Session.find(params[:id])
 
-    if @session.thermal_paraview? && @session.update(session_params) && link = @session.thermal_paraview
-      render json: {link: link}
+    if @session.thermal_paraview? && @session.update(session_params) && vnc_link = @session.thermal_paraview[:vnc_link] && novnc_link = @session.thermal_paraview[:novnc_link]
+      render json: {vnc_link: vnc_link, novnc_link: novnc_link}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
     end
@@ -140,8 +140,8 @@ class SessionsController < ApplicationController
   def structural_paraview
     @session = Session.find(params[:id])
 
-    if @session.structural_paraview? && @session.update(session_params) && link = @session.structural_paraview
-      render json: {link: link}
+    if @session.structural_paraview? && @session.update(session_params) && vnc_link = @session.structural_paraview[:vnc_link] && novnc_link = @session.structural_paraview[:novnc_link]
+      render json: {vnc_link: vnc_link, novnc_link: novnc_link}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
     end

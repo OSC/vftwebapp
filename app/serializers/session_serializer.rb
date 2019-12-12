@@ -60,6 +60,7 @@ class SessionSerializer < ActiveModel::Serializer
       skip: skip_session_url(object, only_path: true),
       stop: stop_session_url(object, only_path: true),
       conn: object.vftsolid_conn_view ? object.vftsolid_conn_view.render(:awesim_vnc) : nil,
+      novnc_conn: object.vftsolid_conn_view ? object.vftsolid_conn_view.render(:novnc) : nil,
       t_paraview: object.thermal_paraview? ? thermal_paraview_session_url(object, only_path: true) : nil,
       s_paraview: object.structural_paraview? ? structural_paraview_session_url(object, only_path: true) : nil
     }

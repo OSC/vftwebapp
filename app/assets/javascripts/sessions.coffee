@@ -171,7 +171,10 @@ sessTable = $('#sessions_table').DataTable
             msg += """
               <p>
                 <a href="#{row.links.conn}" class="btn btn-default btn-block">
-                  <i class="fa fa-desktop"></i> Open VFTSolid
+                  <i class="fa fa-desktop"></i> Open VFTSolid with AweSim Connect
+                </a>
+                <a href="#{row.links.novnc_conn}&compressionsetting=0&qualitysetting=9" class="btn btn-default btn-block">
+                  <i class="fa fa-desktop"></i> Open VFTSolid in the browser
                 </a>
               </p>
               <p>
@@ -586,12 +589,17 @@ $(document).on {
           </div><!-- /.modal-header -->
           <div class="modal-body">
             <p class="text-center">
-              <a href="#{data.link}" class="btn btn-primary">
+              <a href="#{data.vnc_link}" class="btn btn-primary">
                 Launch with AweSim Connect
               </a>
             </p>
+            <p class="text-center">
+              <a href="#{data.novnc_link}&compressionsetting=0&qualitysetting=9" class="btn btn-primary">
+                Launch in the broswer
+              </a>
+            </p>
             <p>
-              <strong>Requirement:</strong> You are required to download and
+              <strong>Requirement:</strong> To launch with Awesim Connect, you are required to download and
               run <a href="https://github.com/OSC/osc-connect/releases/latest"
               target="_blank"><strong>AweSim Connect</strong></a> on
               your Windows PC before the above button will work on your
