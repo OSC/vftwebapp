@@ -9,7 +9,7 @@ fi
 
 update ()
 {
-  TAG=${1} RAILS_ENV=production scl enable git19 rh-ruby22 -- /bin/bash <(
+  TAG=${1} RAILS_ENV=production scl enable rh-git29 rh-ruby24 -- /bin/bash <(
     cat <<\EOF
       git fetch --tags &&
       git checkout ${TAG} &&
