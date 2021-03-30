@@ -1,4 +1,4 @@
-class CreateSessionJobs < ActiveRecord::Migration
+class CreateSessionJobs < ActiveRecord::Migration[4.2]
   def change
     create_table :session_jobs do |t|
       t.references :session, index: true, foreign_key: true
