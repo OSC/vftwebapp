@@ -22,6 +22,6 @@ fi
 export XSTARTUP_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 /usr/bin/fvwm -f ${XSTARTUP_DIR}/fvwm/fvwmrc &
 
-sleep $((PBS_WALLTIME-300))
+sleep $((SLURM_TIME_LIMIT-300))
 
 vncserver -kill ${DISPLAY}
