@@ -240,9 +240,13 @@ class Session < ActiveRecord::Base
   # Connection view for VFTSolid job, so you can connect to it
   def vftsolid_conn_view
     return nil unless vftsolid_active?
-    conn_file = staged_dir.join("#{session_job.pbsid}.conn")
+    conn_file = vftsolid_conn_file
     return nil unless conn_file.file?
     OSC::VNC::ConnView.new vftsolid_script_view, conn_file
+  end
+
+  def vftsolid_conn_file
+    staged_dir.join("#{session_job.pbsid}.#{session_job.host}.conn")
   end
 
   # Staged log root
@@ -398,7 +402,8 @@ class Session < ActiveRecord::Base
 
   # The connection view used to connect to Paraview VNC session
   def paraview_conn_view(job_id)
-    conn_file = paraview_outdir.join("#{job_id}.conn")
+    # FIXME: hardcoded path
+    conn_file = paraview_outdir.join("#{job_id}.owens.conn")
     return nil unless conn_file.file?
     OSC::VNC::ConnView.new paraview_script_view, conn_file
   end
