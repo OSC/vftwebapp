@@ -507,7 +507,7 @@ class Session < ActiveRecord::Base
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
         geom: "#{resx}x#{resy}",
-        load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91",
+        load_turbovnc: "module load intel/19.0.5 turbovnc",
         novnc?: true,
       )
     end
@@ -530,11 +530,10 @@ class Session < ActiveRecord::Base
       script = staged_dir.join('vftsolid_main.sh')
       File.open(script, 'w') do |f|
         f.write <<-EOF.gsub(/^ {8}/, '')
-          #PBS -N VFTSolid
-          #PBS -l nodes=1:ppn=1:ruby
-          #PBS -l walltime=04:00:00
-          #PBS -j oe
-          #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name=VFTSolid
+        #SBATCH --nodes=1 --ntasks-per-node=1
+        #SBATCH --time=4:00:00
         EOF
         f.write vftsolid_script_view.render
       end
