@@ -17,4 +17,13 @@ class SessionJob < ActiveRecord::Base
 
     destroy if status.completed?
   end
+
+  def job
+    OSC::Machete::Job.new(
+      script: script,
+      pbsid: pbsid,
+      host: 'owens', # FIXME: not configurable
+      torque_helper: ResourceMgrAdapter.new(nil)
+    )
+  end
 end

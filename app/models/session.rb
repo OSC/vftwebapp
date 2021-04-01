@@ -415,7 +415,7 @@ class Session < ActiveRecord::Base
     script.write yield
     script.write paraview_script_view.render
     script.close
-    job = OSC::Machete::Job.new(script: script.path, host: 'quick')
+    job = OSC::Machete::Job.new(script:  script.path, host: host, torque_helper: resource_manager('quick'))
 
     # submit job
     submit_machete_job(job) ? (job_id = job.pbsid) : (return false)
@@ -482,6 +482,14 @@ class Session < ActiveRecord::Base
       Pathname.new ENV['OOD_DATAROOT']
     end
 
+    def resource_manager(queue_name = nil)
+      ResourceMgrAdapter.new(queue_name)
+    end
+
+    def host
+      'owens' # FIXME: not configurable
+    end
+
     #
     # VFTSolid helpers
     #
@@ -530,7 +538,7 @@ class Session < ActiveRecord::Base
         EOF
         f.write vftsolid_script_view.render
       end
-      job = OSC::Machete::Job.new(script: script, host: 'quick')
+      job = OSC::Machete::Job.new(script: script, host: host, torque_helper: resource_manager('quick'))
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
@@ -615,7 +623,7 @@ class Session < ActiveRecord::Base
       end
 
       # build job
-      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: 'ruby')
+      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: host, torque_helper: resource_manager)
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
@@ -753,7 +761,7 @@ class Session < ActiveRecord::Base
       end
 
       # build job
-      job = OSC::Machete::Job.new(script: staged_dir.join('structural_main.sh'), host: 'ruby')
+      job = OSC::Machete::Job.new(script: staged_dir.join('structural_main.sh'), host: host, torque_helper: resource_manager)
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
