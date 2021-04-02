@@ -254,8 +254,13 @@ sessTable = $('#sessions_table').DataTable
       data: (row, type, val, meta) ->
         """
           <p>
-            <a class="btn btn-default files-session" href="awesim://sftp@#{row.staged_dir}/">
-              <i class="fa fa-file-o"></i> Files
+            <a class="btn btn-default files-session" href="#{row.links.files_ood_connect_url}">
+              <i class="fa fa-file-o"></i> Files via AweSim Connect
+            </a>
+          </p>
+          <p>
+            <a class="btn btn-default files-session" target="_blank" href="#{row.links.files_url}">
+              <i class="fa fa-external-link"></i> Files via Web File Browser
             </a>
           </p>
           <p>

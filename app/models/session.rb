@@ -240,9 +240,13 @@ class Session < ActiveRecord::Base
   # Connection view for VFTSolid job, so you can connect to it
   def vftsolid_conn_view
     return nil unless vftsolid_active?
-    conn_file = staged_dir.join("#{session_job.pbsid}.conn")
+    conn_file = vftsolid_conn_file
     return nil unless conn_file.file?
     OSC::VNC::ConnView.new vftsolid_script_view, conn_file
+  end
+
+  def vftsolid_conn_file
+    staged_dir.join("#{session_job.pbsid}.#{session_job.host}.conn")
   end
 
   # Staged log root
@@ -272,7 +276,7 @@ class Session < ActiveRecord::Base
 
   # Procs per node used in thermal calculation
   def thermal_ppn
-    20
+    28
   end
 
   # Log file for thermal calculation
@@ -398,7 +402,8 @@ class Session < ActiveRecord::Base
 
   # The connection view used to connect to Paraview VNC session
   def paraview_conn_view(job_id)
-    conn_file = paraview_outdir.join("#{job_id}.conn")
+    # FIXME: hardcoded path
+    conn_file = paraview_outdir.join("#{job_id}.owens.conn")
     return nil unless conn_file.file?
     OSC::VNC::ConnView.new paraview_script_view, conn_file
   end
@@ -415,7 +420,7 @@ class Session < ActiveRecord::Base
     script.write yield
     script.write paraview_script_view.render
     script.close
-    job = OSC::Machete::Job.new(script: script.path, host: 'quick')
+    job = OSC::Machete::Job.new(script:  script.path, host: host, torque_helper: resource_manager('quick'))
 
     # submit job
     submit_machete_job(job) ? (job_id = job.pbsid) : (return false)
@@ -444,11 +449,11 @@ class Session < ActiveRecord::Base
   def thermal_paraview
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
-        #PBS -N Thermal-Paraview
-        #PBS -l nodes=1:ppn=1:owens
-        #PBS -l walltime=04:00:00
-        #PBS -j oe
-        #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name Thermal-Paraview
+        #SBATCH --time=04:00:00
+        #SBATCH --nodes=1
+        #SBATCH --tasks-per-node=1
 
         export DATAFILE="#{staged_dir.join('ctsp.case')}"
       EOF
@@ -464,11 +469,11 @@ class Session < ActiveRecord::Base
   def structural_paraview
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
-        #PBS -N Structural-Paraview
-        #PBS -l nodes=1:ppn=1:owens
-        #PBS -l walltime=04:00:00
-        #PBS -j oe
-        #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name Structural-Paraview
+        #SBATCH --time=04:00:00
+        #SBATCH --nodes=1
+        #SBATCH --tasks-per-node=1
 
         export DATAFILE="#{staged_dir.join('wrp.exo')}"
         export IS_STRUCTURAL="true"
@@ -480,6 +485,14 @@ class Session < ActiveRecord::Base
     # Data root where all data is stored for each user
     def ood_dataroot
       Pathname.new ENV['OOD_DATAROOT']
+    end
+
+    def resource_manager(queue_name = nil)
+      ResourceMgrAdapter.new(queue_name)
+    end
+
+    def host
+      'owens' # FIXME: not configurable
     end
 
     #
@@ -499,7 +512,7 @@ class Session < ActiveRecord::Base
         xstartup: vftsolid_assets.join('xstartup'),
         outdir: staged_dir,
         geom: "#{resx}x#{resy}",
-        load_turbovnc: "module load intel/16.0.3 turbovnc/2.0.91",
+        load_turbovnc: "module load intel/19.0.5 turbovnc",
         novnc?: true,
       )
     end
@@ -522,15 +535,14 @@ class Session < ActiveRecord::Base
       script = staged_dir.join('vftsolid_main.sh')
       File.open(script, 'w') do |f|
         f.write <<-EOF.gsub(/^ {8}/, '')
-          #PBS -N VFTSolid
-          #PBS -l nodes=1:ppn=1:ruby
-          #PBS -l walltime=04:00:00
-          #PBS -j oe
-          #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name=VFTSolid
+        #SBATCH --nodes=1 --ntasks-per-node=1
+        #SBATCH --time=4:00:00
         EOF
         f.write vftsolid_script_view.render
       end
-      job = OSC::Machete::Job.new(script: script, host: 'quick')
+      job = OSC::Machete::Job.new(script: script, host: host, torque_helper: resource_manager('quick'))
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
@@ -615,7 +627,7 @@ class Session < ActiveRecord::Base
       end
 
       # build job
-      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: 'ruby')
+      job = OSC::Machete::Job.new(script: staged_dir.join('thermal_main.sh'), host: host, torque_helper: resource_manager)
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
@@ -753,7 +765,7 @@ class Session < ActiveRecord::Base
       end
 
       # build job
-      job = OSC::Machete::Job.new(script: staged_dir.join('structural_main.sh'), host: 'ruby')
+      job = OSC::Machete::Job.new(script: staged_dir.join('structural_main.sh'), host: host, torque_helper: resource_manager)
 
       # submit job
       submit_machete_job(job) ? create_session_job(job: job) : false
