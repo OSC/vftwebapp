@@ -449,11 +449,11 @@ class Session < ActiveRecord::Base
   def thermal_paraview
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
-        #PBS -N Thermal-Paraview
-        #PBS -l nodes=1:ppn=1:owens
-        #PBS -l walltime=04:00:00
-        #PBS -j oe
-        #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name Thermal-Paraview
+        #SBATCH --time=04:00:00
+        #SBATCH --nodes=1
+        #SBATCH --tasks-per-node=1
 
         export DATAFILE="#{staged_dir.join('ctsp.case')}"
       EOF
@@ -469,11 +469,11 @@ class Session < ActiveRecord::Base
   def structural_paraview
     submit_paraview do
       <<-EOF.gsub(/^ {8}/, '')
-        #PBS -N Structural-Paraview
-        #PBS -l nodes=1:ppn=1:owens
-        #PBS -l walltime=04:00:00
-        #PBS -j oe
-        #PBS -S /bin/bash
+        #!/bin/bash
+        #SBATCH --job-name Structural-Paraview
+        #SBATCH --time=04:00:00
+        #SBATCH --nodes=1
+        #SBATCH --tasks-per-node=1
 
         export DATAFILE="#{staged_dir.join('wrp.exo')}"
         export IS_STRUCTURAL="true"
