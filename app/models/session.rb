@@ -276,7 +276,7 @@ class Session < ActiveRecord::Base
 
   # Procs per node used in thermal calculation
   def thermal_ppn
-    20
+    28
   end
 
   # Log file for thermal calculation

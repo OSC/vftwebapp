@@ -1,9 +1,13 @@
-#PBS -N thermal
-#PBS -l walltime={{{thermal_walltime}}}:00:00
-#PBS -l nodes={{{thermal_nodes}}}:ppn={{{thermal_ppn}}}
-#PBS -o {{{thermal_log_file}}}
-#PBS -j oe
-#PBS -S /bin/bash
+#!/bin/bash
+#SBATCH --job-name thermal
+#SBATCH --time={{thermal_walltime}}:00:00
+#SBATCH --nodes={{{thermal_nodes}}}
+#SBATCH --tasks-per-node={{thermal_ppn}}
+#SBATCH -o {{{thermal_log_file}}}
+
+#FIXME: may be able to just request --ntasks and specify --tasks-per-node=28
+# and if there are 0 tasks - well, its not going to run so should return an
+# error
 
 # Global Settings
 WORKSPACE="${SLURM_SUBMIT_DIR}"
@@ -79,17 +83,17 @@ fi
 echo "Processing CTSP using ${NUM_CORES} cores"
 
 # Go into each subdirectory and run the CTSP executable
-time pbsdsh bash -l -c "
+time srun /bin/bash -l -c "
   export PATH=\"${PATH}\"
   ARRAY=(${DIRS})
-  WORKDIR=\"\${ARRAY[\${PBS_VNODENUM}]}\"
+  WORKDIR=\"\${ARRAY[\${SLURM_PROCID}]}\"
   if [ -d \"\${WORKDIR}\" ]; then
-    exec 1>\"${LOGDIR}/ctsp.\$PBS_VNODENUM.log\" 2>&1
+    exec 1>\"${LOGDIR}/ctsp.\$SLURM_PROCID.log\" 2>&1
     cd \"\${WORKDIR}\"
     ctsp.x
   fi
 "
-check_status $? pbsdsh
+check_status $? 'srun'
 
 # Create common log file
 LOGFILE="${LOGDIR}/ctsp.log"
