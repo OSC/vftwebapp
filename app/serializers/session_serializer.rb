@@ -62,7 +62,9 @@ class SessionSerializer < ActiveModel::Serializer
       conn: object.vftsolid_conn_view ? object.vftsolid_conn_view.render(:awesim_vnc) : nil,
       novnc_conn: object.vftsolid_conn_view ? object.vftsolid_conn_view.render(:novnc) : nil,
       t_paraview: object.thermal_paraview? ? thermal_paraview_session_url(object, only_path: true) : nil,
-      s_paraview: object.structural_paraview? ? structural_paraview_session_url(object, only_path: true) : nil
+      s_paraview: object.structural_paraview? ? structural_paraview_session_url(object, only_path: true) : nil,
+      files_ood_connect_url: "awesim://sftp@#{staged_dir}/",
+      files_url: OodAppkit.files.url(path: staged_dir).to_s
     }
   end
 end
