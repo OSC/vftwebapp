@@ -1,9 +1,9 @@
-#PBS -N structural
-#PBS -l walltime={{{structural_walltime}}}:00:00
-#PBS -l nodes=1:ppn=20
-#PBS -o {{{structural_log_file}}}
-#PBS -j oe
-#PBS -S /bin/bash
+#!/bin/bash
+#SBATCH --job-name structural
+#SBATCH --time={{structural_walltime}}:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=28
+#SBATCH -o {{{structural_log_file}}}
 
 # Global Settings
 WORKSPACE="${SLURM_SUBMIT_DIR}"
@@ -95,8 +95,8 @@ rotate () {
 
 # Set up WARP3D environment (use default WARP3D module)
 module use /users/PZS0645/wiag/local-owens/emc2/share/modulefiles
-module load intel/17.0.2
-module load python/2.7.8
+module load intel/19.0.5 intelmpi/2019.7
+module load python/2.7
 module load warp3d
 
 # Set up trap function
