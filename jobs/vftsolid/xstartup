@@ -5,6 +5,9 @@ if [ -e $HOME/.Xresources ]; then
 fi
 xsetroot -solid grey
 
+# ignore mono + gecko popup
+export WINEDLLOVERRIDES="mscoree,mshtml="
+
 # Set up temporary wine prefix but be careful it doesn't write any data in
 # WINEPREFIX
 # note: `wine` can detect symlinks, so we make symlinks of contents
