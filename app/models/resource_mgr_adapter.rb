@@ -33,7 +33,7 @@ class ResourceMgrAdapter
     cluster = cluster_for_host_id(host)
     script = OodCore::Job::Script.new(
       content: script_path.read,
-      accounting_id: account_string,
+      accounting_id: account_string || OodSupport::Process.group.name,
       queue_name: queue_name
     )
     adapter(cluster).submit( script, **depends_on)
