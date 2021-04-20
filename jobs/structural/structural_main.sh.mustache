@@ -94,12 +94,12 @@ rotate () {
 }
 
 module load python/2.7
-source /users/PZS0645/wiag/local-owens/emc2/warp3d/17.8.2/warp3d2exii/venv/bin/activate
 
 # Set up WARP3D environment (use default WARP3D module)
 module use /users/PZS0645/wiag/local-owens/emc2/share/modulefiles
 module load intel/19.0.5 intelmpi/2019.7
 module load warp3d
+source $WARP3D_VENV/bin/activate
 
 
 
