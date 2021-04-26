@@ -129,8 +129,8 @@ class SessionsController < ApplicationController
   def thermal_paraview
     @session = Session.find(params[:id])
 
-    if @session.thermal_paraview? && @session.update(session_params) && vnc_link = @session.thermal_paraview[:vnc_link] && novnc_link = @session.thermal_paraview[:novnc_link]
-      render json: {vnc_link: vnc_link, novnc_link: novnc_link}
+    if @session.thermal_paraview? && tp = submit_paraview(:thermal_paraview)
+      render json: {vnc_link: tp[:vnc_link], novnc_link: tp[:novnc_link]}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
     end
@@ -140,8 +140,8 @@ class SessionsController < ApplicationController
   def structural_paraview
     @session = Session.find(params[:id])
 
-    if @session.structural_paraview? && @session.update(session_params) && vnc_link = @session.structural_paraview[:vnc_link] && novnc_link = @session.structural_paraview[:novnc_link]
-      render json: {vnc_link: vnc_link, novnc_link: novnc_link}
+    if @session.structural_paraview? && sp = submit_paraview(:structural_paraview)
+      render json: {vnc_link: sp[:vnc_link], novnc_link: sp[:novnc_link]}
     else
       render json: {errors: @session.errors.full_messages}, status: :unprocessable_entity
     end
@@ -156,5 +156,12 @@ class SessionsController < ApplicationController
     # Update the status of all the jobs
     def update_jobs
       SessionJob.all.to_a.each(&:update_status!)
+    end
+
+    def submit_paraview(stage)
+      return nil unless @session.update(session_params)
+
+      paraview = @session.send(stage.to_sym)
+      paraview[:novnc_link].present? && paraview[:vnc_link].present? ? paraview : nil
     end
 end
