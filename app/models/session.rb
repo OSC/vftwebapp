@@ -420,7 +420,7 @@ class Session < ActiveRecord::Base
     script.write yield
     script.write paraview_script_view.render
     script.close
-    job = OSC::Machete::Job.new(script:  script.path, host: host, torque_helper: resource_manager('quick'))
+    job = OSC::Machete::Job.new(script:  script.path, host: host, torque_helper: resource_manager)
 
     # submit job
     submit_machete_job(job) ? (job_id = job.pbsid) : (return false)
@@ -454,6 +454,7 @@ class Session < ActiveRecord::Base
         #SBATCH --time=04:00:00
         #SBATCH --nodes=1
         #SBATCH --tasks-per-node=1
+        #SBATCH --partition quick
 
         export DATAFILE="#{staged_dir.join('ctsp.case')}"
       EOF
@@ -474,6 +475,7 @@ class Session < ActiveRecord::Base
         #SBATCH --time=04:00:00
         #SBATCH --nodes=1
         #SBATCH --tasks-per-node=1
+        #SBATCH --gpus-per-node 1 --gres vis
 
         export DATAFILE="#{staged_dir.join('wrp.exo')}"
         export IS_STRUCTURAL="true"
