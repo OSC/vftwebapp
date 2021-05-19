@@ -56,4 +56,4 @@ gem 'osc_machete_rails', '~> 1.2'
 gem 'osc-vnc', '~> 1.0', '>= 1.1.3'
 gem 'ood_appkit', '~> 1.0'
 
-gem 'nokogiri', '1.10.4'
+gem 'nokogiri', '1.11.4'
