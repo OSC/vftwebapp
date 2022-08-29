@@ -1,4 +1,4 @@
-class Mesh < ActiveRecord::Base
+class Mesh < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_attached_file :upload
 

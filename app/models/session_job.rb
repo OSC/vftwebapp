@@ -1,4 +1,4 @@
-class SessionJob < ActiveRecord::Base
+class SessionJob < ApplicationRecord
   include OscMacheteRails::Statusable
 
   belongs_to :session
