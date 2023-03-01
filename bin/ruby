@@ -1,0 +1,8 @@
+#!/bin/bash
+
+unset GEM_HOME
+unset GEM_PATH
+
+source scl_source enable rh-ruby27
+exec /bin/env ruby "$@"
+
